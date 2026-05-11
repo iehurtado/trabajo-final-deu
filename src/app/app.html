@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-secondary">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/">App</a>
     <button class="navbar-toggler" type="button" (click)="toggleNavbarCollapse()">
@@ -6,9 +6,13 @@
     </button>
     <div class="navbar-collapse" [ngbCollapse]="isNavbarCollapsed">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a routerLink="/" routerLinkActive="active" class="nav-link">Home</a>
-        </li>
+        @for (link of links; track link.route) {
+          <li class="nav-item">
+            <a [routerLink]="link.route" routerLinkActive="active" class="nav-link">
+              {{ link.title }}
+            </a>
+          </li>
+        }
       </ul>
     </div>
   </div>

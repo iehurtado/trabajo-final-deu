@@ -9,7 +9,12 @@ import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './app.scss'
 })
 export class App {
-  protected isNavbarCollapsed = false;
+  protected isNavbarCollapsed = true;
+
+  protected links = [
+    { route: '', title: 'Home' },
+    { route: '/puntos', title: 'Puntos de Interés' },
+  ];
 
   toggleNavbarCollapse() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
