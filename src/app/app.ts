@@ -1,12 +1,17 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterLinkWithHref, RouterOutlet } from '@angular/router';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NgbCollapse, RouterLinkWithHref],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('trabajo-final-deu');
+  protected isNavbarCollapsed = false;
+
+  toggleNavbarCollapse() {
+    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
 }
