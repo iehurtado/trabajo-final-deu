@@ -1,45 +1,51 @@
 <div class="container-fluid">
     <h1>Puntos de Interés</h1>
-    <p><button type="button" class="btn btn-primary" disabled>Agregar...</button></p>
-    <div class="card">
-        <div class="card-body p-0">
-            <table class="table table-striped mb-0">
-                <thead>
-                    <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Categoría</th>
-                        <th scope="col">Subcategoría</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (punto of puntos$|async; track punto) {
+    <p><button type="button" class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar...</button></p>
+    @if (puntos$|async; as paginator) {
+        <div class="card">
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead>
                         <tr>
-                            <td>{{ punto.nombre }}</td>
-                            <td>{{ punto.categoria }}</td>
-                            <td>{{ punto.subcategoria }}</td>
-                            <td>{{ punto.descripcion }}</td>
-                            <td><a [routerLink]="['/puntos', punto.id]">Ver</a></td>
+                            <th scope="col">#</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Categoría</th>
+                            <th scope="col">Subcategoría</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col"></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @for (punto of paginator.data; track punto) {
+                            <tr>
+                                <td>{{ punto.id }}</td>
+                                <td>{{ punto.nombre }}</td>
+                                <td>{{ punto.categoria }}</td>
+                                <td>{{ punto.subcategoria }}</td>
+                                <td>{{ punto.descripcion }}</td>
+                                <td><a [routerLink]="['/puntos', punto.id]">Ver</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <nav aria-label="Paginación">
+                    <ul class="pagination mb-0">
+                        <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == 1">
+                            <a class="page-link" href="#" aria-label="Anterior">&laquo;</a>
+                        </li>
+                        @for (page of range(1, paginator.paginatorInfo.totalPages); track page) {
+                            <li class="page-item" [class.active]="page === paginator.paginatorInfo.currentPage">
+                                <a class="page-link" (click)="page$.next(page)">{{ page }}</a>
+                            </li>
+                        }
+                        <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == paginator.paginatorInfo.totalPages">
+                            <a class="page-link" href="#" aria-label="Siguiente">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
-        <div class="card-footer d-flex justify-content-around">
-            <nav aria-label="Paginación">
-                <ul class="pagination mb-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Anterior">&laquo;</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" (click)="0">1</a>
-                    </li>
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" aria-label="Siguiente">&raquo;</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+    }
 </div>

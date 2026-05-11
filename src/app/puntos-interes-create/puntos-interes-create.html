@@ -1,0 +1,75 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+<div class="container-fluid">
+  <h1>Nuevo Punto de Interés</h1>
+    <div class="row g-2 mb-3">
+      <div class="col-12 col-lg-4">
+        <div class="card">
+          <div class="card-header">Datos Básicos</div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" id="nombre" formControlName="nombre" class="form-control"
+                [class.is-invalid]="form.get('nombre')?.touched && form.get('nombre')?.invalid">
+              @if (form.get('nombre')?.touched && form.get('nombre')?.errors?.['required']) {
+              <div class="invalid-feedback">El nombre es requerido.</div>
+              }
+            </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <textarea id="descripcion" formControlName="descripcion" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="row g-2">
+              <div class="col-md-6 mb-3">
+                <label for="categoria" class="form-label">Categoría</label>
+                <select id="categoria" formControlName="categoria" class="form-select">
+                  <option value="Contaminantes">Contaminantes</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="subcategoria" class="form-label">Subcategoría</label>
+                <input type="text" id="subcategoria" formControlName="subcategoria" class="form-control"
+                  [class.is-invalid]="form.get('subcategoria')?.touched && form.get('subcategoria')?.invalid">
+                @if (form.get('subcategoria')?.touched && form.get('subcategoria')?.errors?.['required']) {
+                  <div class="invalid-feedback">La subcategoría es requerida.</div>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            Ubicación
+            @if (detectando()) {
+              <span class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Detectando ubicación</span>
+              </span>
+            }
+          </div>
+          <div class="card-body p-0">
+            <div id="map" #mapContainer style="height: 500px; width: 100%;"></div>
+          </div>
+          @if (form.get('latitud')?.touched && form.get('latitud')?.errors?.['required']) {
+            <div class="invalid-feedback">Seleccione una ubicación en el mapa</div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="fixed-footer border p-2">
+    <div class="d-flex justify-content-end w-100">
+      <div class="ms-auto">
+        <button type="button" class="btn" [routerLink]="['/puntos']">Cancelar</button>
+        <button type="submit" class="btn btn-primary">
+          Guardar
+          @if (guardando()) {
+            <span class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Guardando</span>
+            </span>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

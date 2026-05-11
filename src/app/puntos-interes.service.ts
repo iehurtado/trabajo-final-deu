@@ -1,5 +1,5 @@
 import { Injectable, signal } from "@angular/core";
-import { BehaviorSubject, Observable, map, take } from "rxjs";
+import { BehaviorSubject, Observable, map, of, take } from "rxjs";
 import { toObservable } from "@angular/core/rxjs-interop";
 
 export interface PuntoInteres {
@@ -54,6 +54,54 @@ export class PuntosInteresService {
             categoria: "Contaminantes",
             subcategoria: "Descarga industrial",
             descripcion: "Descargas industriales y sedimentos contaminados."
+        },
+        {
+            id: 6,
+            nombre: "Reserva Natural Integral Punta Lara",
+            latitud: -34.780, longitud: -58.000,
+            categoria: "Contaminantes",
+            subcategoria: "Residuos Sólidos",
+            descripcion: "Acumulación de basura transportada por la marea en zona protegida."
+        },
+        {
+            id: 7,
+            nombre: "Arroyo del Medio - Berisso",
+            latitud: -34.880, longitud: -57.820,
+            categoria: "Contaminantes",
+            subcategoria: "Efluentes Mixtos",
+            descripcion: "Descargas de efluentes industriales y residuos domésticos."
+        },
+        {
+            id: 8,
+            nombre: "Playa La Balandra",
+            latitud: -34.920, longitud: -57.780,
+            categoria: "Contaminantes",
+            subcategoria: "Plásticos",
+            descripcion: "Presencia de plásticos y restos de fogatas en zona recreativa."
+        },
+        {
+            id: 9,
+            nombre: "Puerto de La Plata - Canal de Acceso",
+            latitud: -34.810, longitud: -57.900,
+            categoria: "Contaminantes",
+            subcategoria: "Hidrocarburos/Metales",
+            descripcion: "Efluentes de buques y sedimentos con metales pesados."
+        },
+        {
+            id: 10,
+            nombre: "Desembocadura Arroyo Sarandí",
+            latitud: -34.660, longitud: -58.330,
+            categoria: "Contaminantes",
+            subcategoria: "Químicos/Cloacales",
+            descripcion: "Altos niveles de contaminación química y cloacal."
+        },
+        {
+            id: 11,
+            nombre: "Costa de Wilde",
+            latitud: -34.680, longitud: -58.290,
+            categoria: "Contaminantes",
+            subcategoria: "Residuos Sólidos",
+            descripcion: "Basurales a cielo abierto en la franja costera."
         }
     ]);
 
@@ -69,5 +117,14 @@ export class PuntosInteresService {
             take(1),
             map(puntos => puntos.find(p => p.id === id))
         );
+    }
+
+    addPuntoInteres(nuevoPunto: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {
+        const currentPuntos = this.puntos.value;
+        const nextId = currentPuntos.length > 0 ? Math.max(...currentPuntos.map(p => p.id)) + 1 : 1;
+        const agregado = { ...nuevoPunto, id: nextId };
+        this.puntos.next([...currentPuntos, agregado]);
+
+        return of(agregado);
     }
 }

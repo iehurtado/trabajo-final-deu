@@ -16,8 +16,8 @@ const defaultIcon = L.icon({
     iconRetinaUrl,
     iconUrl,
     shadowUrl,
-    shadowAnchor: [0, 0],
-    iconAnchor: [0, 0],
+    shadowAnchor: [12, 41],
+    iconAnchor: [12, 41],
 });
 
 L.Marker.prototype.options.icon = defaultIcon;
