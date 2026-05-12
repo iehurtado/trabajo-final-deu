@@ -1,0 +1,115 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="container-fluid">
+        <h1>Nuevo Balneario</h1>
+        <div class="row g-2">
+            <div class="col-12 col-md-6">
+                <div class="card mb-2">
+                    <div class="card-header">Información Básica</div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                                [class.is-invalid]="form.get('nombre')?.touched && form.get('nombre')?.invalid">
+                            <div class="invalid-feedback">El nombre debe tener al menos 3 caracteres.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="estadoAgua" class="form-label">Estado del Agua</label>
+                            <select id="estadoAgua" class="form-select" formControlName="estadoAgua">
+                                <option value="Apto">Apto</option>
+                                <option value="Precaución">Precaución</option>
+                                <option value="No Apto">No Apto</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="latitud" class="form-label">Latitud</label>
+                                    <input type="text" id="latitud" class="form-control" formControlName="latitud"
+                                        readonly>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="mb-3">
+                                    <label for="longitud" class="form-label">Longitud</label>
+                                    <input type="text" id="longitud" class="form-control" formControlName="longitud"
+                                        readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Servicios Disponibles</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="auxilio"
+                                        formControlName="auxilio">
+                                    <label class="form-check-label" for="auxilio">Auxilio</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="banos" formControlName="banos">
+                                    <label class="form-check-label" for="banos">Baños</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="rampa" formControlName="rampa">
+                                    <label class="form-check-label" for="rampa">Rampa</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="vigilancia"
+                                        formControlName="vigilancia">
+                                    <label class="form-check-label" for="vigilancia">Vigilancia</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="parrillas"
+                                        formControlName="parrillas">
+                                    <label class="form-check-label" for="parrillas">Parrillas</label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="bus" formControlName="bus">
+                                    <label class="form-check-label" for="bus">Bus</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Ubicación</h5>
+                        @if (detectando()) {
+                        <span class="badge bg-info text-dark">Detectando...</span>
+                        }
+                    </div>
+                    <div class="card-body p-0">
+                        <div #mapContainer style="height: 100%; min-height: 400px;"></div>
+                    </div>
+                    <div class="card-footer small text-muted">
+                        Haz clic en el mapa para ajustar la ubicación.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-fixed-footer>
+        <div class="d-flex justify-content-end w-100">
+            <div class="ms-auto">
+                <button type="button" class="btn" [routerLink]="['/puntos']">Cancelar</button>
+                <button type="submit" class="btn btn-primary">
+                    Guardar
+                    @if (guardando()) {
+                    <span class="spinner-border spinner-border-sm" role="status">
+                        <span class="visually-hidden">Guardando</span>
+                    </span>
+                    }
+                </button>
+            </div>
+        </div>
+    </app-fixed-footer>
+</form>

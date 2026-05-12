@@ -1,0 +1,70 @@
+<div class="container-fluid">
+    <h1>Balnearios</h1>
+    @if (balnearios$|async; as paginator) {
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado del Agua</th>
+                                <th scope="col">Servicios</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (balneario of paginator.data; track balneario.id) {
+                                <tr>
+                                    <td>{{ balneario.id }}</td>
+                                    <td>{{ balneario.nombre }}</td>
+                                    <td>
+                                        <span class="badge" [class.bg-success]="balneario.estadoAgua === 'Apto'" [class.bg-warning]="balneario.estadoAgua === 'Precaución'" [class.bg-danger]="balneario.estadoAgua === 'No Apto'">
+                                            {{ balneario.estadoAgua }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            @if (balneario.auxilio) { <span class="badge bg-secondary" title="Auxilio">AUXILIO</span> }
+                                            @if (balneario.banos) { <span class="badge bg-secondary" title="Baños">BAÑOS</span> }
+                                            @if (balneario.rampa) { <span class="badge bg-secondary" title="Rampa">RAMPA</span> }
+                                            @if (balneario.vigilancia) { <span class="badge bg-secondary" title="Vigilancia">VIGILANCIA</span> }
+                                            @if (balneario.parrillas) { <span class="badge bg-secondary" title="Parrillas">PARRILLAS</span> }
+                                            @if (balneario.bus) { <span class="badge bg-secondary" title="Bus">BUS</span> }
+                                        </div>
+                                    </td>
+                                    <td><a [routerLink]="['/balnearios', balneario.id]">Ver</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+                <nav aria-label="Paginación">
+                    <ul class="pagination mb-0">
+                        <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == 1">
+                            <a class="page-link" (click)="previousPage()" aria-label="Anterior">&laquo;</a>
+                        </li>
+                        @for (page of range(1, paginator.paginatorInfo.totalPages); track page) {
+                            <li class="page-item" [class.active]="page === paginator.paginatorInfo.currentPage">
+                                <a class="page-link" (click)="page$.next(page)">{{ page }}</a>
+                            </li>
+                        }
+                        <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == paginator.paginatorInfo.totalPages">
+                            <a class="page-link" (click)="nextPage(paginator.paginatorInfo.totalPages)" aria-label="Siguiente">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    }
+</div>
+<app-fixed-footer>
+    <div class="d-flex justify-content-end w-100">
+        <div class="ms-auto">
+            <button class="btn btn-primary" [routerLink]="['/balnearios/create']">Agregar</button>
+        </div>
+    </div>
+</app-fixed-footer>

@@ -14,6 +14,7 @@ export class App {
   protected links = [
     { route: '', title: 'Home' },
     { route: '/puntos', title: 'Puntos de Interés' },
+    { route: '/balnearios', title: 'Balnearios' },
   ];
 
   toggleNavbarCollapse() {

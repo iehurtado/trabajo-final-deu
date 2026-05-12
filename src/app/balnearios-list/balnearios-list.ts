@@ -1,12 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
+import { Balneario, BalneariosService } from '../balnearios.service';
 import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 
 type Paginator = {
-  data: PuntoInteres[];
+  data: Balneario[];
   paginatorInfo: {
     currentPage: number;
     perPage: number;
@@ -18,18 +18,18 @@ type Paginator = {
 const perPage = 10;
 
 @Component({
-  selector: 'app-puntos-interes-list',
+  selector: 'app-balnearios-list',
   imports: [AsyncPipe, RouterLink, FixedFooter],
-  templateUrl: './puntos-interes-list.html',
-  styleUrl: './puntos-interes-list.scss',
+  templateUrl: './balnearios-list.html',
+  styleUrl: './balnearios-list.scss',
 })
-export class PuntosInteresList {
-  private puntosService = inject(PuntosInteresService);
+export class BalneariosList {
+  private balneariosService = inject(BalneariosService);
 
   protected readonly page$ = new BehaviorSubject(1);
 
-  protected readonly puntos$: Observable<Paginator> = this.page$.pipe(
-    switchMap(page => this.puntosService.getPuntosInteres().pipe(
+  protected readonly balnearios$: Observable<Paginator> = this.page$.pipe(
+    switchMap(page => this.balneariosService.getBalnearios().pipe(
       map(data => ({
         data: data.slice((page - 1) * perPage, page * perPage),
         paginatorInfo: {

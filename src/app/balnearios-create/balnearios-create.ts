@@ -3,20 +3,20 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
-import { PuntosInteresService } from '../puntos-interes.service';
+import { BalneariosService } from '../balnearios.service';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 
 @Component({
-  selector: 'app-puntos-interes-create',
+  selector: 'app-balnearios-create',
   imports: [ReactiveFormsModule, RouterLink, FixedFooter],
-  templateUrl: './puntos-interes-create.html',
-  styleUrl: './puntos-interes-create.scss',
+  templateUrl: './balnearios-create.html',
+  styleUrl: './balnearios-create.scss',
 })
-export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
+export class BalneariosCreate implements AfterViewInit, OnDestroy {
   private locationSubscription!: Subscription;
 
   private readonly fb = inject(FormBuilder);
-  private readonly puntosService = inject(PuntosInteresService);
+  private readonly balneariosService = inject(BalneariosService);
   private readonly router = inject(Router);
 
   private map!: L.Map;
@@ -28,11 +28,15 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
 
   protected readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    categoria: ['Contaminantes', [Validators.required]],
-    subcategoria: ['', [Validators.required]],
-    latitud: [-34.92134576106383, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-    longitud: [-57.953514458653274, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-    descripcion: ['', [Validators.maxLength(500)]],
+    estadoAgua: ['Apto', [Validators.required]],
+    latitud: [-34.820, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+    longitud: [-57.965, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+    auxilio: [false],
+    banos: [false],
+    rampa: [false],
+    vigilancia: [false],
+    parrillas: [false],
+    bus: [false],
   });
 
   ngAfterViewInit(): void {
@@ -42,14 +46,15 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.locationSubscription.unsubscribe();
+    if (this.locationSubscription) {
+      this.locationSubscription.unsubscribe();
+    }
   }
 
   private initMap(): void {
     this.map = L.map(this.mapContainer().nativeElement, {
       center: [this.form.value.latitud!, this.form.value.longitud!],
       zoom: 14,
-      dragging: false,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -96,8 +101,6 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
       }, e => {
         this.detectando.set(false);
       });
-    } else {
-      this.form.patchValue({ latitud: -34.820367674622, longitud: -57.96553512674702 });
     }
   }
 
@@ -110,19 +113,23 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
     this.guardando.set(true);
     const formValue = this.form.getRawValue();
 
-    const agregado$ = this.puntosService.addPuntoInteres({
+    const agregado$ = this.balneariosService.addBalneario({
       nombre: formValue.nombre!,
-      categoria: formValue.categoria!,
-      subcategoria: formValue.subcategoria!,
+      estadoAgua: formValue.estadoAgua!,
       latitud: Number(formValue.latitud),
       longitud: Number(formValue.longitud),
-      descripcion: formValue.descripcion ?? undefined,
+      auxilio: !!formValue.auxilio,
+      banos: !!formValue.banos,
+      rampa: !!formValue.rampa,
+      vigilancia: !!formValue.vigilancia,
+      parrillas: !!formValue.parrillas,
+      bus: !!formValue.bus,
     });
 
     agregado$.subscribe(({ id }) => {
-      this.form.markAsPristine(); // Evitar el guard de confirmación al navegar tras guardar
+      this.form.markAsPristine();
       this.guardando.set(false);
-      this.router.navigate(['/puntos', id]);
+      this.router.navigate(['/balnearios', id]);
     });
   }
 

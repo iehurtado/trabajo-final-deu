@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <h1>Balneario #{{ balneario.id }}</h1>
+    <div class="row g-3">
+        <div class="col-12 col-md-5">
+            <div class="card mb-2">
+                <div class="card-header">Información Básica</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="bd-nombre" class="form-label">Nombre</label>
+                        <input id="bd-nombre" type="text" class="form-control" readonly [value]="balneario.nombre">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Estado del Agua</label>
+                        <div class="form-control">
+                            <span class="badge" 
+                                [class.bg-success]="balneario.estadoAgua === 'Apto'" 
+                                [class.bg-warning]="balneario.estadoAgua === 'Precaución'" 
+                                [class.bg-danger]="balneario.estadoAgua === 'No Apto'">
+                                {{ balneario.estadoAgua }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">Servicios Disponibles</div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Auxilio
+                            <span class="badge" [class.bg-success]="balneario.auxilio" [class.bg-danger]="!balneario.auxilio">
+                                {{ balneario.auxilio ? 'Sí' : 'No' }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Baños
+                            <span class="badge" [class.bg-success]="balneario.banos" [class.bg-danger]="!balneario.banos">
+                                {{ balneario.banos ? 'Sí' : 'No' }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Rampa
+                            <span class="badge" [class.bg-success]="balneario.rampa" [class.bg-danger]="!balneario.rampa">
+                                {{ balneario.rampa ? 'Sí' : 'No' }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Vigilancia
+                            <span class="badge" [class.bg-success]="balneario.vigilancia" [class.bg-danger]="!balneario.vigilancia">
+                                {{ balneario.vigilancia ? 'Sí' : 'No' }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Parrillas
+                            <span class="badge" [class.bg-success]="balneario.parrillas" [class.bg-danger]="!balneario.parrillas">
+                                {{ balneario.parrillas ? 'Sí' : 'No' }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Bus
+                            <span class="badge" [class.bg-success]="balneario.bus" [class.bg-danger]="!balneario.bus">
+                                {{ balneario.bus ? 'Sí' : 'No' }}
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-7">
+            <div class="card h-100">
+                <div class="card-header">Ubicación</div>
+                <div class="card-body p-0">
+                    <app-map [puntos]="mapPuntos" [center]="mapCenter" [zoom]="15"></app-map>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-fixed-footer>
+    <div class="d-flex justify-content-end w-100">
+        <div class="ms-auto">
+            <button class="btn btn-primary" [routerLink]="['/balnearios']">Volver</button>
+        </div>
+    </div>
+</app-fixed-footer>

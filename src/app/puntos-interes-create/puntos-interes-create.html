@@ -4,7 +4,7 @@
     <div class="row g-2 mb-3">
       <div class="col-12 col-lg-4">
         <div class="card">
-          <div class="card-header">Datos Básicos</div>
+          <div class="card-header">Información Básica</div>
           <div class="card-body">
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre</label>
@@ -50,14 +50,18 @@
           <div class="card-body p-0">
             <div id="map" #mapContainer style="height: 500px; width: 100%;"></div>
           </div>
-          @if (form.get('latitud')?.touched && form.get('latitud')?.errors?.['required']) {
-            <div class="invalid-feedback">Seleccione una ubicación en el mapa</div>
-          }
+          <div class="card-footer">
+            @if (form.get('latitud')?.touched && form.get('latitud')?.errors?.['required']) {
+              <div class="invalid-feedback">Seleccione una ubicación en el mapa</div>
+            } @else {
+              Haz clic en el mapa para ajustar la ubicación.
+            }
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="fixed-footer border p-2">
+  <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
       <div class="ms-auto">
         <button type="button" class="btn" [routerLink]="['/puntos']">Cancelar</button>
@@ -71,5 +75,5 @@
         </button>
       </div>
     </div>
-  </div>
+  </app-fixed-footer>
 </form>

@@ -1,6 +1,5 @@
-import { Injectable, signal } from "@angular/core";
+import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, map, of, take } from "rxjs";
-import { toObservable } from "@angular/core/rxjs-interop";
 
 export interface PuntoInteres {
     id: number;
@@ -113,10 +112,7 @@ export class PuntosInteresService {
     }
 
     getPuntoInteresById(id: number): Observable<PuntoInteres | undefined> {
-        return this.puntos.pipe(
-            take(1),
-            map(puntos => puntos.find(p => p.id === id))
-        );
+        return of(this.puntos.value.find(p => p.id === id));
     }
 
     addPuntoInteres(nuevoPunto: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {

@@ -1,33 +1,38 @@
 <div class="container-fluid">
     <h1>Puntos de Interés</h1>
-    <p><button type="button" class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar...</button></p>
     @if (puntos$|async; as paginator) {
         <div class="card">
             <div class="card-body p-0">
-                <table class="table table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Categoría</th>
-                            <th scope="col">Subcategoría</th>
-                            <th scope="col">Descripción</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @for (punto of paginator.data; track punto) {
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0">
+                        <thead>
                             <tr>
-                                <td>{{ punto.id }}</td>
-                                <td>{{ punto.nombre }}</td>
-                                <td>{{ punto.categoria }}</td>
-                                <td>{{ punto.subcategoria }}</td>
-                                <td>{{ punto.descripcion }}</td>
-                                <td><a [routerLink]="['/puntos', punto.id]">Ver</a></td>
+                                <th scope="col">#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Categoría</th>
+                                <th scope="col">Subcategoría</th>
+                                <th scope="col">Descripción</th>
+                                <th scope="col"></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @for (punto of paginator.data; track punto) {
+                                <tr>
+                                    <td>{{ punto.id }}</td>
+                                    <td>{{ punto.nombre }}</td>
+                                    <td>
+                                        <div class="badge bg-danger">{{ punto.categoria }}</div>
+                                    </td>
+                                    <td>
+                                        <div class="badge bg-secondary">{{ punto.subcategoria }}</div>
+                                    </td>
+                                    <td>{{ punto.descripcion }}</td>
+                                    <td><a [routerLink]="['/puntos', punto.id]">Ver</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="card-footer d-flex justify-content-end">
                 <nav aria-label="Paginación">
@@ -49,3 +54,10 @@
         </div>
     }
 </div>
+<app-fixed-footer>
+    <div class="d-flex justify-content-end w-100">
+        <div class="ms-auto">
+            <button class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar</button>
+        </div>
+    </div>
+</app-fixed-footer>
