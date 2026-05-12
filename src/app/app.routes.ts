@@ -13,6 +13,7 @@ import { PuntosInteresUpdate } from './pages/puntos-interes-update';
 import { PuntosInteresService } from './puntos-interes.service';
 import { ErrorPage } from './pages/error-page';
 import { firstValueFrom } from 'rxjs';
+import { Settings } from './pages/settings/settings';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
     const router = inject(Router);
@@ -52,6 +53,7 @@ export const routes: Routes = [
     {
         component: Home,
         path: '',
+        pathMatch: 'full',
         title: 'Home',
     },
     {
@@ -129,6 +131,11 @@ export const routes: Routes = [
             }
             return true;
         }]
+    },
+    {
+        component: Settings,
+        path: 'configuracion',
+        title: 'Configuración',
     },
     {
         component: ErrorPage,

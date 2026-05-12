@@ -13,6 +13,8 @@ import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap
 })
 export class App {
   protected readonly faRightFromBracket = faRightFromBracket;
+  protected readonly faCog = faCog;
+
   protected isNavbarCollapsed = signal(true);
 
   protected user = signal({
@@ -24,6 +26,7 @@ export class App {
     { route: '', title: 'Home' },
     { route: '/puntos', title: 'Puntos de Interés' },
     { route: '/balnearios', title: 'Balnearios' },
+    { route: '/configuracion', title: 'Configuración' },
   ];
 
   toggleNavbarCollapse() {

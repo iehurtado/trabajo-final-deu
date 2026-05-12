@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <h1>Configuración</h1>
+
+    <div class="card">
+        <div class="card-header">
+            Ajustes Visuales
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="fontSizeRange" class="form-label">
+                    Tamaño de letra: <strong>{{ settings.fontSize() }}%</strong>
+                    @if (settings.fontSize() !== 100) {
+                        <button class="btn btn-link p-0 ms-2" (click)="setFontSize(100)" title="Restablecer predeterminado">
+                            <fa-icon [icon]="faRotateLeft"></fa-icon>
+                        </button>
+                    }
+                </label>
+                <input type="range" class="form-range" id="fontSizeRange" min="80" max="150" step="5"
+                    [ngModel]="settings.fontSize()" (ngModelChange)="setFontSize($event)">
+                <div class="d-flex justify-content-between mt-2 text-muted small">
+                    <span>Pequeña (80%)</span>
+                    <span>Grande (150%)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
