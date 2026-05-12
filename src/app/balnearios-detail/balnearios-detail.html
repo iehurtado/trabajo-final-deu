@@ -3,7 +3,13 @@
     <div class="row g-3">
         <div class="col-12 col-md-5">
             <div class="card mb-2">
-                <div class="card-header">Información Básica</div>
+                <div class="card-header">
+                    Información Básica
+                    <button type="button" class="btn btn-link align-bottom px-0 py-0">
+                        <span class="visually-hidden">Editar información básica</span>
+                        <fa-icon [icon]="faPencilAlt"></fa-icon>
+                    </button>
+                </div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="bd-nombre" class="form-label">Nombre</label>
@@ -23,7 +29,13 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-header">Servicios Disponibles</div>
+                <div class="card-header">
+                    Servicios Disponibles
+                    <button type="button" class="btn btn-link align-bottom px-0 py-0">
+                        <span class="visually-hidden">Editar servicios disponibles</span>
+                        <fa-icon [icon]="faPencilAlt"></fa-icon>
+                    </button>
+                </div>
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -68,7 +80,13 @@
         </div>
         <div class="col-12 col-md-7">
             <div class="card h-100">
-                <div class="card-header">Ubicación</div>
+                <div class="card-header">
+                    Ubicación
+                    <button type="button" class="btn btn-link align-bottom px-0 py-0">
+                        <span class="visually-hidden">Editar ubicación</span>
+                        <fa-icon [icon]="faPencilAlt"></fa-icon>
+                    </button>
+                </div>
                 <div class="card-body p-0">
                     <app-map [puntos]="mapPuntos" [center]="mapCenter" [zoom]="15"></app-map>
                 </div>
@@ -79,7 +97,7 @@
 <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
         <div class="ms-auto">
-            <button class="btn btn-primary" [routerLink]="['/balnearios']">Volver</button>
+            <a role="button" class="btn btn-primary" [routerLink]="['/balnearios']">Volver</a>
         </div>
     </div>
 </app-fixed-footer>

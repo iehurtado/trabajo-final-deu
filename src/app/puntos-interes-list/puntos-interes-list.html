@@ -27,7 +27,11 @@
                                         <div class="badge bg-secondary">{{ punto.subcategoria }}</div>
                                     </td>
                                     <td>{{ punto.descripcion }}</td>
-                                    <td><a [routerLink]="['/puntos', punto.id]">Ver</a></td>
+                                    <td>
+                                        <a [routerLink]="['/puntos', punto.id]" aria-label="Ver detalle">
+                                            <fa-icon [icon]="faEye"></fa-icon>
+                                        </a>
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -38,15 +42,24 @@
                 <nav aria-label="Paginación">
                     <ul class="pagination mb-0">
                         <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == 1">
-                            <a class="page-link" href="#" aria-label="Anterior">&laquo;</a>
+                            <button class="page-link" (click)="previousPage()">
+                                <span class="visually-hidden">Página anterior</span>
+                                &laquo;
+                            </button>
                         </li>
                         @for (page of range(1, paginator.paginatorInfo.totalPages); track page) {
                             <li class="page-item" [class.active]="page === paginator.paginatorInfo.currentPage">
-                                <a class="page-link" (click)="page$.next(page)">{{ page }}</a>
+                                <button class="page-link" (click)="page$.next(page)">
+                                    <span class="visually-hidden">Página {{ page }}</span>
+                                    {{ page }}
+                                </button>
                             </li>
                         }
                         <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == paginator.paginatorInfo.totalPages">
-                            <a class="page-link" href="#" aria-label="Siguiente">&raquo;</a>
+                            <button class="page-link" (click)="nextPage(paginator.paginatorInfo.totalPages)">
+                                <span class="visually-hidden">Página siguiente</span>
+                                &raquo;
+                            </button>
                         </li>
                     </ul>
                 </nav>
@@ -57,7 +70,7 @@
 <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
         <div class="ms-auto">
-            <button class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar</button>
+            <a role="button" class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar</a>
         </div>
     </div>
 </app-fixed-footer>

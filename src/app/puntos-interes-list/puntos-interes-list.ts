@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 type Paginator = {
   data: PuntoInteres[];
@@ -19,11 +21,12 @@ const perPage = 10;
 
 @Component({
   selector: 'app-puntos-interes-list',
-  imports: [AsyncPipe, RouterLink, FixedFooter],
+  imports: [AsyncPipe, RouterLink, FixedFooter, FaIconComponent],
   templateUrl: './puntos-interes-list.html',
   styleUrl: './puntos-interes-list.scss',
 })
 export class PuntosInteresList {
+  protected readonly faEye = faEye;
   private puntosService = inject(PuntosInteresService);
 
   protected readonly page$ = new BehaviorSubject(1);

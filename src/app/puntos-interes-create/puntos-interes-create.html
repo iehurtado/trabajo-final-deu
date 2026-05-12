@@ -54,7 +54,7 @@
             @if (form.get('latitud')?.touched && form.get('latitud')?.errors?.['required']) {
               <div class="invalid-feedback">Seleccione una ubicación en el mapa</div>
             } @else {
-              Haz clic en el mapa para ajustar la ubicación.
+              Haga clic en el mapa para ajustar la ubicación.
             }
           </div>
         </div>
@@ -64,7 +64,7 @@
   <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
       <div class="ms-auto">
-        <button type="button" class="btn" [routerLink]="['/puntos']">Cancelar</button>
+        <a role="button" class="btn" [routerLink]="['/puntos']">Cancelar</a>
         <button type="submit" class="btn btn-primary">
           Guardar
           @if (guardando()) {

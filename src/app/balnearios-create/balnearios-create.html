@@ -21,23 +21,6 @@
                                 <option value="No Apto">No Apto</option>
                             </select>
                         </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="latitud" class="form-label">Latitud</label>
-                                    <input type="text" id="latitud" class="form-control" formControlName="latitud"
-                                        readonly>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="mb-3">
-                                    <label for="longitud" class="form-label">Longitud</label>
-                                    <input type="text" id="longitud" class="form-control" formControlName="longitud"
-                                        readonly>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="card">
@@ -80,18 +63,20 @@
                 </div>
             </div>
             <div class="col-12 col-md-6">
-                <div class="card h-100">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Ubicación</h5>
+                <div class="card">
+                    <div class="card-header">
+                        Ubicación
                         @if (detectando()) {
-                        <span class="badge bg-info text-dark">Detectando...</span>
+                            <span class="spinner-border spinner-border-sm" role="status">
+                                <span class="visually-hidden">Detectando ubicación</span>
+                            </span>
                         }
                     </div>
                     <div class="card-body p-0">
                         <div #mapContainer style="height: 100%; min-height: 400px;"></div>
                     </div>
                     <div class="card-footer small text-muted">
-                        Haz clic en el mapa para ajustar la ubicación.
+                        Haga clic en el mapa para ajustar la ubicación.
                     </div>
                 </div>
             </div>
@@ -100,7 +85,7 @@
     <app-fixed-footer>
         <div class="d-flex justify-content-end w-100">
             <div class="ms-auto">
-                <button type="button" class="btn" [routerLink]="['/puntos']">Cancelar</button>
+                <a role="button" class="btn" [routerLink]="['/balnearios']">Cancelar</a>
                 <button type="submit" class="btn btn-primary">
                     Guardar
                     @if (guardando()) {

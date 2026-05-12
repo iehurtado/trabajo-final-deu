@@ -4,6 +4,8 @@ import { RouterLink } from '@angular/router';
 import { Balneario, BalneariosService } from '../balnearios.service';
 import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 
 type Paginator = {
   data: Balneario[];
@@ -19,11 +21,13 @@ const perPage = 10;
 
 @Component({
   selector: 'app-balnearios-list',
-  imports: [AsyncPipe, RouterLink, FixedFooter],
+  imports: [AsyncPipe, RouterLink, FixedFooter, FaIconComponent],
   templateUrl: './balnearios-list.html',
   styleUrl: './balnearios-list.scss',
 })
 export class BalneariosList {
+  protected faEye = faEye;
+
   private balneariosService = inject(BalneariosService);
 
   protected readonly page$ = new BehaviorSubject(1);

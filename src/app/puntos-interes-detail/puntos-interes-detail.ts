@@ -4,15 +4,19 @@ import { MapComponent } from '../map/map';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { RouterLink } from "@angular/router";
 import { PuntoMapa } from '../map/types';
+import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-puntos-interes-detail',
-  imports: [MapComponent, FixedFooter, RouterLink],
+  imports: [MapComponent, FixedFooter, RouterLink, FaIconComponent],
   templateUrl: './puntos-interes-detail.html',
   styleUrl: './puntos-interes-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PuntosInteresDetail {
+  protected readonly faPencilAlt = faPencilAlt;
+
   @Input() punto!: PuntoInteres;
 
   protected get mapPuntos(): PuntoMapa[] {
