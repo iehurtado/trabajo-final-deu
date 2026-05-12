@@ -1,8 +1,8 @@
 import { Component, inject, signal, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { PuntosInteresForm } from "../puntos-interes-form/puntos-interes-form";
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
+import { PuntosInteresForm } from '../components/puntos-interes-form/puntos-interes-form';
 
 @Component({
   selector: 'app-puntos-interes-create',

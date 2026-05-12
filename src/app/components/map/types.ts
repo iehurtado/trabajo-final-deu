@@ -1,6 +1,6 @@
 import * as L from "leaflet";
-import { PuntoInteres } from "../puntos-interes.service";
-import { Balneario } from "../balnearios.service";
+import { PuntoInteres } from "../../puntos-interes.service";
+import { Balneario } from "../../balnearios.service";
 import { defaultIcon } from "./defaults";
 
 export const PuntoMapa = {

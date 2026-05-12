@@ -1,11 +1,11 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Balneario, BalneariosService } from '../balnearios.service';
-import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
-import { FixedFooter } from "../fixed-footer/fixed-footer";
-import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
+import { Balneario, BalneariosService } from '../../balnearios.service';
+import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 
 type Paginator = {
   data: Balneario[];

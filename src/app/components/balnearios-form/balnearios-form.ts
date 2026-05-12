@@ -3,21 +3,20 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
-import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
+import { Balneario } from '../../balnearios.service';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { PUNTA_LARA } from '../util';
+import { PUNTA_LARA } from '../../util';
 
 @Component({
-  selector: 'app-puntos-interes-form',
+  selector: 'app-balnearios-form',
   imports: [ReactiveFormsModule, RouterLink, FixedFooter, FaIconComponent],
-  templateUrl: './puntos-interes-form.html',
-  styleUrl: './puntos-interes-form.scss',
+  templateUrl: './balnearios-form.html',
+  styleUrl: './balnearios-form.scss',
 })
-export class PuntosInteresForm implements AfterViewInit, OnDestroy {
+export class BalneariosForm implements AfterViewInit, OnDestroy {
   private locationSubscription!: Subscription;
-
   protected readonly faLocationCrosshairs = faLocationCrosshairs;
 
   private readonly fb = inject(FormBuilder);
@@ -30,16 +29,20 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
   protected readonly detectando = signal(false);
   protected readonly guardando = signal(false);
 
-  initialData = input<PuntoInteres>();
-  protected readonly guardado = output<Omit<PuntoInteres, 'id'>>();
+  initialData = input<Balneario>();
+  protected readonly guardado = output<Omit<Balneario, 'id'>>();
 
-  protected readonly form = this.fb.nonNullable.group({
+  protected readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    categoria: ['Contaminantes', [Validators.required]],
-    subcategoria: ['', [Validators.required]],
+    estadoAgua: ['Apto', [Validators.required]],
     latitud: [null as number|null, [Validators.required]],
     longitud: [null as number|null, [Validators.required]],
-    descripcion: ['', [Validators.maxLength(500)]],
+    auxilio: [false],
+    banos: [false],
+    rampa: [false],
+    vigilancia: [false],
+    parrillas: [false],
+    bus: [false],
   });
 
   constructor() {
@@ -57,14 +60,15 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.locationSubscription.unsubscribe();
+    if (this.locationSubscription) {
+      this.locationSubscription.unsubscribe();
+    }
   }
 
   private initMap(): void {
     this.map = L.map(this.mapContainer().nativeElement, {
       center: PUNTA_LARA,
       zoom: 14,
-      dragging: false,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -111,8 +115,6 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
       }, e => {
         this.detectando.set(false);
       });
-    } else {
-      this.form.patchValue({ latitud: -34.820367674622, longitud: -57.96553512674702 });
     }
   }
 
@@ -126,12 +128,16 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
     const formValue = this.form.getRawValue();
 
     this.guardado.emit({
-      nombre: formValue.nombre,
-      categoria: formValue.categoria,
-      subcategoria: formValue.subcategoria,
+      nombre: formValue.nombre!,
+      estadoAgua: formValue.estadoAgua!,
       latitud: Number(formValue.latitud),
       longitud: Number(formValue.longitud),
-      descripcion: formValue.descripcion,
+      auxilio: !!formValue.auxilio,
+      banos: !!formValue.banos,
+      rampa: !!formValue.rampa,
+      vigilancia: !!formValue.vigilancia,
+      parrillas: !!formValue.parrillas,
+      bus: !!formValue.bus,
     });
   }
 

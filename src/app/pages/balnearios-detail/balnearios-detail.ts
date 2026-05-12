@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from "@angular/router";
-import { Balneario } from '../balnearios.service';
-import { FixedFooter } from "../fixed-footer/fixed-footer";
-import { MapComponent } from '../map/map';
-import { PuntoMapa } from '../map/types';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { Balneario } from '../../balnearios.service';
+import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
+import { MapComponent } from '../../components/map/map';
+import { PuntoMapa } from '../../components/map/types';
 
 @Component({
   selector: 'app-balnearios-detail',
-  imports: [MapComponent, FixedFooter, RouterLink, FaIconComponent],
+  imports: [MapComponent, FixedFooter, RouterLink],
   templateUrl: './balnearios-detail.html',
   styleUrl: './balnearios-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

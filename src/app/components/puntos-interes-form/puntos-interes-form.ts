@@ -1,22 +1,23 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
-import { Balneario } from '../balnearios.service';
+import { PuntoInteres } from '../../puntos-interes.service';
+import { PUNTA_LARA } from '../../util';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
-import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { PUNTA_LARA } from '../util';
 
 @Component({
-  selector: 'app-balnearios-form',
+  selector: 'app-puntos-interes-form',
   imports: [ReactiveFormsModule, RouterLink, FixedFooter, FaIconComponent],
-  templateUrl: './balnearios-form.html',
-  styleUrl: './balnearios-form.scss',
+  templateUrl: './puntos-interes-form.html',
+  styleUrl: './puntos-interes-form.scss',
 })
-export class BalneariosForm implements AfterViewInit, OnDestroy {
+export class PuntosInteresForm implements AfterViewInit, OnDestroy {
   private locationSubscription!: Subscription;
+
   protected readonly faLocationCrosshairs = faLocationCrosshairs;
 
   private readonly fb = inject(FormBuilder);
@@ -29,20 +30,16 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   protected readonly detectando = signal(false);
   protected readonly guardando = signal(false);
 
-  initialData = input<Balneario>();
-  protected readonly guardado = output<Omit<Balneario, 'id'>>();
+  initialData = input<PuntoInteres>();
+  protected readonly guardado = output<Omit<PuntoInteres, 'id'>>();
 
-  protected readonly form = this.fb.group({
+  protected readonly form = this.fb.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    estadoAgua: ['Apto', [Validators.required]],
+    categoria: ['Contaminantes', [Validators.required]],
+    subcategoria: ['', [Validators.required]],
     latitud: [null as number|null, [Validators.required]],
     longitud: [null as number|null, [Validators.required]],
-    auxilio: [false],
-    banos: [false],
-    rampa: [false],
-    vigilancia: [false],
-    parrillas: [false],
-    bus: [false],
+    descripcion: ['', [Validators.maxLength(500)]],
   });
 
   constructor() {
@@ -60,15 +57,14 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.locationSubscription) {
-      this.locationSubscription.unsubscribe();
-    }
+    this.locationSubscription.unsubscribe();
   }
 
   private initMap(): void {
     this.map = L.map(this.mapContainer().nativeElement, {
       center: PUNTA_LARA,
       zoom: 14,
+      dragging: false,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -115,6 +111,8 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
       }, e => {
         this.detectando.set(false);
       });
+    } else {
+      this.form.patchValue({ latitud: -34.820367674622, longitud: -57.96553512674702 });
     }
   }
 
@@ -128,16 +126,12 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     const formValue = this.form.getRawValue();
 
     this.guardado.emit({
-      nombre: formValue.nombre!,
-      estadoAgua: formValue.estadoAgua!,
+      nombre: formValue.nombre,
+      categoria: formValue.categoria,
+      subcategoria: formValue.subcategoria,
       latitud: Number(formValue.latitud),
       longitud: Number(formValue.longitud),
-      auxilio: !!formValue.auxilio,
-      banos: !!formValue.banos,
-      rampa: !!formValue.rampa,
-      vigilancia: !!formValue.vigilancia,
-      parrillas: !!formValue.parrillas,
-      bus: !!formValue.bus,
+      descripcion: formValue.descripcion,
     });
   }
 

@@ -1,6 +1,6 @@
 import { Component, inject, input, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { BalneariosForm } from "../balnearios-form/balnearios-form";
+import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { Balneario, BalneariosService } from '../balnearios.service';
 
 @Component({

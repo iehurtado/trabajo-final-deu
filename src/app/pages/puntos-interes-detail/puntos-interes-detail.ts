@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PuntoInteres } from '../puntos-interes.service';
-import { MapComponent } from '../map/map';
-import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { RouterLink } from "@angular/router";
-import { PuntoMapa } from '../map/types';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
+import { MapComponent } from '../../components/map/map';
+import { PuntoMapa } from '../../components/map/types';
+import { PuntoInteres } from '../../puntos-interes.service';
 
 @Component({
   selector: 'app-puntos-interes-detail',
-  imports: [MapComponent, FixedFooter, RouterLink, FaIconComponent],
+  imports: [MapComponent, FixedFooter, RouterLink],
   templateUrl: './puntos-interes-detail.html',
   styleUrl: './puntos-interes-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

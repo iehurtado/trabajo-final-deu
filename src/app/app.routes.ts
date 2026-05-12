@@ -1,16 +1,16 @@
-import { ActivatedRouteSnapshot, Routes } from '@angular/router';
-import { Home } from './home/home';
-import { PuntosInteresList } from './puntos-interes-list/puntos-interes-list';
-import { PuntosInteresDetail } from './puntos-interes-detail/puntos-interes-detail';
-import { PuntosInteresCreate } from './puntos-interes-create/puntos-interes-create';
 import { inject } from '@angular/core';
-import { PuntosInteresService } from './puntos-interes.service';
-import { BalneariosList } from './balnearios-list/balnearios-list';
-import { BalneariosCreate } from './balnearios-create/balnearios-create';
-import { BalneariosDetail } from './balnearios-detail/balnearios-detail';
+import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { BalneariosService } from './balnearios.service';
-import { PuntosInteresUpdate } from './puntos-interes-update/puntos-interes-update';
-import { BalneariosUpdate } from './balnearios-update/balnearios-update';
+import { Home } from './pages/home/home';
+import { BalneariosCreate } from './pages/balnearios-create';
+import { BalneariosDetail } from './pages/balnearios-detail/balnearios-detail';
+import { BalneariosList } from './pages/balnearios-list/balnearios-list';
+import { BalneariosUpdate } from './pages/balnearios-update';
+import { PuntosInteresCreate } from './pages/puntos-interes-create';
+import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-interes-detail';
+import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
+import { PuntosInteresUpdate } from './pages/puntos-interes-update';
+import { PuntosInteresService } from './puntos-interes.service';
 
 export const routes: Routes = [
     {

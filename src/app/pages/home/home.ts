@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
-import { MapComponent } from '../map/map';
-import { PuntoMapa } from '../map/types';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { combineLatest, map } from 'rxjs';
-import { Balneario, BalneariosService } from '../balnearios.service';
-import * as L from 'leaflet';
+import { BalneariosService } from '../../balnearios.service';
+import { MapComponent } from '../../components/map/map';
+import { PuntoMapa } from '../../components/map/types';
+import { PuntosInteresService } from '../../puntos-interes.service';
 
 @Component({
   selector: 'app-home',
