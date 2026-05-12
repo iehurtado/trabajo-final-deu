@@ -3,13 +3,7 @@
     <div class="row g-2">
         <div class="col-12 col-md-4">
             <div class="card">
-                <div class="card-header">
-                    Información Básica
-                    <button type="button" class="btn btn-link align-bottom px-0 py-0">
-                        <span class="visually-hidden">Editar información básica</span>
-                        <fa-icon [icon]="faPencilAlt"></fa-icon>
-                    </button>
-                </div>
+                <div class="card-header">Información Básica</div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="pid-nombre" class="form-label">Nombre</label>
@@ -32,13 +26,7 @@
         </div>
         <div class="col-12 col-md-8">
             <div class="card">
-                <div class="card-header">
-                    Ubicación
-                    <button type="button" class="btn btn-link align-bottom px-0 py-0">
-                        <span class="visually-hidden">Editar ubicación</span>
-                        <fa-icon [icon]="faPencilAlt"></fa-icon>
-                    </button>
-                </div>
+                <div class="card-header">Ubicación</div>
                 <div class="card-body p-0">
                     <app-map [puntos]="mapPuntos" [center]="mapCenter" [zoom]="15"></app-map>
                 </div>
@@ -49,7 +37,8 @@
 <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
         <div class="ms-auto">
-            <a role="button" class="btn btn-primary" [routerLink]="['/puntos']">Volver</a>
+            <a role="button" class="btn" routerLink="/puntos">Volver</a>
+            <a role="button" class="btn btn-primary" [routerLink]="['/puntos', punto.id, 'update']">Editar</a>
         </div>
     </div>
 </app-fixed-footer>

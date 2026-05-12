@@ -123,4 +123,17 @@ export class PuntosInteresService {
 
         return of(agregado);
     }
+
+    updatePuntoInteres(id: number, data: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {
+        const currentPuntos = this.puntos.value;
+        const index = currentPuntos.findIndex(p => p.id === id);
+        if (index === -1) {
+            throw new Error(`Punto de Interés con ID ${id} no encontrado`);
+        }
+        const actualizado = { ...data, id };
+        const nuevosPuntos = [...currentPuntos];
+        nuevosPuntos[index] = actualizado;
+        this.puntos.next(nuevosPuntos);
+        return of(actualizado);
+    }
 }

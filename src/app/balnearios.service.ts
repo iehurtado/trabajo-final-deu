@@ -56,4 +56,17 @@ export class BalneariosService {
         this.balnearios.next([...current, agregado]);
         return of(agregado);
     }
+
+    updateBalneario(id: number, data: Omit<Balneario, 'id'>): Observable<Balneario> {
+        const current = this.balnearios.value;
+        const index = current.findIndex(b => b.id === id);
+        if (index === -1) {
+            throw new Error(`Balneario con ID ${id} no encontrado`);
+        }
+        const actualizado = { ...data, id };
+        const nuevos = [...current];
+        nuevos[index] = actualizado;
+        this.balnearios.next(nuevos);
+        return of(actualizado);
+    }
 }

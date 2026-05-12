@@ -1,0 +1,40 @@
+import { Component, inject, input, viewChild } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PuntosInteresForm } from "../puntos-interes-form/puntos-interes-form";
+import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
+
+@Component({
+  selector: 'app-puntos-interes-update',
+  imports: [ReactiveFormsModule, PuntosInteresForm],
+  template: `
+    @if (punto(); as punto) {
+      <div class="container-fluid">
+        <h1>Editar Punto de Interés #{{punto.id}}</h1>
+        <app-puntos-interes-form [initialData]="punto" (guardado)="onSubmit($event)"/>
+      </div>
+    }
+  `,
+})
+export class PuntosInteresUpdate {
+  private readonly puntosService = inject(PuntosInteresService);
+  private readonly router = inject(Router);
+
+  private readonly form = viewChild(PuntosInteresForm);
+
+  punto = input<PuntoInteres>();
+
+  onSubmit(data: Omit<PuntoInteres, 'id'>): void {
+    const id = this.punto()?.id;
+    if (!id) return;
+
+    this.puntosService.updatePuntoInteres(id, data).subscribe(() => {
+      this.form()?.notifySubmissionCompleted();
+      this.router.navigate(['/puntos', id]);
+    });
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.form()?.hasUnsavedChanges() ?? false;
+  }
+}

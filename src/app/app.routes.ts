@@ -9,6 +9,8 @@ import { BalneariosList } from './balnearios-list/balnearios-list';
 import { BalneariosCreate } from './balnearios-create/balnearios-create';
 import { BalneariosDetail } from './balnearios-detail/balnearios-detail';
 import { BalneariosService } from './balnearios.service';
+import { PuntosInteresUpdate } from './puntos-interes-update/puntos-interes-update';
+import { BalneariosUpdate } from './balnearios-update/balnearios-update';
 
 export const routes: Routes = [
     {
@@ -44,6 +46,23 @@ export const routes: Routes = [
         }
     },
     {
+        component: PuntosInteresUpdate,
+        path: 'puntos/:id/update',
+        title: 'Editar Punto de Interés',
+        resolve: {
+            punto: (route: ActivatedRouteSnapshot) => {
+                const id = route.paramMap.get('id');
+                return inject(PuntosInteresService).getPuntoInteresById(Number(id));
+            }
+        },
+        canDeactivate: [(component: PuntosInteresUpdate) => {
+            if (component.hasUnsavedChanges()) {
+                return confirm('Tienes cambios sin guardar. ¿Deseas salir igualmente?');
+            }
+            return true;
+        }]
+    },
+    {
         component: BalneariosList,
         path: 'balnearios',
         title: 'Balnearios',
@@ -69,5 +88,22 @@ export const routes: Routes = [
                 return inject(BalneariosService).getBalnearioById(Number(id));
             }
         }
+    },
+    {
+        component: BalneariosUpdate,
+        path: 'balnearios/:id/update',
+        title: 'Editar Balneario',
+        resolve: {
+            balneario: (route: ActivatedRouteSnapshot) => {
+                const id = route.paramMap.get('id');
+                return inject(BalneariosService).getBalnearioById(Number(id));
+            }
+        },
+        canDeactivate: [(component: BalneariosUpdate) => {
+            if (component.hasUnsavedChanges()) {
+                return confirm('Tienes cambios sin guardar. ¿Deseas salir igualmente?');
+            }
+            return true;
+        }]
     }
 ];

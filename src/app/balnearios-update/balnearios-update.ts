@@ -1,31 +1,34 @@
-import { Component, inject, signal, viewChild } from '@angular/core';
+import { Component, inject, input, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BalneariosForm } from "../balnearios-form/balnearios-form";
 import { Balneario, BalneariosService } from '../balnearios.service';
 
 @Component({
-  selector: 'app-balnearios-create',
+  selector: 'app-balnearios-update',
   imports: [BalneariosForm],
   template: `
-    <div class="container-fluid">
-      <h1>Nuevo Balneario</h1>
-      <app-balnearios-form (guardado)="onSubmit($event)"/>
-    </div>
+    @if (balneario(); as balneario) {
+      <div class="container-fluid">
+        <h1>Editar Balneario #{{ balneario.id }}</h1>
+        <app-balnearios-form [initialData]="balneario" (guardado)="onSubmit($event)"/>
+      </div>
+    }
   `,
 })
-export class BalneariosCreate {
+export class BalneariosUpdate {
   private readonly balneariosService = inject(BalneariosService);
   private readonly router = inject(Router);
 
   private readonly form = viewChild.required(BalneariosForm);
 
-  protected readonly guardando = signal(false);
+  protected readonly balneario = input<Balneario>();
 
   onSubmit(data: Omit<Balneario, 'id'>): void {
-    this.guardando.set(true);
-    this.balneariosService.addBalneario(data).subscribe(({ id }) => {
+    const id = this.balneario()?.id;
+    if (!id) return;
+
+    this.balneariosService.updateBalneario(id, data).subscribe(() => {
       this.form().notifySubmissionCompleted();
-      this.guardando.set(false);
       this.router.navigate(['/balnearios', id]);
     });
   }
