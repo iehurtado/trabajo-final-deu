@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 import { BalneariosService } from './balnearios.service';
 import { Home } from './pages/home/home';
 import { BalneariosCreate } from './pages/balnearios-create';
@@ -11,6 +11,42 @@ import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-intere
 import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
 import { PuntosInteresUpdate } from './pages/puntos-interes-update';
 import { PuntosInteresService } from './puntos-interes.service';
+import { ErrorPage } from './pages/error-page';
+import { firstValueFrom } from 'rxjs';
+
+const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
+    const router = inject(Router);
+    const service = inject(PuntosInteresService);
+    const id = route.paramMap.get('id');
+    const punto = await firstValueFrom(service.getPuntoInteresById(Number(id)));
+
+    if (!punto) {
+        return router.navigate(['/error'], {
+            state: {
+                message: "Punto de Interés no encontrado"
+            },
+        });
+    }
+
+    return punto;
+};
+
+const resolveBalneario = async (route: ActivatedRouteSnapshot) => {
+    const router = inject(Router);
+    const service = inject(BalneariosService);
+    const id = route.paramMap.get('id');
+    const balneario = await firstValueFrom(service.getBalnearioById(Number(id)));
+
+    if (!balneario) {
+        return router.navigate(['/error'], {
+            state: {
+                message: "Balneario no encontrado"
+            },
+        });
+    }
+
+    return balneario;
+};
 
 export const routes: Routes = [
     {
@@ -39,10 +75,7 @@ export const routes: Routes = [
         path: 'puntos/:id',
         title: 'Puntos de Interés',
         resolve: {
-            punto: (route: ActivatedRouteSnapshot) => {
-                const id = route.paramMap.get('id');
-                return inject(PuntosInteresService).getPuntoInteresById(Number(id));
-            } 
+            punto: resolvePuntoInteres
         }
     },
     {
@@ -50,10 +83,7 @@ export const routes: Routes = [
         path: 'puntos/:id/update',
         title: 'Editar Punto de Interés',
         resolve: {
-            punto: (route: ActivatedRouteSnapshot) => {
-                const id = route.paramMap.get('id');
-                return inject(PuntosInteresService).getPuntoInteresById(Number(id));
-            }
+            punto: resolvePuntoInteres,
         },
         canDeactivate: [(component: PuntosInteresUpdate) => {
             if (component.hasUnsavedChanges()) {
@@ -83,10 +113,7 @@ export const routes: Routes = [
         path: 'balnearios/:id',
         title: 'Balneario',
         resolve: {
-            balneario: (route: ActivatedRouteSnapshot) => {
-                const id = route.paramMap.get('id');
-                return inject(BalneariosService).getBalnearioById(Number(id));
-            }
+            balneario: resolveBalneario
         }
     },
     {
@@ -94,10 +121,7 @@ export const routes: Routes = [
         path: 'balnearios/:id/update',
         title: 'Editar Balneario',
         resolve: {
-            balneario: (route: ActivatedRouteSnapshot) => {
-                const id = route.paramMap.get('id');
-                return inject(BalneariosService).getBalnearioById(Number(id));
-            }
+            balneario: resolveBalneario,
         },
         canDeactivate: [(component: BalneariosUpdate) => {
             if (component.hasUnsavedChanges()) {
@@ -105,5 +129,18 @@ export const routes: Routes = [
             }
             return true;
         }]
+    },
+    {
+        component: ErrorPage,
+        path: 'error',
+        title: 'Error',
+    },
+    {
+        component: ErrorPage,
+        path: '**',
+        title: 'No encontrado',
+        data: {
+            message: 'Ruta no encontrada',
+        },
     }
 ];
