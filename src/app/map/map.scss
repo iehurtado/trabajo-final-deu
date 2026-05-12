@@ -9,3 +9,40 @@
   height: 100%;
   min-height: 400px;
 }
+
+:host ::ng-deep {
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+
+  .leaflet-popup-content {
+    margin: 12px;
+  }
+
+  .leaflet-popup-custom {
+    h6 {
+      font-size: 1rem;
+      margin-top: 0;
+    }
+    
+    .badge {
+      font-size: 0.75rem;
+      padding: 0.4em 0.6em;
+    }
+
+    p {
+      margin-bottom: 8px;
+    }
+
+    .btn {
+      font-weight: 500;
+      transition: all 0.2s;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+    }
+  }
+}

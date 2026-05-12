@@ -3,6 +3,7 @@ import { PuntoInteres } from '../puntos-interes.service';
 import { MapComponent } from '../map/map';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { RouterLink } from "@angular/router";
+import { PuntoMapa } from '../map/types';
 
 @Component({
   selector: 'app-puntos-interes-detail',
@@ -14,8 +15,8 @@ import { RouterLink } from "@angular/router";
 export class PuntosInteresDetail {
   @Input() punto!: PuntoInteres;
 
-  protected get mapPuntos(): PuntoInteres[] {
-    return [this.punto];
+  protected get mapPuntos(): PuntoMapa[] {
+    return [PuntoMapa.fromPuntoInteres(this.punto)];
   }
 
   protected get mapCenter(): [number, number] {

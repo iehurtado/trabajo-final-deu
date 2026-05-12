@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, effect, ElementRef, input, OnDestroy, viewChild } from '@angular/core';
 import * as L from 'leaflet';
-import { PuntoInteres } from '../puntos-interes.service';
+import { PuntoMapa } from './types';
 
 @Component({
   selector: 'app-map',
@@ -9,7 +9,7 @@ import { PuntoInteres } from '../puntos-interes.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
-  puntos = input<PuntoInteres[] | null>([]);
+  puntos = input<PuntoMapa[] | null>([]);
   center = input<[number, number]>([-34.820367674622, -57.96553512674702]);
   zoom = input<number>(13);
 
@@ -59,13 +59,13 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       this.updateMarkers(puntos);
     }
 
-    // // Force a resize check to avoid display issues in hidden containers
-    // setTimeout(() => {
-    //     this.map?.invalidateSize();
-    // }, 100);
+    // Force a resize check to avoid display issues in hidden containers
+    setTimeout(() => {
+      this.map?.invalidateSize();
+    }, 100);
   }
 
-  private updateMarkers(puntos: PuntoInteres[]): void {
+  private updateMarkers(puntos: PuntoMapa[]): void {
     if (!this.map) return;
 
     // Clear existing markers
@@ -74,13 +74,9 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     // Add new markers
     puntos.forEach(punto => {
-      const marker = L.marker([punto.latitud, punto.longitud])
+      const marker = L.marker([punto.latitud, punto.longitud], punto.markerOptions)
         .addTo(this.map!)
-        .bindPopup(`
-          <strong>${punto.nombre}</strong><br>
-          ${punto.subcategoria}<br>
-          ${punto.descripcion || ''}
-        `);
+        .bindPopup(layer => punto.popup(layer));
       this.markers.push(marker);
     });
   }

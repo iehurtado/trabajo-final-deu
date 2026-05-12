@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Balneario } from '../balnearios.service';
-import { MapComponent } from '../map/map';
-import { PuntoInteres } from '../puntos-interes.service';
-import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { RouterLink } from "@angular/router";
+import { Balneario } from '../balnearios.service';
+import { FixedFooter } from "../fixed-footer/fixed-footer";
+import { MapComponent } from '../map/map';
+import { PuntoMapa } from '../map/types';
 
 @Component({
   selector: 'app-balnearios-detail',
@@ -15,16 +15,8 @@ import { RouterLink } from "@angular/router";
 export class BalneariosDetail {
   @Input() balneario!: Balneario;
 
-  protected get mapPuntos(): PuntoInteres[] {
-    // Adaptamos el balneario para el componente de mapa que espera PuntoInteres
-    return [{
-      id: this.balneario.id,
-      nombre: this.balneario.nombre,
-      latitud: this.balneario.latitud,
-      longitud: this.balneario.longitud,
-      categoria: 'Balneario',
-      subcategoria: this.balneario.estadoAgua
-    }];
+  protected get mapPuntos(): PuntoMapa[] {
+    return [PuntoMapa.fromBalneario(this.balneario)];
   }
 
   protected get mapCenter(): [number, number] {

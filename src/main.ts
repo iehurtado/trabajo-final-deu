@@ -4,21 +4,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { App } from './app/app';
 import * as L from 'leaflet';
+import { defaultIcon } from './app/map/defaults';
 
-
-const iconRetinaUrl = 'assets/marker-icon-2x.png';
-const iconUrl = 'assets/marker-icon.png';
-const shadowUrl = 'assets/marker-shadow.png';
-
-const defaultIcon = L.icon({
-    ...L.Icon.Default,
-    iconSize: [25, 41],
-    iconRetinaUrl,
-    iconUrl,
-    shadowUrl,
-    shadowAnchor: [12, 41],
-    iconAnchor: [12, 41],
-});
 
 L.Marker.prototype.options.icon = defaultIcon;
 
