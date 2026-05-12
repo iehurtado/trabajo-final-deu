@@ -72,7 +72,7 @@
     <div class="d-flex justify-content-end w-100">
       <div class="ms-auto">
         <a role="button" class="btn" [routerLink]="['/puntos']">Cancelar</a>
-        <button type="submit" class="btn btn-primary" [disabled]="!form.valid || guardando()">
+        <button type="submit" class="btn btn-primary" [disabled]="guardando()">
           Guardar
           @if (guardando()) {
             <span class="spinner-border spinner-border-sm ms-2" role="status">

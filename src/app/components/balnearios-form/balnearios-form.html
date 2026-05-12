@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
     <div class="row g-2 mb-3">
-        <div class="col-12 col-md-5">
+        <div class="col-12 col-md-4">
             <!-- Información Básica -->
             <div class="card mb-2">
                 <div class="card-header">Información Básica</div>
@@ -8,16 +8,15 @@
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" id="nombre" class="form-control" formControlName="nombre" 
-                            placeholder="Ej: Balneario Municipal"
                             [class.is-invalid]="form.get('nombre')?.touched && form.get('nombre')?.invalid">
                     </div>
 
                     <div class="mb-3">
                         <label for="estadoAgua" class="form-label">Estado del Agua</label>
                         <select id="estadoAgua" class="form-select" formControlName="estadoAgua">
-                            <option value="Apto">Apto para bañarse</option>
-                            <option value="Precaución">Precaución / Dudoso</option>
-                            <option value="No Apto">No Apto / Contaminado</option>
+                            <option value="Apto">Apto</option>
+                            <option value="Precaución">Precaución</option>
+                            <option value="No Apto">No Apto</option>
                         </select>
                     </div>
                 </div>
@@ -70,8 +69,8 @@
         </div>
 
         <!-- Ubicación -->
-        <div class="col-12 col-md-7">
-            <div class="card h-100">
+        <div class="col-12 col-md-8">
+            <div class="card">
                 <div class="card-header">
                     Ubicación
                     <button type="button" class="btn btn-sm btn-link py-0 px-1 align-bottom" (click)="detectarUbicacion()" [disabled]="detectando()">
@@ -100,12 +99,12 @@
         <div class="d-flex justify-content-end w-100">
             <div class="ms-auto">
                 <a routerLink="/balnearios" class="btn me-2">Cancelar</a>
-                <button type="submit" class="btn btn-primary" [disabled]="!form.valid || guardando()">
+                <button type="submit" class="btn btn-primary" [disabled]="guardando()">
+                    Guardar
                     @if (guardando()) {
-                        <span class="spinner-border spinner-border-sm me-2"></span>
-                        Guardando...
-                    } @else {
-                        {{ initialData() ? 'Guardar Cambios' : 'Crear Balneario' }}
+                        <span class="spinner-border spinner-border-sm ms-2" role="status">
+                        <span class="visually-hidden">Guardando</span>
+                        </span>
                     }
                 </button>
             </div>
