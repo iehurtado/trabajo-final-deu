@@ -1,15 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterLinkWithHref, RouterOutlet } from '@angular/router';
-import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { Component, signal } from '@angular/core';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import { NgOptimizedImage } from '@angular/common';
+import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgbCollapse, RouterLinkWithHref],
+  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, NgOptimizedImage],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected isNavbarCollapsed = true;
+  protected isNavbarCollapsed = signal(true);
+
+  protected user = signal({
+    name: "Margarita Rosa Violeta",
+    email: "mvr@example.com",
+  })
 
   protected links = [
     { route: '', title: 'Home' },
@@ -18,6 +24,10 @@ export class App {
   ];
 
   toggleNavbarCollapse() {
-    this.isNavbarCollapsed = !this.isNavbarCollapsed;
+    this.isNavbarCollapsed.update(v => !v);
+  }
+
+  logout() {
+    confirm("¿Está seguro de que desea cerrar sesión?");
   }
 }
