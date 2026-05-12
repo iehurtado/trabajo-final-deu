@@ -5,15 +5,19 @@ import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
 import { BalneariosService } from '../balnearios.service';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
+import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { PUNTA_LARA } from '../util';
 
 @Component({
   selector: 'app-balnearios-create',
-  imports: [ReactiveFormsModule, RouterLink, FixedFooter],
+  imports: [ReactiveFormsModule, RouterLink, FixedFooter, FaIconComponent],
   templateUrl: './balnearios-create.html',
   styleUrl: './balnearios-create.scss',
 })
 export class BalneariosCreate implements AfterViewInit, OnDestroy {
   private locationSubscription!: Subscription;
+  protected readonly faLocationCrosshairs = faLocationCrosshairs;
 
   private readonly fb = inject(FormBuilder);
   private readonly balneariosService = inject(BalneariosService);
@@ -29,8 +33,8 @@ export class BalneariosCreate implements AfterViewInit, OnDestroy {
   protected readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
     estadoAgua: ['Apto', [Validators.required]],
-    latitud: [-34.820, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-    longitud: [-57.965, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+    latitud: [null as number|null, [Validators.required]],
+    longitud: [null as number|null, [Validators.required]],
     auxilio: [false],
     banos: [false],
     rampa: [false],
@@ -42,7 +46,6 @@ export class BalneariosCreate implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.initMap();
     this.observeMarker();
-    this.detectarUbicacion();
   }
 
   ngOnDestroy(): void {
@@ -53,7 +56,7 @@ export class BalneariosCreate implements AfterViewInit, OnDestroy {
 
   private initMap(): void {
     this.map = L.map(this.mapContainer().nativeElement, {
-      center: [this.form.value.latitud!, this.form.value.longitud!],
+      center: PUNTA_LARA,
       zoom: 14,
     });
 
@@ -92,7 +95,7 @@ export class BalneariosCreate implements AfterViewInit, OnDestroy {
     });
   }
 
-  private detectarUbicacion() {
+  protected detectarUbicacion() {
     if (navigator.geolocation) {
       this.detectando.set(true);
       navigator.geolocation.getCurrentPosition(e => {

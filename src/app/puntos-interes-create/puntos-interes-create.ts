@@ -5,15 +5,20 @@ import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
 import { PuntosInteresService } from '../puntos-interes.service';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
+import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { PUNTA_LARA } from '../util';
 
 @Component({
   selector: 'app-puntos-interes-create',
-  imports: [ReactiveFormsModule, RouterLink, FixedFooter],
+  imports: [ReactiveFormsModule, RouterLink, FixedFooter, FaIconComponent],
   templateUrl: './puntos-interes-create.html',
   styleUrl: './puntos-interes-create.scss',
 })
 export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
   private locationSubscription!: Subscription;
+
+  protected readonly faLocationCrosshairs = faLocationCrosshairs;
 
   private readonly fb = inject(FormBuilder);
   private readonly puntosService = inject(PuntosInteresService);
@@ -30,15 +35,14 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
     nombre: ['', [Validators.required, Validators.minLength(3)]],
     categoria: ['Contaminantes', [Validators.required]],
     subcategoria: ['', [Validators.required]],
-    latitud: [-34.92134576106383, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
-    longitud: [-57.953514458653274, [Validators.required, Validators.pattern(/^-?\d+(\.\d+)?$/)]],
+    latitud: [null as number|null, [Validators.required]],
+    longitud: [null as number|null, [Validators.required]],
     descripcion: ['', [Validators.maxLength(500)]],
   });
 
   ngAfterViewInit(): void {
     this.initMap();
     this.observeMarker();
-    this.detectarUbicacion();
   }
 
   ngOnDestroy(): void {
@@ -47,7 +51,7 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
 
   private initMap(): void {
     this.map = L.map(this.mapContainer().nativeElement, {
-      center: [this.form.value.latitud!, this.form.value.longitud!],
+      center: PUNTA_LARA,
       zoom: 14,
       dragging: false,
     });
@@ -87,7 +91,7 @@ export class PuntosInteresCreate implements AfterViewInit, OnDestroy {
     });
   }
 
-  private detectarUbicacion() {
+  protected detectarUbicacion() {
     if (navigator.geolocation) {
       this.detectando.set(true);
       navigator.geolocation.getCurrentPosition(e => {

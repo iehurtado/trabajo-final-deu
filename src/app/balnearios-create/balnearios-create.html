@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <h1>Nuevo Balneario</h1>
         <div class="row g-2">
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-4">
                 <div class="card mb-2">
                     <div class="card-header">Información Básica</div>
                     <div class="card-body">
@@ -62,21 +62,35 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-8">
                 <div class="card">
                     <div class="card-header">
                         Ubicación
-                        @if (detectando()) {
-                            <span class="spinner-border spinner-border-sm" role="status">
-                                <span class="visually-hidden">Detectando ubicación</span>
-                            </span>
-                        }
+                        <button type="button" class="btn btn-sm btn-link py-0 px-1 align-bottom" 
+                                (click)="detectarUbicacion()" [disabled]="detectando()">
+                            @if (detectando()) {
+                                <span class="spinner-border spinner-border-sm" role="status">
+                                    <span class="visually-hidden">Detectando...</span>
+                                </span>
+                            } @else {
+                                <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
+                                <span class="visually-hidden">Detectar ubicación</span>
+                            }
+                        </button>
                     </div>
                     <div class="card-body p-0">
                         <div #mapContainer style="height: 100%; min-height: 400px;"></div>
                     </div>
-                    <div class="card-footer small text-muted">
-                        Haga clic en el mapa para ajustar la ubicación.
+                    <div class="card-footer small">
+                        @let latitud = form.get('latitud');
+                        @let longitud = form.get('longitud');
+
+                        @if ((latitud?.touched && latitud?.errors?.['required']) || 
+                               (longitud?.touched && longitud?.errors?.['required'])) {
+                            <div class="text-danger">Seleccione una ubicación en el mapa</div>
+                        } @else {
+                            Haga clic en el mapa para ajustar la ubicación.
+                        }
                     </div>
                 </div>
             </div>
