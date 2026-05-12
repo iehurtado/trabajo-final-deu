@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, of } from "rxjs";
+import { BehaviorSubject, delay, Observable, of } from "rxjs";
 
 export interface Balneario {
     id: number;
@@ -54,7 +54,7 @@ export class BalneariosService {
         const nextId = current.length > 0 ? Math.max(...current.map(b => b.id)) + 1 : 1;
         const agregado = { ...nuevo, id: nextId };
         this.balnearios.next([...current, agregado]);
-        return of(agregado);
+        return of(agregado).pipe(delay(1200));
     }
 
     updateBalneario(id: number, data: Omit<Balneario, 'id'>): Observable<Balneario> {
@@ -67,6 +67,6 @@ export class BalneariosService {
         const nuevos = [...current];
         nuevos[index] = actualizado;
         this.balnearios.next(nuevos);
-        return of(actualizado);
+        return of(actualizado).pipe(delay(1200));
     }
 }

@@ -49,6 +49,14 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
         this.form.patchValue(data);
       }
     });
+
+    effect(() => {
+      if (this.guardando()) {
+        this.form.disable();
+      } else {
+        this.form.enable();
+      }
+    })
   }
 
   ngAfterViewInit(): void {

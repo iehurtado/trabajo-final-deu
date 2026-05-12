@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, map, of, take } from "rxjs";
+import { BehaviorSubject, Observable, delay, map, of, take } from "rxjs";
 
 export interface PuntoInteres {
     id: number;
@@ -121,7 +121,7 @@ export class PuntosInteresService {
         const agregado = { ...nuevoPunto, id: nextId };
         this.puntos.next([...currentPuntos, agregado]);
 
-        return of(agregado);
+        return of(agregado).pipe(delay(1200));
     }
 
     updatePuntoInteres(id: number, data: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {
@@ -134,6 +134,6 @@ export class PuntosInteresService {
         const nuevosPuntos = [...currentPuntos];
         nuevosPuntos[index] = actualizado;
         this.puntos.next(nuevosPuntos);
-        return of(actualizado);
+        return of(actualizado).pipe(delay(1200));
     }
 }
