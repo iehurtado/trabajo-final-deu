@@ -5,7 +5,7 @@ import { effect, Injectable, signal } from '@angular/core';
 })
 export class SettingsService {
   private readonly STORAGE_KEY = 'app-font-size';
-  private readonly DEFAULT_SIZE = 16;
+  private readonly DEFAULT_SIZE = 100;
 
   fontSize = signal<number>(this.loadSize());
 
