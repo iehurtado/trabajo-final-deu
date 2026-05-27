@@ -6,8 +6,9 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
 import { Balneario, BalneariosService } from '../../balnearios.service';
 import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
+import { Paginator } from "../../components/paginator/paginator";
 
-type Paginator = {
+type BalneariosPaginator = {
   data: Balneario[];
   paginatorInfo: {
     currentPage: number;
@@ -21,7 +22,7 @@ const perPage = 10;
 
 @Component({
   selector: 'app-balnearios-list',
-  imports: [AsyncPipe, RouterLink, FixedFooter, FaIconComponent],
+  imports: [AsyncPipe, RouterLink, FixedFooter, FaIconComponent, Paginator],
   templateUrl: './balnearios-list.html',
   styleUrl: './balnearios-list.scss',
 })
@@ -32,7 +33,7 @@ export class BalneariosList {
 
   protected readonly page$ = new BehaviorSubject(1);
 
-  protected readonly balnearios$: Observable<Paginator> = this.page$.pipe(
+  protected readonly balnearios$: Observable<BalneariosPaginator> = this.page$.pipe(
     switchMap(page => this.balneariosService.getBalnearios().pipe(
       map(data => ({
         data: data.slice((page - 1) * perPage, page * perPage),
@@ -45,16 +46,4 @@ export class BalneariosList {
       }))
     ))
   );
-
-  protected range(start: number, end: number) {
-    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-  }
-
-  protected previousPage() {
-    this.page$.next(Math.max(this.page$.getValue() - 1, 1));
-  }
-
-  protected nextPage(totalPages: number) {
-    this.page$.next(Math.min(this.page$.getValue() + 1, totalPages));
-  }
 }

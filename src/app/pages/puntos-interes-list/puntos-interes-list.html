@@ -39,30 +39,7 @@
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-end">
-                <nav aria-label="Paginación">
-                    <ul class="pagination mb-0">
-                        <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == 1">
-                            <button class="page-link" (click)="previousPage()">
-                                <span class="visually-hidden">Página anterior</span>
-                                &laquo;
-                            </button>
-                        </li>
-                        @for (page of range(1, paginator.paginatorInfo.totalPages); track page) {
-                            <li class="page-item" [class.active]="page === paginator.paginatorInfo.currentPage">
-                                <button class="page-link" (click)="page$.next(page)">
-                                    <span class="visually-hidden">Página {{ page }}</span>
-                                    {{ page }}
-                                </button>
-                            </li>
-                        }
-                        <li class="page-item" [class.disabled]="paginator.paginatorInfo.currentPage == paginator.paginatorInfo.totalPages">
-                            <button class="page-link" (click)="nextPage(paginator.paginatorInfo.totalPages)">
-                                <span class="visually-hidden">Página siguiente</span>
-                                &raquo;
-                            </button>
-                        </li>
-                    </ul>
-                </nav>
+                <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
             </div>
         </div>
     }

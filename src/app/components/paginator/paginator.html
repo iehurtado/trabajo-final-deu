@@ -1,0 +1,24 @@
+<nav aria-label="Paginación">
+    <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="theresNoPrevious()">
+            <button class="page-link" (click)="pageChange.emit(current() - 1)" title="Página anterior">
+                &laquo;
+            </button>
+        </li>
+        @for (page of pages(); track page) {
+            @let isCurrent = page === current();
+
+            <!-- No usamos aria-current="page" porque "page" para ARIA es la ruta -->
+            <li class="page-item" [class.active]="isCurrent" [aria-current]="isCurrent">
+                <button class="page-link" (click)="pageChange.emit(page)" title="Página {{ page }}">
+                    {{ page }}
+                </button>
+            </li>
+        }
+        <li class="page-item" [class.disabled]="theresNoNext()">
+            <button class="page-link" (click)="pageChange.emit(current() + 1)" title="Página siguiente">
+                &raquo;
+            </button>
+        </li>
+    </ul>
+</nav>
