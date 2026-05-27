@@ -1,13 +1,13 @@
-import { NgOptimizedImage } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { SettingsMenu } from "./components/settings-menu/settings-menu";
+import { UserMenu } from "./components/user-menu/user-menu";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, NgOptimizedImage, FaIconComponent],
+  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, UserMenu, SettingsMenu],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
@@ -26,14 +26,9 @@ export class App {
     { route: '', title: 'Home' },
     { route: '/puntos', title: 'Puntos de Interés' },
     { route: '/balnearios', title: 'Balnearios' },
-    { route: '/configuracion', title: 'Configuración' },
   ];
 
   toggleNavbarCollapse() {
     this.isNavbarCollapsed.update(v => !v);
-  }
-
-  logout() {
-    confirm("¿Está seguro de que desea cerrar sesión?");
   }
 }

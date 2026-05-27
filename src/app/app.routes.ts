@@ -1,19 +1,18 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { BalneariosService } from './balnearios.service';
-import { Home } from './pages/home/home';
 import { BalneariosCreate } from './pages/balnearios-create';
 import { BalneariosDetail } from './pages/balnearios-detail/balnearios-detail';
 import { BalneariosList } from './pages/balnearios-list/balnearios-list';
 import { BalneariosUpdate } from './pages/balnearios-update';
+import { ErrorPage } from './pages/error-page';
+import { Home } from './pages/home/home';
 import { PuntosInteresCreate } from './pages/puntos-interes-create';
 import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-interes-detail';
 import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
 import { PuntosInteresUpdate } from './pages/puntos-interes-update';
 import { PuntosInteresService } from './puntos-interes.service';
-import { ErrorPage } from './pages/error-page';
-import { firstValueFrom } from 'rxjs';
-import { Settings } from './pages/settings/settings';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
     const router = inject(Router);
@@ -131,11 +130,6 @@ export const routes: Routes = [
             }
             return true;
         }]
-    },
-    {
-        component: Settings,
-        path: 'configuracion',
-        title: 'Configuración',
     },
     {
         component: ErrorPage,

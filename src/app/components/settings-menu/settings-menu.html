@@ -1,0 +1,27 @@
+<button class="nav-link p-2" title="Abrir configuración" (click)="open(content)">
+  <fa-icon [icon]="faCog" alt="" />
+</button>
+<ng-template #content let-offcanvas>
+	<div class="offcanvas-header">
+		<h4 class="offcanvas-title" id="offcanvas-basic-title">Configuración</h4>
+		<button type="button" class="btn-close" aria-label="Cerrar" (click)="offcanvas.dismiss()"></button>
+	</div>
+	<div class="offcanvas-body">
+		<div class="mb-3">
+        <label for="fontSizeRange" class="form-label">
+            Tamaño de letra: <strong>{{ settings.fontSize() }}%</strong>
+            @if (settings.fontSize() !== 100) {
+                <button class="btn btn-link p-0 ms-2" (click)="settings.resetFontSize()" title="Restablecer predeterminado">
+                    <fa-icon [icon]="faRotateLeft"></fa-icon>
+                </button>
+            }
+        </label>
+        <input type="range" class="form-range" id="fontSizeRange" min="80" max="150" step="5"
+            [ngModel]="settings.fontSize()" (ngModelChange)="settings.setFontSize($event)">
+        <div class="d-flex justify-content-between mt-2 text-muted small">
+            <span>Pequeña (80%)</span>
+            <span>Grande (150%)</span>
+        </div>
+    </div>
+	</div>
+</ng-template>

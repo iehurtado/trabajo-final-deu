@@ -14,33 +14,12 @@
           </li>
         }
       </ul>
-      
+
       @if (user(); as user) {
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item dropdown" ngbDropdown placement="bottom-end">
-            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" id="userDropdown" role="button" ngbDropdownToggle>
-              <span class="d-none d-sm-inline">{{ user.name }}</span>
-              <img ngSrc="assets/user.svg" width="32" height="32" class="rounded-circle bg-light border">
-            </a>
-            <div class="dropdown-menu dropdown-menu-end shadow-sm border-0" aria-labelledby="userDropdown" ngbDropdownMenu>
-              <div class="p-3">
-                <div class="d-flex align-items-center gap-3">
-                  <div>
-                    <div class="fw-bold text-nowrap">{{ user.name }}</div>
-                    <div class="small text-muted">{{ user.email }}</div>
-                  </div>
-                  <img ngSrc="assets/user.svg" width="48" height="48" alt="Avatar" class="rounded-circle bg-light border">
-                </div>
-              </div>
-              <div class="dropdown-divider m-0"></div>
-              <button ngbDropdownItem class="p-2" (click)="logout()">
-                <fa-icon [icon]="faRightFromBracket"></fa-icon>
-                Cerrar Sesión
-              </button>
-            </div>
-          </li>
-        </ul>
+        <app-user-menu [user]="user" />
+        <span class="vr mx-2"></span>
       }
+      <app-settings-menu />
     </div>
   </div>
 </nav>

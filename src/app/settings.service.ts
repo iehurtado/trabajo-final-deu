@@ -7,7 +7,7 @@ export class SettingsService {
   private readonly STORAGE_KEY = 'app-font-size';
   private readonly DEFAULT_SIZE = 100;
 
-  fontSize = signal<number>(this.loadSize());
+  readonly fontSize = signal<number>(this.loadSize());
 
   constructor() {
     effect(() => {
@@ -26,5 +26,9 @@ export class SettingsService {
 
   setFontSize(size: number) {
     this.fontSize.set(size);
+  }
+
+  resetFontSize() {
+    this.fontSize.set(this.DEFAULT_SIZE);
   }
 }
