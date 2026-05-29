@@ -2,12 +2,12 @@
     <div class="row g-2 mb-3">
         <div class="col-12 col-md-4">
             <!-- Información Básica -->
-            <div class="card mb-2">
-                <div class="card-header">Información Básica</div>
+            <section class="card mb-2">
+                <h5 class="card-header">Información Básica</h5>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" id="nombre" class="form-control" formControlName="nombre" 
+                        <input type="text" id="nombre" class="form-control" formControlName="nombre"
                             [class.is-invalid]="form.get('nombre')?.touched && form.get('nombre')?.invalid">
                     </div>
 
@@ -20,63 +20,65 @@
                         </select>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Servicios Disponibles -->
-            <div class="card">
-                <div class="card-header">Servicios Disponibles</div>
+            <section class="card">
+                <h5 #swHeading class="card-header">Servicios Disponibles</h5>
                 <div class="card-body">
-                    <div class="row row-cols-1 row-cols-sm-2 g-2">
-                        <div class="col">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="auxilio" id="swAuxilio">
-                                <label class="form-check-label" for="swAuxilio">Auxilio</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="banos" id="swBanos">
-                                <label class="form-check-label" for="swBanos">Baños</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="rampa" id="swRampa">
-                                <label class="form-check-label" for="swRampa">Rampa</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="vigilancia" id="swVigilancia">
-                                <label class="form-check-label" for="swVigilancia">Vigilancia</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="parrillas" id="swParrillas">
-                                <label class="form-check-label" for="swParrillas">Parrillas</label>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" formControlName="bus" id="swBus">
-                                <label class="form-check-label" for="swBus">Bus</label>
-                            </div>
-                        </div>
-                    </div>
+                    <fieldset [ariaLabelledByElements]="[swHeading]">
+                      <div class="row row-cols-1 row-cols-sm-2 g-2">
+                          <div class="col">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" formControlName="auxilio" id="swAuxilio">
+                                  <label class="form-check-label" for="swAuxilio">Auxilio</label>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" formControlName="banos" id="swBanos">
+                                  <label class="form-check-label" for="swBanos">Baños</label>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" formControlName="rampa" id="swRampa">
+                                  <label class="form-check-label" for="swRampa">Rampa</label>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" formControlName="vigilancia" id="swVigilancia">
+                                  <label class="form-check-label" for="swVigilancia">Vigilancia</label>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" formControlName="parrillas" id="swParrillas">
+                                  <label class="form-check-label" for="swParrillas">Parrillas</label>
+                              </div>
+                          </div>
+                          <div class="col">
+                              <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" formControlName="bus" id="swBus">
+                                  <label class="form-check-label" for="swBus">Bus</label>
+                              </div>
+                          </div>
+                      </div>
+                    </fieldset>
                 </div>
-            </div>
+            </section>
         </div>
 
         <!-- Ubicación -->
         <div class="col-12 col-md-8">
-            <div class="card">
-                <div class="card-header">
+            <section class="card">
+                <h5 class="card-header">
                     Ubicación
                     <button type="button" class="btn btn-sm btn-link py-0 px-1 align-bottom" (click)="detectarUbicacion()" [disabled]="detectando()">
                         <fa-icon [icon]="faLocationCrosshairs"></fa-icon>
                     </button>
-                </div>
+                </h5>
                 <div class="card-body p-0">
                     <div #mapContainer style="height: 500px; width: 100%;"></div>
                 </div>
@@ -84,14 +86,14 @@
                     @let latitud = form.get('latitud');
                     @let longitud = form.get('longitud');
 
-                    @if ((latitud?.touched && latitud?.errors?.['required']) || 
+                    @if ((latitud?.touched && latitud?.errors?.['required']) ||
                         (longitud?.touched && longitud?.errors?.['required'])) {
                         <div class="text-danger">Seleccione una ubicación en el mapa</div>
                     } @else {
                         Haga clic en el mapa para ajustar la ubicación.
                     }
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 

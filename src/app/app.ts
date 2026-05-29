@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsMenu } from "./components/settings-menu/settings-menu";
@@ -7,7 +7,7 @@ import { UserMenu } from "./components/user-menu/user-menu";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, UserMenu, SettingsMenu],
+  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, RouterLinkActive, UserMenu, SettingsMenu],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

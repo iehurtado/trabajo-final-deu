@@ -1,10 +1,10 @@
-<div class="container-fluid">
+<main class="container-fluid">
     <h1>Puntos de Interés</h1>
     @if (puntos$|async; as paginator) {
         <div class="card">
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-striped mb-0">
+                    <table class="table table-striped mb-0" summary="Listado de Puntos de Interés - Página {{ paginator.paginatorInfo.currentPage }}">
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
@@ -43,7 +43,7 @@
             </div>
         </div>
     }
-</div>
+</main>
 <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
         <div class="ms-auto">

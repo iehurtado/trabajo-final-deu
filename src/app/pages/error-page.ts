@@ -5,12 +5,12 @@ import { ActivatedRoute } from "@angular/router";
     selector: "app-error-page",
     standalone: true,
     template: `
-    <div class="container">
+    <main class="container">
         <h1>Error</h1>
         <div class="alert alert-danger">
             {{ message() ?? "Se ha producido un error desconocido" }}
         </div>
-    </div>
+    </main>
     `,
 })
 export class ErrorPage {

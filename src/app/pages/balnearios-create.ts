@@ -7,10 +7,10 @@ import { Balneario, BalneariosService } from '../balnearios.service';
   selector: 'app-balnearios-create',
   imports: [BalneariosForm],
   template: `
-    <div class="container-fluid">
+    <main class="container-fluid">
       <h1>Nuevo Balneario</h1>
       <app-balnearios-form (guardado)="onSubmit($event)"/>
-    </div>
+    </main>
   `,
 })
 export class BalneariosCreate {

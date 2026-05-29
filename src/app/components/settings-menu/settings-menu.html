@@ -16,11 +16,11 @@
                 </button>
             }
         </label>
-        <input type="range" class="form-range" id="fontSizeRange" min="80" max="150" step="5"
+        <input ngbAutofocus type="range" class="form-range" id="fontSizeRange" min="50" max="200" step="5"
             [ngModel]="settings.fontSize()" (ngModelChange)="settings.setFontSize($event)">
-        <div class="d-flex justify-content-between mt-2 text-muted small">
-            <span>Pequeña (80%)</span>
-            <span>Grande (150%)</span>
+        <div class="form-text text-muted d-flex justify-content-between small">
+          <div>Pequeña (50%)</div>
+          <div>Grande (200%)</div>
         </div>
     </div>
 	</div>

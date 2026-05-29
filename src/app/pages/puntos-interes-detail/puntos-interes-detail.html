@@ -1,9 +1,9 @@
-<div class="container-fluid">
+<main class="container-fluid">
     <h1>Punto de Interés #{{ punto.id }}</h1>
     <div class="row g-2">
         <div class="col-12 col-md-4">
-            <div class="card">
-                <div class="card-header">Información Básica</div>
+            <section class="card">
+                <h5 class="card-header">Información Básica</h5>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="pid-nombre" class="form-label">Nombre</label>
@@ -22,18 +22,18 @@
                         <textarea class="form-control" id="pid-descripcion" readonly>{{punto.descripcion}}</textarea>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
         <div class="col-12 col-md-8">
-            <div class="card">
-                <div class="card-header">Ubicación</div>
+            <section class="card">
+                <h5 class="card-header">Ubicación</h5>
                 <div class="card-body p-0">
                     <app-map [puntos]="mapPuntos" [center]="mapCenter" [zoom]="15"></app-map>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
-</div>
+</main>
 <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
         <div class="ms-auto">

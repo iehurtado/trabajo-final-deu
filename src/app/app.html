@@ -8,7 +8,9 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         @for (link of links; track link.route) {
           <li class="nav-item">
-            <a [routerLink]="link.route" routerLinkActive="active" class="nav-link" (click)="isNavbarCollapsed.set(true)">
+            <a class="nav-link" [routerLink]="link.route" routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }"
+              (click)="isNavbarCollapsed.set(true)" ariaCurrentWhenActive="page">
               {{ link.title }}
             </a>
           </li>

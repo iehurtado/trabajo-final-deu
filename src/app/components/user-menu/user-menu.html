@@ -1,11 +1,11 @@
 @let user = this.user();
 
-<div ngbDropdown title="Menú de Usuario">
+<div ngbDropdown role="menu" title="Menú de Usuario">
   <button #toggler type="button" class="nav-link" ngbDropdownToggle>
     <span class="d-none d-sm-inline">{{ user.name }}</span>
     <img ngSrc="assets/user.svg" width="32" height="32" class="rounded-circle bg-light border" alt="Avatar">
   </button>
-  <div ngbDropdownMenu [ariaLabelledByElements]="toggler">
+  <div ngbDropdownMenu [ariaLabelledByElements]="[toggler]">
     <div class="p-3">
       <div class="d-flex align-items-center gap-3">
         <div>

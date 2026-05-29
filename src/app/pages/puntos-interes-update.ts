@@ -8,12 +8,12 @@ import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
   selector: 'app-puntos-interes-update',
   imports: [ReactiveFormsModule, PuntosInteresForm],
   template: `
-    @if (punto(); as punto) {
-      <div class="container-fluid">
-        <h1>Editar Punto de Interés #{{punto.id}}</h1>
-        <app-puntos-interes-form [initialData]="punto" (guardado)="onSubmit($event)"/>
-      </div>
-    }
+    @let punto = this.punto();
+
+    <main class="container-fluid">
+      <h1>Editar Punto de Interés #{{punto.id}}</h1>
+      <app-puntos-interes-form [initialData]="punto" (guardado)="onSubmit($event)"/>
+    </main>
   `,
 })
 export class PuntosInteresUpdate {
@@ -22,7 +22,7 @@ export class PuntosInteresUpdate {
 
   private readonly form = viewChild(PuntosInteresForm);
 
-  punto = input<PuntoInteres>();
+  readonly punto = input.required<PuntoInteres>();
 
   onSubmit(data: Omit<PuntoInteres, 'id'>): void {
     const id = this.punto()?.id;

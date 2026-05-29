@@ -13,6 +13,8 @@ export const PuntoMapa = {
           iconRetinaUrl: 'assets/marker-icon-red-2x.png',
           iconUrl: 'assets/marker-icon-red.png',
         }),
+        alt: `Punto de Interés ${p.nombre}`,
+        title: 'Ver detalle',
       },
       latitud: p.latitud,
       longitud: p.longitud,
@@ -30,7 +32,7 @@ export const PuntoMapa = {
   },
   fromBalneario(b: Balneario): PuntoMapa {
     const estadoClass = b.estadoAgua === 'Apto' ? 'bg-success' : (b.estadoAgua === 'Precaución' ? 'bg-warning text-dark' : 'bg-danger');
-    
+
     const servicios = [
       { key: 'auxilio', label: 'AUXILIO' },
       { key: 'banos', label: 'BAÑOS' },
@@ -44,6 +46,10 @@ export const PuntoMapa = {
     .join('');
 
     return {
+      markerOptions: {
+        alt: `Balneario ${b.nombre}`,
+        title: 'Ver detalle',
+      },
       latitud: b.latitud,
       longitud: b.longitud,
       popup: () => `

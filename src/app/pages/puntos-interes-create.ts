@@ -8,10 +8,10 @@ import { PuntosInteresForm } from '../components/puntos-interes-form/puntos-inte
   selector: 'app-puntos-interes-create',
   imports: [ReactiveFormsModule, PuntosInteresForm],
   template: `
-  <div class="container-fluid">
+  <main class="container-fluid">
     <h1>Nuevo Punto de Interés</h1>
     <app-puntos-interes-form (guardado)="onSubmit($event)"/>
-  </div>`,
+  </main>`,
 })
 export class PuntosInteresCreate {
   private readonly puntosService = inject(PuntosInteresService);

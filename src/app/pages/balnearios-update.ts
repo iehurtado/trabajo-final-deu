@@ -8,10 +8,10 @@ import { Balneario, BalneariosService } from '../balnearios.service';
   imports: [BalneariosForm],
   template: `
     @if (balneario(); as balneario) {
-      <div class="container-fluid">
+      <main class="container-fluid">
         <h1>Editar Balneario #{{ balneario.id }}</h1>
         <app-balnearios-form [initialData]="balneario" (guardado)="onSubmit($event)"/>
-      </div>
+      </main>
     }
   `,
 })
