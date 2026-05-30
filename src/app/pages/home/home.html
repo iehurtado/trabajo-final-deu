@@ -1,3 +1,30 @@
 <main>
-  <app-map [puntos]="markers$ | async" id="map"></app-map>
+  @if (!popup()) {
+    <div class="card panel">
+      <div class="card-body" aria-live="polite">
+        <fa-icon [icon]="faInfoCircle" alt=""/>
+        Seleccione un marcador en el mapa para ver la información disponible
+      </div>
+    </div>
+  }
+  <app-map id="map">
+    @for (p of puntos$ | async; track p) {
+      <app-map-marker [latlng]="[p.latitud, p.longitud]"
+        [options]="{ title: `Punto de Interés ${p.nombre}`, icon: PuntoInteresIcon }"
+        (popup)="onPopupOpened($event)">
+        <ng-template appMapPopup>
+          <app-popup-punto-interes [punto]="p"></app-popup-punto-interes>
+        </ng-template>
+      </app-map-marker>
+    }
+    @for(b of balnearios$ | async; track b) {
+      <app-map-marker [latlng]="[b.latitud, b.longitud]"
+        [options]="{ title: `Balneario ${b.nombre}` }"
+        (popup)="onPopupOpened($event)">
+        <ng-template appMapPopup>
+          <app-popup-balneario [balneario]="b"></app-popup-balneario>
+        </ng-template>
+      </app-map-marker>
+    }
+  </app-map>
 </main>

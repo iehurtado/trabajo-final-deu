@@ -70,7 +70,11 @@
             <section class="card h-100">
                 <h5 class="card-header">Ubicación</h5>
                 <div class="card-body p-0">
-                    <app-map [puntos]="mapPuntos" [center]="mapCenter" [zoom]="15"></app-map>
+                    <app-map [center]="[balneario.latitud, balneario.longitud]" [zoom]="15">
+                        <app-map-marker 
+                            [latlng]="[balneario.latitud, balneario.longitud]" 
+                            [options]="markerOptions" />
+                    </app-map>
                 </div>
             </section>
         </div>

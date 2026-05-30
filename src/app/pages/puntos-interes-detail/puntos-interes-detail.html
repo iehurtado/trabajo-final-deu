@@ -28,7 +28,11 @@
             <section class="card">
                 <h5 class="card-header">Ubicación</h5>
                 <div class="card-body p-0">
-                    <app-map [puntos]="mapPuntos" [center]="mapCenter" [zoom]="15"></app-map>
+                    <app-map [center]="[punto.latitud, punto.longitud]" [zoom]="15">
+                        <app-map-marker
+                            [latlng]="[punto.latitud, punto.longitud]"
+                            [options]="markerOptions"/>
+                    </app-map>
                 </div>
             </section>
         </div>
