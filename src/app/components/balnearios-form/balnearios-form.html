@@ -8,7 +8,17 @@
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
                         <input type="text" id="nombre" class="form-control" formControlName="nombre"
-                            [class.is-invalid]="form.get('nombre')?.touched && form.get('nombre')?.invalid">
+                            [class.is-invalid]="nombre.touched && nombre.invalid">
+                        @if (nombre.touched && nombre.errors; as errors) {
+                          <div class="form-text text-danger small">
+                            @if (errors['required']) {
+                              El nombre es requerido.
+                            }
+                            @else if (errors['minlength']; as e) {
+                              Debe tener al menos {{ e.required }} caracteres.
+                            }
+                          </div>
+                        }
                     </div>
 
                     <div class="mb-3">

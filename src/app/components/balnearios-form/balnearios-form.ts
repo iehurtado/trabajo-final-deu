@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
@@ -25,7 +25,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   private map!: L.Map;
   private marker?: L.Marker;
   private readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
-  
+
   protected readonly detectando = signal(false);
   protected readonly guardando = signal(false);
 
@@ -44,6 +44,9 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     parrillas: [false],
     bus: [false],
   });
+
+  protected nombre = this.form.get('nombre') as FormControl<string>;
+
 
   constructor() {
     effect(() => {

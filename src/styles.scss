@@ -7,3 +7,10 @@ h1 {
     margin-top: 0.3em;
     margin-bottom: 0.25em;
 }
+
+.mark-required::after {
+  content: '*';
+  color: var(--bs-danger);
+  font-weight: bold;
+  margin-left: 0.125em;
+}
