@@ -13,6 +13,7 @@ import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-intere
 import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
 import { PuntosInteresUpdate } from './pages/puntos-interes-update';
 import { PuntosInteresService } from './puntos-interes.service';
+import { confirmOnUnsavedChanges } from './util';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
     const router = inject(Router);
@@ -64,12 +65,7 @@ export const routes: Routes = [
         component: PuntosInteresCreate,
         path: 'puntos/create',
         title: 'Nuevo Punto de Interés',
-        canDeactivate: [(component: PuntosInteresCreate) => {
-            if (component.hasUnsavedChanges()) {
-                return confirm('Tienes cambios sin guardar. ¿Deseas salir igualmente?');
-            }
-            return true;
-        }]
+        canDeactivate: [confirmOnUnsavedChanges]
     },
     {
         component: PuntosInteresDetail,
@@ -86,12 +82,7 @@ export const routes: Routes = [
         resolve: {
             punto: resolvePuntoInteres,
         },
-        canDeactivate: [(component: PuntosInteresUpdate) => {
-            if (component.hasUnsavedChanges()) {
-                return confirm('Tienes cambios sin guardar. ¿Deseas salir igualmente?');
-            }
-            return true;
-        }]
+        canDeactivate: [confirmOnUnsavedChanges]
     },
     {
         component: BalneariosList,
@@ -102,12 +93,7 @@ export const routes: Routes = [
         component: BalneariosCreate,
         path: 'balnearios/create',
         title: 'Nuevo Balneario',
-        canDeactivate: [(component: BalneariosCreate) => {
-            if (component.hasUnsavedChanges()) {
-                return confirm('Tienes cambios sin guardar. ¿Deseas salir igualmente?');
-            }
-            return true;
-        }]
+        canDeactivate: [confirmOnUnsavedChanges]
     },
     {
         component: BalneariosDetail,
@@ -124,12 +110,7 @@ export const routes: Routes = [
         resolve: {
             balneario: resolveBalneario,
         },
-        canDeactivate: [(component: BalneariosUpdate) => {
-            if (component.hasUnsavedChanges()) {
-                return confirm('Tienes cambios sin guardar. ¿Deseas salir igualmente?');
-            }
-            return true;
-        }]
+        canDeactivate: [confirmOnUnsavedChanges]
     },
     {
         component: ErrorPage,

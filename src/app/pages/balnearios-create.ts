@@ -2,6 +2,7 @@ import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { Balneario, BalneariosService } from '../balnearios.service';
+import { ReportsUnsaved } from '../util';
 
 @Component({
   selector: 'app-balnearios-create',
@@ -13,7 +14,7 @@ import { Balneario, BalneariosService } from '../balnearios.service';
     </main>
   `,
 })
-export class BalneariosCreate {
+export class BalneariosCreate implements ReportsUnsaved {
   private readonly balneariosService = inject(BalneariosService);
   private readonly router = inject(Router);
 

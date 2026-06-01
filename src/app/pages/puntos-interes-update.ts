@@ -3,6 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PuntosInteresForm } from "../components/puntos-interes-form/puntos-interes-form";
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
+import { ReportsUnsaved } from '../util';
 
 @Component({
   selector: 'app-puntos-interes-update',
@@ -16,7 +17,7 @@ import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
     </main>
   `,
 })
-export class PuntosInteresUpdate {
+export class PuntosInteresUpdate implements ReportsUnsaved {
   private readonly puntosService = inject(PuntosInteresService);
   private readonly router = inject(Router);
 
