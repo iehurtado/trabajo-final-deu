@@ -70,7 +70,7 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
       view.rootNodes.forEach(node => el.appendChild(node));
 
       this.appRef.attachView(view);
-      
+
       marker.addEventListener('popupclose', ev => {
         view.destroy();
       });
@@ -127,6 +127,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       maxZoom: 18,
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      className: 'map-tiles',
     }).addTo(this.map);
 
     // Force a resize check to avoid display issues in hidden containers
