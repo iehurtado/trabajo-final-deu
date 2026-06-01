@@ -4,9 +4,10 @@
 
 .fixed-footer {
   position: fixed;
-  background-color: var(--bs-gray-100);
+  background-color: var(--bs-secondary-bg);
   bottom: 0;
   left: 0;
   width: 100%;
   z-index: 999;
 }
+

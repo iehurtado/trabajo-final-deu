@@ -23,5 +23,16 @@
           <div>Grande (200%)</div>
         </div>
     </div>
+    <fieldset aria-labelledby="labelTema">
+      <label id="labelTema" class="form-label d-block">Tema</label>
+      <div class="btn-group d-flex">
+        <input type="radio" class="btn-check" name="tema" id="temaNormal" autocomplete="off"
+          [value]="false" [ngModel]="darkModeSetting.isDarkMode()" (ngModelChange)="darkModeSetting.setDarkMode($event)">
+        <label class="btn btn-outline-primary" for="temaNormal">Normal</label>
+        <input type="radio" class="btn-check" name="tema" id="temaOscuro" autocomplete="off"
+          [value]="true" [ngModel]="darkModeSetting.isDarkMode()" (ngModelChange)="darkModeSetting.setDarkMode($event)">
+        <label class="btn btn-outline-primary" for="temaOscuro">Oscuro</label>
+      </div>
+    </fieldset>
 	</div>
 </ng-template>

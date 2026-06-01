@@ -1,22 +1,26 @@
-import { Component, inject, TemplateRef } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, OnDestroy, TemplateRef } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faCog, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faMoon, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
-import { SettingsService } from '../../settings.service';
+import { DarkModeSettingService } from '../../darkmode-setting.service';
+import { FontSizeSettingService } from '../../font-size-setting.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-settings-menu',
-  imports: [FaIconComponent, FormsModule, NgbOffcanvasModule],
+  imports: [FaIconComponent, FormsModule, NgbOffcanvasModule, ReactiveFormsModule],
   templateUrl: './settings-menu.html',
   styleUrl: './settings-menu.scss',
 })
 export class SettingsMenu {
   protected readonly faCog = faCog;
   protected readonly faRotateLeft = faRotateLeft;
+  protected readonly faMoon = faMoon;
 
-  protected readonly settings = inject(SettingsService);
-  protected readonly offcanvas = inject(NgbOffcanvas)
+  protected readonly settings = inject(FontSizeSettingService);
+  protected readonly darkModeSetting = inject(DarkModeSettingService);
+  protected readonly offcanvas = inject(NgbOffcanvas);
 
   protected open(content: TemplateRef<any>) {
     this.offcanvas.open(content, {

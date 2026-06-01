@@ -3,8 +3,8 @@ import { effect, Injectable, signal } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class SettingsService {
-  private readonly STORAGE_KEY = 'app-font-size';
+export class FontSizeSettingService {
+  private readonly STORAGE_KEY = 'app-settings';
   private readonly DEFAULT_SIZE = 100;
 
   readonly fontSize = signal<number>(this.loadSize());
