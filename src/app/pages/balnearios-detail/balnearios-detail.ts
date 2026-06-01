@@ -4,6 +4,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { Balneario } from '../../balnearios.service';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
+import { BalnearioIcon } from '../../components/map/util';
 
 @Component({
   selector: 'app-balnearios-detail',
@@ -18,6 +19,6 @@ export class BalneariosDetail {
   @Input() balneario!: Balneario;
 
   get markerOptions(): L.MarkerOptions {
-    return { title: `Balneario ${this.balneario.nombre}` }
+    return { title: `Balneario ${this.balneario.nombre}`, icon: BalnearioIcon }
   }
 }

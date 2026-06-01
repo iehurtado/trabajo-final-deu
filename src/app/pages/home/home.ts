@@ -1,20 +1,13 @@
 import { AsyncPipe } from '@angular/common';
-import { AfterViewInit, Binding, ChangeDetectionStrategy, Component, inject, signal, Type, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, signal, viewChild } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faExclamationCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { BalneariosService } from '../../balnearios.service';
 import { MapComponent, MapPopup, MarkerComponent } from '../../components/map/map';
-import { PuntoInteresIcon } from '../../components/map/util';
+import { BalnearioIcon, PuntoInteresIcon } from '../../components/map/util';
 import { PopupBalneario } from '../../components/popup-balneario';
 import { PopupPuntoInteres } from '../../components/popup-punto-interes';
 import { PuntosInteresService } from '../../puntos-interes.service';
-
-type Panel = {
-  component: Type<any>;
-  options?: {
-    bindings?: Binding[];
-  };
-};
 
 @Component({
   selector: 'app-home',
@@ -37,10 +30,12 @@ export class Home implements AfterViewInit {
   private readonly map = viewChild.required(MapComponent);
 
   protected readonly faInfoCircle = faInfoCircle;
+  protected readonly faExclamationCircle = faExclamationCircle;
 
   protected readonly popup = signal<L.Popup|null>(null);
 
   protected readonly PuntoInteresIcon = PuntoInteresIcon;
+  protected readonly BalnearioIcon = BalnearioIcon;
 
   protected readonly puntos$ = this.puntosService.getPuntosInteres();
   protected readonly balnearios$ = this.balneariosService.getBalnearios();

@@ -7,11 +7,9 @@ import * as L from 'leaflet';
 export class MapPopup {
   readonly templateRef = inject(TemplateRef);
 }
-
 @Component({
   selector: 'app-map-marker',
   template: ``,
-
 })
 export class MarkerComponent implements AfterViewInit, OnDestroy {
   private readonly injector = inject(Injector);

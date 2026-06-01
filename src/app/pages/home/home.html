@@ -19,7 +19,7 @@
     }
     @for(b of balnearios$ | async; track b) {
       <app-map-marker [latlng]="[b.latitud, b.longitud]"
-        [options]="{ title: `Balneario ${b.nombre}` }"
+        [options]="{ title: `Balneario ${b.nombre}`, icon: BalnearioIcon }"
         (popup)="onPopupOpened($event)">
         <ng-template appMapPopup>
           <app-popup-balneario [balneario]="b"></app-popup-balneario>

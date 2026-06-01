@@ -4,6 +4,7 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
 import { PuntoInteres } from '../../puntos-interes.service';
+import { PuntoInteresIcon } from '../../components/map/util';
 
 @Component({
   selector: 'app-puntos-interes-detail',
@@ -18,7 +19,7 @@ export class PuntosInteresDetail {
   @Input({ required: true }) punto!: PuntoInteres;
 
   get markerOptions(): L.MarkerOptions {
-    return { title: `Punto de Interés ${this.punto.nombre}` };
+    return { title: `Punto de Interés ${this.punto.nombre}`, icon: PuntoInteresIcon };
   }
 }
 
