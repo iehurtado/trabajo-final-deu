@@ -1,10 +1,18 @@
 import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, Directive, effect, ElementRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
 import * as L from 'leaflet';
 
 @Directive({
   selector: 'ng-template[appMapPopup]',
 })
 export class MapPopup {
+  readonly templateRef = inject(TemplateRef);
+}
+
+@Directive({
+  selector: 'ng-template[appMapPanel]',
+})
+export class MapPanel {
   readonly templateRef = inject(TemplateRef);
 }
 @Component({
@@ -61,6 +69,7 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
       content: el,
       autoPan: true,
       closeOnClick: false,
+      closeButton: false,
     });
 
     marker.bindPopup(popup);
@@ -80,13 +89,23 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
 
 @Component({
   selector: 'app-map',
-  template: `<div #mapContainer class="map-container"></div>`,
+  imports: [NgTemplateOutlet],
+  template: `
+    <div #mapContainer class="map-container"></div>
+    @if (panelTemplate()) {
+      <div class="map-overlay-panel" (mousedown)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()">
+        <ng-container *ngTemplateOutlet="panelTemplate()!"></ng-container>
+      </div>
+    }
+  `,
   styleUrl: './map.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MapComponent implements AfterViewInit, OnDestroy {
   readonly center = input<[number, number]>([-34.820367674622, -57.96553512674702]);
   readonly zoom = input<number>(13);
+
+  readonly panelTemplate = contentChild(MapPanel, { read: TemplateRef });
 
   private mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
   private map?: L.Map;
