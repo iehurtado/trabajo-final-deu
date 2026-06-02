@@ -16,6 +16,11 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
   }
 
+  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+  }
+
   .leaflet-popup-content {
     margin: 12px;
     width: auto !important;

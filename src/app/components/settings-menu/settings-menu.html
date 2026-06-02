@@ -26,9 +26,9 @@
     <fieldset aria-labelledby="labelTema">
       <label id="labelTema" class="form-label d-block">Tema</label>
       <div class="btn-group d-flex">
-        <input type="radio" class="btn-check" name="tema" id="temaNormal" autocomplete="off"
+        <input type="radio" class="btn-check" name="tema" id="temaClaro" autocomplete="off"
           [value]="false" [ngModel]="darkModeSetting.isDarkMode()" (ngModelChange)="darkModeSetting.setDarkMode($event)">
-        <label class="btn btn-outline-primary" for="temaNormal">Normal</label>
+        <label class="btn btn-outline-primary" for="temaClaro">Claro</label>
         <input type="radio" class="btn-check" name="tema" id="temaOscuro" autocomplete="off"
           [value]="true" [ngModel]="darkModeSetting.isDarkMode()" (ngModelChange)="darkModeSetting.setDarkMode($event)">
         <label class="btn btn-outline-primary" for="temaOscuro">Oscuro</label>
