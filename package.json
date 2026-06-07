@@ -3,12 +3,15 @@
   "private": true,
   "packageManager": "yarn@4.16.0",
   "workspaces": [
-    "frontend"
+    "frontend",
+    "backend"
   ],
   "scripts": {
     "start": "yarn workspace frontend start",
     "build": "yarn workspace frontend build",
     "test": "yarn workspace frontend test",
-    "ng": "yarn workspace frontend ng"
+    "ng": "yarn workspace frontend ng",
+    "start:backend": "yarn workspace backend start:dev",
+    "build:backend": "yarn workspace backend build"
   }
 }
