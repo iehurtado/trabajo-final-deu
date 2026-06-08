@@ -44,3 +44,8 @@
 - Design services around a single responsibility
 - Use the `providedIn: 'root'` option for singleton services
 - Use the `inject()` function instead of constructor injection
+
+## API Services
+
+- Generate them from openapi configuration using `yarn openapi:generate`
+- They are generated in `src/api` folder

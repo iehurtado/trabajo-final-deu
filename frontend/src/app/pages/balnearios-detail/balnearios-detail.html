@@ -12,12 +12,7 @@
                     <div class="mb-3">
                         <label class="form-label">Estado del Agua</label>
                         <div class="form-control">
-                            <span class="badge"
-                                [class.bg-success]="balneario.estadoAgua === 'Apto'"
-                                [class.bg-warning]="balneario.estadoAgua === 'Precaución'"
-                                [class.bg-danger]="balneario.estadoAgua === 'No Apto'">
-                                {{ balneario.estadoAgua }}
-                            </span>
+                          <app-estado-agua-badge [balneario]="balneario" />
                         </div>
                     </div>
                 </div>
@@ -71,8 +66,8 @@
                 <h5 class="card-header">Ubicación</h5>
                 <div class="card-body p-0">
                     <app-map [center]="[balneario.latitud, balneario.longitud]" [zoom]="15">
-                        <app-map-marker 
-                            [latlng]="[balneario.latitud, balneario.longitud]" 
+                        <app-map-marker
+                            [latlng]="[balneario.latitud, balneario.longitud]"
                             [options]="markerOptions" />
                     </app-map>
                 </div>

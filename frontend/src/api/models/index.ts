@@ -14,6 +14,12 @@ export interface LoginCredentials {
 export interface SignupForm {
 }
 
+export interface CreateBalnearioForm {
+}
+
+export interface UpdateBalnearioForm {
+}
+
 /** Request Options for Angular HttpClient requests */
 export interface RequestOptions<TResponseType extends 'arraybuffer' | 'blob' | 'json' | 'text'> {
     headers?: HttpHeaders;

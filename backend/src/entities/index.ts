@@ -1,4 +1,4 @@
-import { defineEntity, InferEntity, p } from "@mikro-orm/core";
+import { p, defineEntity, InferEntity } from "@mikro-orm/postgresql";
 
 export const User = defineEntity({
   name: "User",
@@ -8,6 +8,25 @@ export const User = defineEntity({
     fullname: p.string(),
     password: p.string(),
   }
-})
+});
 
-export type User = InferEntity<typeof User>
+export type User = InferEntity<typeof User>;
+
+export const Balneario = defineEntity({
+  name: "Balneario",
+  properties: {
+    id: p.integer().primary(),
+    nombre: p.string(),
+    latitud: p.float(),
+    longitud: p.float(),
+    estadoAgua: p.enum(["APTO", "PRECAUCION", "NO_APTO"]),
+    auxilio: p.boolean(),
+    banos: p.boolean(),
+    rampa: p.boolean(),
+    vigilancia: p.boolean(),
+    parrillas: p.boolean(),
+    bus: p.boolean(),
+  }
+});
+
+export type Balneario = InferEntity<typeof Balneario>;

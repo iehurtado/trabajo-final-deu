@@ -5,10 +5,11 @@ import { Balneario } from '../../balnearios.service';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
 import { BalnearioIcon } from '../../components/map/util';
+import { EstadoAguaBadge } from "../../components/estado-agua-badge";
 
 @Component({
   selector: 'app-balnearios-detail',
-  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent],
+  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent, EstadoAguaBadge],
   templateUrl: './balnearios-detail.html',
   styleUrl: './balnearios-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
