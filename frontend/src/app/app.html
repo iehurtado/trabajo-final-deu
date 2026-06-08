@@ -17,10 +17,8 @@
         }
       </ul>
 
-      @if (user(); as user) {
-        <app-user-menu [user]="user" />
-        <span class="vr mx-2"></span>
-      }
+      <app-user-menu />
+      <span class="vr mx-2"></span>
       <app-settings-menu />
     </div>
   </div>

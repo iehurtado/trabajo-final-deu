@@ -1,0 +1,48 @@
+<form [formGroup]="form" (ngSubmit)="continuar()">
+  <div class="modal-header">
+    <h5>Iniciar Sesión</h5>
+  </div>
+  <div class="modal-body">
+    @if (invalidCredentials()) {
+      <div class="alert alert-danger">
+        Los datos ingresados no coinciden con nuestros registros
+      </div>
+    }
+    <div class="mb-3">
+      <label for="loginEmail" class="form-label">Correo Electrónico</label>
+      <input ngbAutofocus type="text" class="form-control" id="loginEmail" formControlName="email"
+        [class.is-invalid]="email.touched && !email.valid">
+      @if (email.touched && email.errors; as errors) {
+        <div class="invalid-feedback">
+          @if (errors['required'] || errors['email']) {
+            Debe ingresar una dirección de correo electrónico válida
+          }
+        </div>
+      }
+    </div>
+    <div class="mb-3">
+      <label for="loginPassword" class="form-label">Contraseña</label>
+      <input type="password" class="form-control" id="loginPassword" formControlName="password"
+        [class.is-invalid]="password.touched && !password.valid">
+      @if (password.touched && password.errors; as errors) {
+        <div class="invalid-feedback">
+          @if (errors['required']) {
+            Debe ingresar una contraseña
+          }
+        </div>
+      }
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="btn btn-link">Crear Cuenta</a>
+    <div class="ms-auto">
+      <button type="button" class="btn" (click)="modal.dismiss()" [disabled]="submitting()">Cancelar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+        Continuar
+        @if (submitting()) {
+          <span class="spinner-border spinner-border-sm" role="status" aria-description="Iniciando Sesión"></span>
+        }
+      </button>
+    </div>
+  </div>
+</form>

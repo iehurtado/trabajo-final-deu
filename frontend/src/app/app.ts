@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from './auth.service';
 import { SettingsMenu } from "./components/settings-menu/settings-menu";
 import { UserMenu } from "./components/user-menu/user-menu";
 
@@ -12,15 +13,12 @@ import { UserMenu } from "./components/user-menu/user-menu";
   styleUrl: './app.scss'
 })
 export class App {
+  protected readonly auth = inject(AuthService);
+
   protected readonly faRightFromBracket = faRightFromBracket;
   protected readonly faCog = faCog;
 
   protected isNavbarCollapsed = signal(true);
-
-  protected user = signal({
-    name: "Margarita Rosa Violeta",
-    email: "mvr@example.com",
-  })
 
   protected links = [
     { route: '', title: 'Home' },
@@ -31,4 +29,6 @@ export class App {
   toggleNavbarCollapse() {
     this.isNavbarCollapsed.update(v => !v);
   }
+
+
 }

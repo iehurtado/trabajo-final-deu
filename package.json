@@ -11,7 +11,9 @@
     "build": "yarn workspace frontend build",
     "test": "yarn workspace frontend test",
     "ng": "yarn workspace frontend ng",
+    "nest": "yarn workspace backend nest",
     "start:backend": "yarn workspace backend start:dev",
-    "build:backend": "yarn workspace backend build"
+    "build:backend": "yarn workspace backend build",
+    "mikro-orm": "yarn workspace backend mikro-orm"
   }
 }

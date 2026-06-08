@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "openapi:generate": "ng-openapi -i http://localhost:3000/api/docs/json -o src/api"
   },
   "private": true,
   "dependencies": {
@@ -32,6 +33,7 @@
     "@angular/localize": "^21.2.0",
     "@types/leaflet": "^1.9.21",
     "jsdom": "^28.0.0",
+    "ng-openapi": "^0.2.19",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
