@@ -8,7 +8,7 @@ export default defineConfig({
   extensions: [Migrator, SeedManager],
   entities: [Balneario, PuntoInteres, Rol, User],
   dbName: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  password: 'password', // TODO cambiar para usar .env
+  host: process.env.DB_HOST ?? 'localhost',
+  port: parseInt(process.env.DB_PORT ?? '5432'),
+  password: process.env.DB_PASSWORD ?? 'password',
 })

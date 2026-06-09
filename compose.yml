@@ -1,14 +1,37 @@
 services:
+  backend:
+    build:
+      dockerfile: backend/Dockerfile
+      context: .
+    environment:
+      DB_HOST: postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      JWT_SECRET: ${JWT_SECRET?}
+    networks:
+      - local
+
+  frontend:
+    build:
+      dockerfile: frontend/Dockerfile
+      context: .
+    ports:
+      - "8000:80"
+    networks:
+      - local
+
   postgres:
     image: postgres:18.4
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
       POSTGRES_DB: postgres
     volumes:
       - postgres_data:/var/lib/postgresql
+    networks:
+      - local
 
 volumes:
   postgres_data:
+
+networks:
+  local:

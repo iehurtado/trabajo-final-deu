@@ -11,7 +11,7 @@ import { AuthGuard } from './auth.guard';
     OrmModule,
     JwtModule.register({
       global: true,
-      secret: createSecretKey(Buffer.from('t0ps5cr3t')), // TODO ajustar para usar .env
+      secret: createSecretKey(Buffer.from(process.env.JWT_SECRET!)),
       signOptions: {
         expiresIn: '6h',
       },
