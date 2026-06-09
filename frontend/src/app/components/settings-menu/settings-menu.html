@@ -1,5 +1,6 @@
-<button class="nav-link p-2" title="Abrir configuración" (click)="open(content)">
-  <fa-icon [icon]="faCog" alt="" />
+<button class="nav-link px-sm-2 py-2 px-0" title="Configuración" (click)="open(content)">
+  <fa-icon class="d-none d-sm-inline" [icon]="faCog" alt="" />
+  <span class="d-inline d-sm-none">Configuración</span>
 </button>
 <ng-template #content let-offcanvas>
 	<div class="offcanvas-header">

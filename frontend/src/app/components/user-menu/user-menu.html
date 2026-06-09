@@ -1,7 +1,7 @@
 @if (this.auth.user(); as user) {
   <div ngbDropdown role="menu" title="Menú de Usuario">
     <button #toggler type="button" class="nav-link" ngbDropdownToggle>
-      <span class="d-none d-sm-inline">{{ user.fullname }}</span>
+      <span class="d-inline-block d-sm-inline">{{ user.fullname }}</span>
       <img ngSrc="assets/user.svg" width="32" height="32" class="rounded-circle bg-light border" alt="Avatar">
       @if (working()) {
         <span class="spinner-border spinner-border-sm" role="status"></span>
@@ -25,9 +25,9 @@
     </div>
   </div>
 } @else {
-  <div class="d-flex gap-1">
-    <a class="btn" routerLink="/signup">Crear Cuenta</a>
-    <button class="btn btn-primary" (click)="login()">Iniciar Sesión</button>
+  <div>
+    <a class="btn d-block d-sm-inline text-start px-0 px-sm-2" routerLink="/signup">Crear Cuenta</a>
+    <button class="btn btn-primary d-block d-sm-inline" (click)="login()">Iniciar Sesión</button>
   </div>
 }
 
