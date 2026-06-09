@@ -4,6 +4,7 @@ import { AuthService, UnauthorizedError } from '../../auth.service';
 import { NgbActiveModal, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { combineLatest, map, startWith } from 'rxjs';
+import { RouterLink } from "@angular/router";
 
 type LoginDialogState = {
   status: 'waiting'|'submitting'|'error'
@@ -22,7 +23,7 @@ export class LoginDialogService {
 
 @Component({
   selector: 'app-login-dialog',
-  imports: [NgbModalModule, ReactiveFormsModule],
+  imports: [NgbModalModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login-dialog.html',
   styleUrl: './login-dialog.scss',
 })

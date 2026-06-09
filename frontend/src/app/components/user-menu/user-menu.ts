@@ -6,10 +6,11 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../auth.service';
 import { DialogService } from '../dialog/dialog.service';
 import { LoginDialogService } from '../login-dialog/login-dialog';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-user-menu',
-  imports: [FaIconComponent, NgOptimizedImage, NgbDropdownModule],
+  imports: [FaIconComponent, NgOptimizedImage, NgbDropdownModule, RouterLink],
   templateUrl: './user-menu.html',
   styleUrl: './user-menu.scss',
 })

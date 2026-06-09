@@ -1,27 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, input, OnInit, output, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, UrlTree } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Rol, User, UserService } from '../../user.service';
+import { equals } from "../../validators";
 import { FixedFooter } from "../fixed-footer/fixed-footer";
-
-function equals(a: string, b: string): ValidatorFn {
-  return (form: AbstractControl) => {
-    if (!(form instanceof FormGroup)) {
-      throw new Error('form must be a FormGroup');
-    }
-
-    const aField = form.controls[a];
-    const bField = form.controls[b];
-
-    if (aField.value === bField.value) {
-      return null;
-    }
-
-    return { equals: {} };
-  }
-}
 
 const PASSWD_VALIDATORS = [Validators.required, Validators.minLength(6)];
 const PASSWD_R_VALIDATORS = [Validators.required];

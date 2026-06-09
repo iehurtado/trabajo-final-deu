@@ -19,6 +19,7 @@ import { UsersDetail } from './pages/users-detail/users-detail';
 import { UsersList } from './pages/users-list/users-list';
 import { UsersUpdate } from './pages/users-update';
 import { confirmOnUnsavedChanges } from './util';
+import { Signup } from './pages/signup/signup';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
     const router = inject(Router);
@@ -77,6 +78,11 @@ export const routes: Routes = [
         path: '',
         pathMatch: 'full',
         title: 'Home',
+    },
+    {
+        component: Signup,
+        path: 'signup',
+        title: 'Crear Cuenta',
     },
     {
         component: PuntosInteresList,

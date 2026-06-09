@@ -1,0 +1,62 @@
+<main class="container">
+  <h1>Crear Cuenta</h1>
+  <form [formGroup]="form" (ngSubmit)="crearCuenta()">
+    <section class="card">
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="text" id="email" class="form-control" [class.is-invalid]="email.touched && email.errors"
+            formControlName="email">
+          @if (email.touched && email.errors; as errors) {
+          <div class="invalid-feedback">
+            @if (errors['required'] || errors['email']) {
+            Ingrese un correo electrónico válido
+            }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="fullname" class="form-label">Nombre Completo</label>
+          <input type="text" id="fullname" class="form-control" [class.is-invalid]="fullname.touched && fullname.errors"
+            formControlName="fullname">
+          @if (fullname.touched && fullname.errors; as errors) {
+          <div class="invalid-feedback">
+            @if (errors['required']) { Ingrese su nombre completo }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" id="password" class="form-control"
+            [class.is-invalid]="password.touched && password.errors" formControlName="password">
+          @if (password.touched && password.errors; as errors) {
+          <div class="invalid-feedback">
+            @if (errors['required']) { Ingrese una contraseña }
+            @if (errors['minlength']; as ml) { La contraseña debe tener al menos {{ ml.requiredLength }} caracteres }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="password_repeat" class="form-label">Repetir Contraseña</label>
+          <input type="password" id="password_repeat" class="form-control"
+            [class.is-invalid]="password_repeat.touched && (password_repeat.errors || form.errors)"
+            formControlName="password_repeat">
+          @if (password_repeat.touched && (password_repeat.errors || form.errors); as errors) {
+          <div class="invalid-feedback">
+            @if (errors['equals']) { Las contraseñas no coinciden }
+          </div>
+          }
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end gap-2">
+        <a class="btn" [class.disabled]="submitting()">Volver al Home</a>
+        <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+          Crear Cuenta
+          @if (submitting()) {
+          <span class="spinner-border spinner-border-sm" aria-role="status" aria-label="Creando Cuenta"></span>
+          }
+        </button>
+      </div>
+    </section>
+  </form>
+</main>
