@@ -32,6 +32,13 @@ export class AuthService {
     });
   }
 
+  public can(role: string) {
+    return computed(() => {
+      const user = this.user();
+      return user != null && user.roles.some(x => x.nombre == role);
+    });
+  }
+
   public async login(credentials: { email: string, password: string }): Promise<void> {
     try {
       const response = await firstValueFrom(this.authController.login(credentials));

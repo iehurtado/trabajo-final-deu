@@ -1,6 +1,7 @@
-import { Component, Input } from "@angular/core";
+import { Component, inject, Input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { PuntoInteres } from "../puntos-interes.service";
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: 'app-popup-punto-interes',
@@ -12,11 +13,16 @@ import { PuntoInteres } from "../puntos-interes.service";
       <span class="badge bg-secondary">{{ punto.subcategoria }}</span>
     </div>
     <p class="small text-muted mb-2">{{ punto.descripcion || '' }}</p>
-    <div class="text-end">
-      <a [routerLink]="['/puntos', punto.id]" class="btn btn-sm btn-primary text-white">Ir a detalle</a>
-    </div>
+    @if (canViewDetail()) {
+      <div class="text-end">
+        <a [routerLink]="['/puntos', punto.id]" class="btn btn-sm btn-primary text-white">Ir a detalle</a>
+      </div>
+    }
   `
 })
 export class PopupPuntoInteres {
+  protected readonly auth = inject(AuthService);
+  protected readonly canViewDetail = this.auth.can('Administrador');
+
   @Input({ required: true }) punto!: PuntoInteres;
 }

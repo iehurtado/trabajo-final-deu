@@ -1,6 +1,7 @@
-import { Component, Input } from "@angular/core";
+import { Component, inject, Input } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { Balneario } from "../balnearios.service";
+import { AuthService } from "../auth.service";
 
 const servicios = [
   { key: 'auxilio', label: 'AUXILIO' },
@@ -24,12 +25,17 @@ const servicios = [
         <span class="badge bg-light text-dark border me-1 mb-1" style="font-size: 0.65rem;">{{s.label}}</span>
       }
     </div>
-    <div class="text-end">
-      <a [routerLink]="['/balnearios', balneario.id ]" class="btn btn-primary btn-sm text-white">Ir a detalle</a>
-    </div>
+    @if (canViewDetail()) {
+      <div class="text-end">
+        <a [routerLink]="['/balnearios', balneario.id ]" class="btn btn-primary btn-sm text-white">Ir a detalle</a>
+      </div>
+    }
   `
 })
 export class PopupBalneario {
+  protected readonly auth = inject(AuthService);
+  protected readonly canViewDetail = this.auth.can('Administrador');
+
   @Input({ required: true }) balneario!: Balneario;
 
   get estadoClass() {
