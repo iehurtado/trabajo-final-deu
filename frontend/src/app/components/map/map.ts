@@ -147,6 +147,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       className: 'map-tiles',
+      referrerPolicy: 'origin',
     }).addTo(this.map);
 
     // Force a resize check to avoid display issues in hidden containers
