@@ -11,3 +11,5 @@ export { AppService } from "./app.service";
 export { AuthService } from "./auth.service";
 export { BalneariosService } from "./balnearios.service";
 export { PuntosInteresService } from "./puntosInteres.service";
+export { RolesService } from "./roles.service";
+export { UsersService } from "./users.service";

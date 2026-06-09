@@ -13,6 +13,11 @@ import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-intere
 import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
 import { PuntosInteresUpdate } from './pages/puntos-interes-update';
 import { PuntosInteresService } from './puntos-interes.service';
+import { UserService } from './user.service';
+import { UsersCreate } from './pages/users-create';
+import { UsersDetail } from './pages/users-detail/users-detail';
+import { UsersList } from './pages/users-list/users-list';
+import { UsersUpdate } from './pages/users-update';
 import { confirmOnUnsavedChanges } from './util';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
@@ -47,6 +52,23 @@ const resolveBalneario = async (route: ActivatedRouteSnapshot) => {
     }
 
     return balneario;
+};
+
+const resolveUser = async (route: ActivatedRouteSnapshot) => {
+    const router = inject(Router);
+    const service = inject(UserService);
+    const id = route.paramMap.get('id');
+    const user = await firstValueFrom(service.getUserById(Number(id)));
+
+    if (!user) {
+        return router.navigate(['/error'], {
+            state: {
+                message: "Usuario no encontrado"
+            },
+        });
+    }
+
+    return user;
 };
 
 export const routes: Routes = [
@@ -109,6 +131,34 @@ export const routes: Routes = [
         title: 'Editar Balneario',
         resolve: {
             balneario: resolveBalneario,
+        },
+        canDeactivate: [confirmOnUnsavedChanges]
+    },
+    {
+        component: UsersList,
+        path: 'users',
+        title: 'Usuarios',
+    },
+    {
+        component: UsersCreate,
+        path: 'users/create',
+        title: 'Nuevo Usuario',
+        canDeactivate: [confirmOnUnsavedChanges]
+    },
+    {
+        component: UsersDetail,
+        path: 'users/:id',
+        title: 'Usuario',
+        resolve: {
+            user: resolveUser
+        }
+    },
+    {
+        component: UsersUpdate,
+        path: 'users/:id/edit',
+        title: 'Editar Usuario',
+        resolve: {
+            user: resolveUser,
         },
         canDeactivate: [confirmOnUnsavedChanges]
     },

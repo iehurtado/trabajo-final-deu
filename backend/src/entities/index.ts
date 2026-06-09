@@ -1,12 +1,23 @@
 import { p, defineEntity, InferEntity } from "@mikro-orm/postgresql";
 
+export const Rol = defineEntity({
+  name: "Rol",
+  properties: {
+    id: p.integer().primary(),
+    nombre: p.string().unique(),
+  },
+});
+
+export type Rol = InferEntity<typeof Rol>;
+
 export const User = defineEntity({
   name: "User",
   properties: {
     id: p.integer().primary(),
     email: p.string().unique(),
     fullname: p.string(),
-    password: p.string(),
+    password: p.string().hidden(),
+    roles: () => p.manyToMany(Rol),
   }
 });
 

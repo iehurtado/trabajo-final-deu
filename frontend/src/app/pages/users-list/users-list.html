@@ -1,0 +1,61 @@
+<main class="container-fluid">
+    <h1>Usuarios</h1>
+    @if (users$|async; as paginator) {
+        <div class="card">
+            <div class="card-body" [class.p-0]="paginator.data.length > 0">
+              @if (paginator.data.length > 0) {
+                <div class="table-responsive">
+                    <table class="table table-striped mb-0" summary="Lista de Usuarios - Página {{ paginator.paginatorInfo.currentPage }}">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Correo Electrónico</th>
+                                <th scope="col">Nombre Completo</th>
+                                <th scope="col">Roles</th>
+                                <th scope="col" style="width: 5%"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (user of paginator.data; track user.id) {
+                                <tr>
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.fullname }}</td>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            @for (role of user.roles; track role.id) {
+                                                <span class="badge bg-secondary">{{ role.nombre }}</span>
+                                            } @empty {
+                                              <span class="text-muted">(ninguno)</span>
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a [routerLink]="['/users', user.id]" aria-label="Ver detalle">
+                                            <fa-icon [icon]="faEye"></fa-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+              } @else {
+                No hay usuarios cargados.
+              }
+            </div>
+            @if (paginator.data.length > 0) {
+              <div class="card-footer d-flex justify-content-end">
+                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
+              </div>
+            }
+        </div>
+    }
+</main>
+<app-fixed-footer>
+    <div class="d-flex justify-content-end w-100">
+        <div class="ms-auto">
+            <a role="button" class="btn btn-primary" [routerLink]="['/users/create']">Agregar...</a>
+        </div>
+    </div>
+</app-fixed-footer>

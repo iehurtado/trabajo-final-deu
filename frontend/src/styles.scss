@@ -2,6 +2,41 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+@import "@ng-select/ng-select/themes/default.theme.css";
+
+.ng-select {
+  .ng-select-container {
+    color: var(--bs-body-color) !important;
+    background-color: var(--bs-body-bg) !important;
+    border: var(--bs-border-width) solid var(--bs-border-color) !important;
+  }
+
+  &.ng-select-multiple .ng-select-container .ng-value-container {
+    .ng-input > input {
+      color: var(--bs-body-color);
+    }
+    .ng-value, .ng-value {
+      color: var(--bs-primary-text);
+      background-color: var(--bs-primary);
+    }
+  }
+}
+
+.ng-dropdown-panel {
+  background-color: var(--bs-body-bg);
+  border: var(--bs-border-width) solid var(--bs-border-color);
+
+  &.ng-select-bottom {
+    border-top-color: var(--bs-border-color-translucent);
+  }
+
+  .ng-dropdown-panel-items .ng-option {
+    color: var(--bs-body-color) !important;
+    background-color: var(--bs-body-bg) !important;
+    // border: var(--bs-border-width) solid var(--bs-border-color) !important;
+  }
+}
+
 
 h1 {
     margin-top: 0.3em;

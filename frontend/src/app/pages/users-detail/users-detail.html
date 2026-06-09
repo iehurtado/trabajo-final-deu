@@ -1,0 +1,35 @@
+<main class="container-fluid">
+  @if (user(); as user) {
+  <h1>{{ user.fullname }}</h1>
+
+  <div class="card">
+    <h5 class="card-header">Información Básica</h5>
+    <div class="card-body">
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo Electrónico</label>
+        <input type="text" id="email" class="form-control" [value]="user.email" readonly />
+      </div>
+      <div class="mb-3">
+        <label for="fullname" class="form-label">Nombre Completo</label>
+        <input type="text" id="fullname" class="form-control" [value]="user.fullname" readonly />
+      </div>
+      <div class="mb-3">
+        <label id="roles-label" class="form-label">Roles</label>
+        <div class="form-control" aria-labelledby="roles-label">
+          @for (role of user.roles; track role.id) {
+          <span class="badge bg-primary">{{ role.nombre }}</span>
+          } @empty {
+          <span class="text-muted">Sin roles asignados</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-fixed-footer>
+    <div class="d-flex justify-content-end w-100">
+      <a role="button" class="btn" [routerLink]="['/users']">Volver</a>
+      <a [routerLink]="['/users', user.id, 'edit']" class="btn btn-primary">Editar</a>
+    </div>
+  </app-fixed-footer>
+  }
+</main>

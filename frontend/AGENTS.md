@@ -1,3 +1,7 @@
+## Utility commands
+
+- Use `yarn workspace frontend openapi:generate` (or `yarn openapi:generate` if `frontend` is the cwd) to generate openapi-generated code when updating the API in the backend.
+
 ## Angular Best Practices
 
 - Always use standalone components over NgModules
