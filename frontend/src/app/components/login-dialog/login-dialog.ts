@@ -1,10 +1,9 @@
 import { Component, inject, Injectable, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService, UnauthorizedError } from '../../auth.service';
-import { NgbActiveModal, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { toObservable } from '@angular/core/rxjs-interop';
-import { combineLatest, map, startWith } from 'rxjs';
 import { RouterLink } from "@angular/router";
+import { NgbActiveModal, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService, UnauthorizedError } from '../../auth.service';
+import { Toaster } from '../toaster/toaster.service';
 
 type LoginDialogState = {
   status: 'waiting'|'submitting'|'error'
@@ -14,10 +13,12 @@ type LoginDialogState = {
 export class LoginDialogService {
   private readonly modal = inject(NgbModal);
 
-  show() {
-    this.modal.open(LoginDialog, {
+  async show() {
+    const modalRef = this.modal.open(LoginDialog, {
       backdrop: 'static',
     });
+
+    await modalRef.result.catch(() => undefined);
   }
 }
 
@@ -31,6 +32,7 @@ export class LoginDialog {
   private readonly fb = inject(FormBuilder);
   private readonly auth = inject(AuthService);
   protected readonly modal = inject(NgbActiveModal);
+  private readonly toaster = inject(Toaster);
 
   protected readonly invalidCredentials = signal(false);
   protected readonly submitting = signal(false);
@@ -56,6 +58,8 @@ export class LoginDialog {
       this.form.disable();
       const value = this.form.getRawValue();
       await this.auth.login({ email: value.email!, password: value.password! });
+      const message = 'Se ha iniciado la sesión correctamente';
+      this.toaster.show('Iniciar Sesión', message);
       this.modal.close();
     } catch (e: unknown) {
       if (e instanceof UnauthorizedError) {

@@ -6,10 +6,11 @@ import { AuthService } from './auth.service';
 import { SettingsMenu } from "./components/settings-menu/settings-menu";
 import { UserMenu } from "./components/user-menu/user-menu";
 import { NgSelectConfig } from '@ng-select/ng-select';
+import { ToastContainer } from './components/toaster/toast-container';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, RouterLinkActive, UserMenu, SettingsMenu],
+  imports: [RouterOutlet, NgbCollapseModule, NgbDropdownModule, RouterLink, RouterLinkActive, UserMenu, SettingsMenu, ToastContainer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

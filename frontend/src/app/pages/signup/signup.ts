@@ -4,6 +4,7 @@ import { equals } from '../../validators';
 import { AuthService } from '../../../api';
 import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
+import { Toaster } from '../../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-signup',
@@ -14,7 +15,8 @@ import { Router } from '@angular/router';
 export class Signup {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
-  private readonly authController = inject(AuthService)
+  private readonly authController = inject(AuthService);
+  private readonly toaster = inject(Toaster);
 
   protected readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -50,6 +52,8 @@ export class Signup {
       this.submitting.set(true);
       const value = this.form.getRawValue();
       await firstValueFrom(this.authController.signup(value));
+      const message = 'La cuenta se ha creado exitosamente. Utilice su correo y contraseña para iniciar sesión.';
+      this.toaster.show('Crear Cuenta', message);
       await this.router.navigate(['/']);
     } finally {
       this.submitting.set(false);

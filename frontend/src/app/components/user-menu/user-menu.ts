@@ -6,7 +6,8 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../../auth.service';
 import { DialogService } from '../dialog/dialog.service';
 import { LoginDialogService } from '../login-dialog/login-dialog';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Toaster } from '../toaster/toaster.service';
 
 @Component({
   selector: 'app-user-menu',
@@ -18,13 +19,16 @@ export class UserMenu {
   protected readonly auth = inject(AuthService);
   private readonly dialog = inject(DialogService);
   protected readonly loginDialog = inject(LoginDialogService);
+  private readonly toaster = inject(Toaster);
+  private readonly router = inject(Router);
 
   protected readonly faRightFromBracket = faRightFromBracket;
 
   readonly working = signal(false);
 
-  login() {
-    this.loginDialog.show();
+  async login() {
+    await this.loginDialog.show();
+    this.router.navigate(['/']);
   }
 
   async logout() {
@@ -35,6 +39,8 @@ export class UserMenu {
 
       try {
         await this.auth.logout();
+        this.toaster.show('Cerrar Sesión', 'La sesión se cerró exitosamente');
+        await this.router.navigate(['/']);
       } finally {
         this.working.set(false);
       }
