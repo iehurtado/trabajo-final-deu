@@ -5,11 +5,14 @@ import { faExclamationCircle, faInfoCircle } from '@fortawesome/free-solid-svg-i
 import { Icon, IconOptions } from 'leaflet';
 import { firstValueFrom } from 'rxjs';
 import { BalneariosService } from '../../balnearios.service';
+import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { MapComponent, MapPanel, MapPopup, MarkerComponent } from '../../components/map/map';
 import { BalnearioIcon, PuntoInteresIcon } from '../../components/map/util';
 import { PopupBalneario } from '../../components/popup-balneario';
 import { PopupPuntoInteres } from '../../components/popup-punto-interes';
 import { PuntosInteresService } from '../../puntos-interes.service';
+import { RouterLink } from '@angular/router';
+import { AuthService } from '../../auth.service';
 
 type PanelMarcador = {
   component: Type<any>;
@@ -39,13 +42,18 @@ function diagonally(a: Marcador, b: Marcador) {
     MapPopup,
     FaIconComponent,
     MapPanel,
-    NgComponentOutlet
+    NgComponentOutlet,
+    FixedFooter,
+    RouterLink,
 ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Home implements OnInit {
+  private readonly auth = inject(AuthService);
+  protected readonly canAddPuntos = this.auth.can(['Colaborador', 'Administrador']);
+
   private readonly puntosService = inject(PuntosInteresService);
   private readonly balneariosService = inject(BalneariosService);
   private readonly map = viewChild.required(MapComponent);

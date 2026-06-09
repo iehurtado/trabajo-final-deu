@@ -90,14 +90,16 @@ function requiereAutenticacion(): CanActivateFn {
   }
 }
 
-function requiereRol(nombre: string): CanActivateFn {
+function requiereRol(nombre: string|string[]): CanActivateFn {
   return () => {
     const router = inject(Router);
     const toaster = inject(Toaster);
     const auth = inject(AuthService);
     const user = auth.user();
 
-    if (user == null || !user.roles.some(x => x.nombre === nombre)) {
+    const requeridos = !Array.isArray(nombre) ? [nombre] : nombre;
+
+    if (user == null || !user.roles.some(x => requeridos.includes(x.nombre))) {
       toaster.show('No Autorizado', 'No tiene autorización para acceder a esta página.');
       return router.createUrlTree(['/']);
     }
@@ -120,18 +122,19 @@ export const routes: Routes = [
     },
     {
       path: 'puntos',
-      canActivateChild: [requiereRol('Administrador')],
       children: [
         {
             component: PuntosInteresList,
             path: '',
             pathMatch: 'full',
             title: 'Puntos de Interés',
+            canActivate: [requiereRol('Administrador')],
         },
         {
             component: PuntosInteresCreate,
             path: 'create',
             title: 'Nuevo Punto de Interés',
+            canActivate: [requiereRol(['Administrador', 'Colaborador'])],
             canDeactivate: [confirmOnUnsavedChanges]
         },
         {
@@ -141,6 +144,7 @@ export const routes: Routes = [
             resolve: {
                 punto: resolvePuntoInteres
             },
+            canActivate: [requiereRol('Administrador')],
         },
         {
             component: PuntosInteresUpdate,
@@ -149,7 +153,8 @@ export const routes: Routes = [
             resolve: {
                 punto: resolvePuntoInteres,
             },
-            canDeactivate: [confirmOnUnsavedChanges]
+            canActivate: [requiereRol('Administrador')],
+            canDeactivate: [confirmOnUnsavedChanges],
         },
       ],
     },

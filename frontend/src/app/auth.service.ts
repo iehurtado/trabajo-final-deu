@@ -32,10 +32,12 @@ export class AuthService {
     });
   }
 
-  public can(role: string) {
+  public can(role: string|string[]) {
+    const requeridos = !Array.isArray(role) ? [role] : role;
+
     return computed(() => {
       const user = this.user();
-      return user != null && user.roles.some(x => x.nombre == role);
+      return user != null && user.roles.some(x => requeridos.includes(x.nombre));
     });
   }
 
