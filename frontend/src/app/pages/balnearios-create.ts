@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { Balneario, BalneariosService } from '../balnearios.service';
 import { ReportsUnsaved } from '../util';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-balnearios-create',
@@ -22,13 +23,17 @@ export class BalneariosCreate implements ReportsUnsaved {
 
   protected readonly guardando = signal(false);
 
-  onSubmit(data: Omit<Balneario, 'id'>): void {
+  async onSubmit(data: Omit<Balneario, 'id'>): Promise<void> {
     this.guardando.set(true);
-    this.balneariosService.addBalneario(data).subscribe(({ id }) => {
+    try {
+      const { id } = await firstValueFrom(this.balneariosService.addBalneario(data));
       this.form().notifySubmissionCompleted();
+      await this.router.navigate(['/balnearios', id]);
+    } catch (e: unknown) {
+      this.form().notifySubmissionCompleted();
+    } finally {
       this.guardando.set(false);
-      this.router.navigate(['/balnearios', id]);
-    });
+    }
   }
 
   hasUnsavedChanges(): boolean {

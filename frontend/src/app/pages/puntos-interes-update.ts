@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PuntosInteresForm } from "../components/puntos-interes-form/puntos-interes-form";
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { ReportsUnsaved } from '../util';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-puntos-interes-update',
@@ -23,18 +24,21 @@ export class PuntosInteresUpdate implements ReportsUnsaved {
   private readonly puntosService = inject(PuntosInteresService);
   private readonly router = inject(Router);
 
-  private readonly form = viewChild(PuntosInteresForm);
+  private readonly form = viewChild.required(PuntosInteresForm);
 
   readonly punto = input.required<PuntoInteres>();
 
-  onSubmit(data: Omit<PuntoInteres, 'id'>): void {
-    const id = this.punto()?.id;
-    if (!id) return;
+  async onSubmit(data: Omit<PuntoInteres, 'id'>): Promise<void> {
+    const id = this.punto().id;
 
-    this.puntosService.updatePuntoInteres(id, data).subscribe(() => {
-      this.form()?.notifySubmissionCompleted();
-      this.router.navigate(['/puntos', id]);
-    });
+    try {
+      await firstValueFrom(this.puntosService.updatePuntoInteres(id, data));
+      this.form().notifySubmissionCompleted();
+      await this.router.navigate(['/puntos', id]);
+    } catch (e: unknown) {
+      this.form().notifySubmissionCompleted();
+      throw e;
+    }
   }
 
   hasUnsavedChanges(): boolean {

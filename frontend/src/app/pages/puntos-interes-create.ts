@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { PuntosInteresForm } from '../components/puntos-interes-form/puntos-interes-form';
 import { ReportsUnsaved } from '../util';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-puntos-interes-create',
@@ -22,13 +23,15 @@ export class PuntosInteresCreate implements ReportsUnsaved {
 
   protected readonly guardando = signal(false);
 
-  onSubmit(data: Omit<PuntoInteres, 'id'>): void {
-    const agregado$ = this.puntosService.addPuntoInteres(data);
-
-    agregado$.subscribe(({ id }) => {
+  async onSubmit(data: Omit<PuntoInteres, 'id'>): Promise<void> {
+    try {
+      const { id } = await firstValueFrom(this.puntosService.addPuntoInteres(data));
       this.form().notifySubmissionCompleted();
-      this.router.navigate(['/puntos', id]);
-    });
+      await this.router.navigate(['/puntos', id]);
+    } catch (e: unknown) {
+      this.form().notifySubmissionCompleted();
+      throw e;
+    }
   }
 
   hasUnsavedChanges(): boolean {

@@ -1,7 +1,8 @@
 import { Component, inject, input, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
+import { firstValueFrom } from 'rxjs';
 import { Balneario, BalneariosService } from '../balnearios.service';
+import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { ReportsUnsaved } from '../util';
 
 @Component({
@@ -23,19 +24,23 @@ export class BalneariosUpdate implements ReportsUnsaved {
 
   private readonly form = viewChild.required(BalneariosForm);
 
-  protected readonly balneario = input<Balneario>();
+  protected readonly balneario = input.required<Balneario>();
 
-  onSubmit(data: Omit<Balneario, 'id'>): void {
-    const id = this.balneario()?.id;
-    if (!id) return;
+  async onSubmit(data: Omit<Balneario, 'id'>): Promise<void> {
+    const id = this.balneario().id;
 
-    this.balneariosService.updateBalneario(id, data).subscribe(() => {
+    try {
+      await firstValueFrom(this.balneariosService.updateBalneario(id, data));
       this.form().notifySubmissionCompleted();
-      this.router.navigate(['/balnearios', id]);
-    });
+      await this.router.navigate(['/balnearios', id]);
+    } catch (e: unknown) {
+      this.form().notifySubmissionCompleted();
+      throw e;
+    }
   }
 
   hasUnsavedChanges(): boolean {
     return this.form().hasUnsavedChanges();
   }
 }
+
