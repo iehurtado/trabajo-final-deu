@@ -17,7 +17,7 @@ export const User = defineEntity({
     email: p.string().unique(),
     fullname: p.string(),
     password: p.string().hidden(),
-    roles: () => p.manyToMany(Rol),
+    roles: () => p.manyToMany(Rol).eager(),
   }
 });
 

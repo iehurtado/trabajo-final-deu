@@ -1,6 +1,11 @@
 <main class="container-fluid">
     <h1>Usuarios</h1>
-    @if (users$|async; as paginator) {
+    @if (unauthorized()) {
+      <div class="alert alert-danger">
+        No tiene autorización para ver el contenido
+      </div>
+    }
+    @if (users.hasValue() && users.value(); as paginator) {
         <div class="card">
             <div class="card-body" [class.p-0]="paginator.data.length > 0">
               @if (paginator.data.length > 0) {
@@ -46,7 +51,7 @@
             </div>
             @if (paginator.data.length > 0) {
               <div class="card-footer d-flex justify-content-end">
-                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
+                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page.set($event)" />
               </div>
             }
         </div>

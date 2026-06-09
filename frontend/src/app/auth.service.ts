@@ -8,7 +8,7 @@ export class UnauthorizedError extends Error {
 }
 
 type AuthState = {
-  user: { id: string, fullname: string, email: string }|null;
+  user: { id: string, fullname: string, email: string, roles: Array<{ id: string, nombre: string }> }|null;
   token: string|null;
 }
 

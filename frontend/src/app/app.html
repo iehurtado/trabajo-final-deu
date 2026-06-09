@@ -6,7 +6,7 @@
     </button>
     <div class="navbar-collapse" [ngbCollapse]="isNavbarCollapsed()">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        @for (link of links; track link.route) {
+        @for (link of links(); track link.route) {
           <li class="nav-item">
             <a class="nav-link" [routerLink]="link.route" routerLinkActive="active"
               [routerLinkActiveOptions]="{ exact: true }"

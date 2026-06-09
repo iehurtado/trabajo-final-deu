@@ -23,17 +23,9 @@ class SignupForm {
   ) {}
 }
 
-class UserDto {
-  constructor(
-    public readonly id: number,
-    public readonly email: string,
-    public readonly fullname: string,
-  ) {}
-}
-
 type LoginResponse = {
   access_token: string;
-  user: UserDto;
+  user: User;
 }
 
 @Controller('auth')
@@ -58,20 +50,19 @@ export class AuthController {
 
     return {
       access_token: await this.jwtService.signAsync(payload),
-      user: new UserDto(user.id, user.email, user.fullname),
+      user,
     };
   }
 
   @Get('profile')
   @UseGuards(AuthGuard)
   public async profile(@Req() req) {
-    const user = await this.userRepository.findOne({ id: req.user.sub });
-    return new UserDto(user!.id, user!.email, user!.fullname);
+    return this.userRepository.findOne({ id: req.user.sub });
   }
 
   @Public()
   @Post('signup')
-  public async signup(@Body() form: SignupForm): Promise<UserDto> {
+  public async signup(@Body() form: SignupForm): Promise<User> {
     const user = this.userRepository.create({
       email: form.email,
       fullname: form.fullname,
@@ -79,8 +70,9 @@ export class AuthController {
     });
 
     await this.em.flush();
+    // await this.em.populate(user, ['roles']);
 
-    return new UserDto(user.id, user.email, user.fullname);
+    return user;
   }
 }
 

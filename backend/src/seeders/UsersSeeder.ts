@@ -1,18 +1,19 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { User, Rol } from 'src/entities';
+import * as bcrypt from 'bcrypt';
 
 export class UsersSeeder extends Seeder {
 
   async run(em: EntityManager): Promise<void> {
     // First ensure roles exist
     const roles = [
-      { id: 1, nombre: "Administrador" },
-      { id: 2, nombre: "Colaborador" },
+      { nombre: "Administrador" },
+      { nombre: "Colaborador" },
     ];
 
     for (const roleData of roles) {
-      const existing = await em.findOne(Rol, { id: roleData.id });
+      const existing = await em.findOne(Rol, { nombre: roleData.nombre });
       if (!existing) {
         em.create(Rol, roleData);
       }
@@ -23,35 +24,33 @@ export class UsersSeeder extends Seeder {
 
     const users = [
       {
-        id: 1,
         email: "admin@example.com",
-        fullname: "Admin User",
-        password: "hashedPassword123",
+        fullname: "Carlos Admin",
+        password: "password123",
         roles: [adminRole],
       },
       {
-        id: 2,
         email: "user1@example.com",
-        fullname: "John Doe",
-        password: "hashedPassword456",
+        fullname: "María Colaboración",
+        password: "password123",
         roles: [colabRole],
       },
       {
-        id: 3,
         email: "user2@example.com",
-        fullname: "Jane Smith",
-        password: "hashedPassword789",
-        roles: [colabRole],
+        fullname: "Alberto Qualunque",
+        password: "password123",
+        roles: [],
       }
     ];
 
     for (const userData of users) {
-      const existing = await em.findOne(User, { id: userData.id });
+      const existing = await em.findOne(User, { email: userData.email });
+
       if (!existing) {
         const user = em.create(User, {
           email: userData.email,
           fullname: userData.fullname,
-          password: userData.password,
+          password: await bcrypt.hash(userData.password, 10),
         });
 
         user.roles.set(userData.roles);

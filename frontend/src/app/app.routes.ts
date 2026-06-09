@@ -1,5 +1,5 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, Routes } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { BalneariosService } from './balnearios.service';
 import { BalneariosCreate } from './pages/balnearios-create';
@@ -20,6 +20,8 @@ import { UsersList } from './pages/users-list/users-list';
 import { UsersUpdate } from './pages/users-update';
 import { confirmOnUnsavedChanges } from './util';
 import { Signup } from './pages/signup/signup';
+import { AuthService } from './auth.service';
+import { Toaster } from './components/toaster/toaster.service';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
     const router = inject(Router);
@@ -72,6 +74,38 @@ const resolveUser = async (route: ActivatedRouteSnapshot) => {
     return user;
 };
 
+function requiereAutenticacion(): CanActivateFn {
+  return () => {
+    const router = inject(Router);
+    const toaster = inject(Toaster);
+    const auth = inject(AuthService);
+    const user = auth.user();
+
+    if (user == null) {
+      toaster.show('No Autorizado', 'Inicie sesión para ver esta página');
+      return router.createUrlTree(['/']);
+    }
+
+    return true;
+  }
+}
+
+function requiereRol(nombre: string): CanActivateFn {
+  return () => {
+    const router = inject(Router);
+    const toaster = inject(Toaster);
+    const auth = inject(AuthService);
+    const user = auth.user();
+
+    if (user == null || !user.roles.some(x => x.nombre === nombre)) {
+      toaster.show('No Autorizado', 'No tiene autorización para acceder a esta página.');
+      return router.createUrlTree(['/']);
+    }
+
+    return true;
+  }
+}
+
 export const routes: Routes = [
     {
         component: Home,
@@ -85,88 +119,109 @@ export const routes: Routes = [
         title: 'Crear Cuenta',
     },
     {
-        component: PuntosInteresList,
-        path: 'puntos',
-        title: 'Puntos de Interés',
-    },
-    {
-        component: PuntosInteresCreate,
-        path: 'puntos/create',
-        title: 'Nuevo Punto de Interés',
-        canDeactivate: [confirmOnUnsavedChanges]
-    },
-    {
-        component: PuntosInteresDetail,
-        path: 'puntos/:id',
-        title: 'Puntos de Interés',
-        resolve: {
-            punto: resolvePuntoInteres
-        }
-    },
-    {
-        component: PuntosInteresUpdate,
-        path: 'puntos/:id/update',
-        title: 'Editar Punto de Interés',
-        resolve: {
-            punto: resolvePuntoInteres,
+      path: 'puntos',
+      canActivateChild: [requiereRol('Administrador')],
+      children: [
+        {
+            component: PuntosInteresList,
+            path: '',
+            pathMatch: 'full',
+            title: 'Puntos de Interés',
         },
-        canDeactivate: [confirmOnUnsavedChanges]
-    },
-    {
-        component: BalneariosList,
-        path: 'balnearios',
-        title: 'Balnearios',
-    },
-    {
-        component: BalneariosCreate,
-        path: 'balnearios/create',
-        title: 'Nuevo Balneario',
-        canDeactivate: [confirmOnUnsavedChanges]
-    },
-    {
-        component: BalneariosDetail,
-        path: 'balnearios/:id',
-        title: 'Balneario',
-        resolve: {
-            balneario: resolveBalneario
-        }
-    },
-    {
-        component: BalneariosUpdate,
-        path: 'balnearios/:id/update',
-        title: 'Editar Balneario',
-        resolve: {
-            balneario: resolveBalneario,
+        {
+            component: PuntosInteresCreate,
+            path: 'create',
+            title: 'Nuevo Punto de Interés',
+            canDeactivate: [confirmOnUnsavedChanges]
         },
-        canDeactivate: [confirmOnUnsavedChanges]
-    },
-    {
-        component: UsersList,
-        path: 'users',
-        title: 'Usuarios',
-    },
-    {
-        component: UsersCreate,
-        path: 'users/create',
-        title: 'Nuevo Usuario',
-        canDeactivate: [confirmOnUnsavedChanges]
-    },
-    {
-        component: UsersDetail,
-        path: 'users/:id',
-        title: 'Usuario',
-        resolve: {
-            user: resolveUser
-        }
-    },
-    {
-        component: UsersUpdate,
-        path: 'users/:id/edit',
-        title: 'Editar Usuario',
-        resolve: {
-            user: resolveUser,
+        {
+            component: PuntosInteresDetail,
+            path: ':id',
+            title: 'Puntos de Interés',
+            resolve: {
+                punto: resolvePuntoInteres
+            },
         },
-        canDeactivate: [confirmOnUnsavedChanges]
+        {
+            component: PuntosInteresUpdate,
+            path: ':id/update',
+            title: 'Editar Punto de Interés',
+            resolve: {
+                punto: resolvePuntoInteres,
+            },
+            canDeactivate: [confirmOnUnsavedChanges]
+        },
+      ],
+    },
+    {
+      path: 'balnearios',
+      canActivateChild: [requiereRol('Administrador')],
+      children: [
+        {
+            component: BalneariosList,
+            path: '',
+            pathMatch: 'full',
+            title: 'Balnearios',
+        },
+        {
+            component: BalneariosCreate,
+            path: 'create',
+            title: 'Nuevo Balneario',
+            canDeactivate: [confirmOnUnsavedChanges],
+        },
+        {
+            component: BalneariosDetail,
+            path: ':id',
+            title: 'Balneario',
+            resolve: {
+                balneario: resolveBalneario
+            },
+        },
+        {
+            component: BalneariosUpdate,
+            path: ':id/update',
+            title: 'Editar Balneario',
+            resolve: {
+                balneario: resolveBalneario,
+            },
+            canDeactivate: [confirmOnUnsavedChanges],
+        },
+      ],
+    },
+    {
+      path: 'users',
+      canActivateChild: [requiereRol('Administrador')],
+      children: [
+        {
+            component: UsersList,
+            path: '',
+            pathMatch: 'full',
+            title: 'Usuarios',
+        },
+        {
+            component: UsersCreate,
+            path: 'create',
+            title: 'Nuevo Usuario',
+            canDeactivate: [confirmOnUnsavedChanges]
+        },
+        {
+            component: UsersDetail,
+            path: ':id',
+            title: 'Usuario',
+            resolve: {
+                user: resolveUser
+            }
+        },
+        {
+            component: UsersUpdate,
+            path: ':id/edit',
+            title: 'Editar Usuario',
+            resolve: {
+                user: resolveUser,
+            },
+            canDeactivate: [confirmOnUnsavedChanges]
+        },
+      ],
     },
     {
         component: ErrorPage,

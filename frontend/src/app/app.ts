@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -23,12 +23,25 @@ export class App implements OnInit {
 
   protected isNavbarCollapsed = signal(true);
 
-  protected links = [
-    { route: '', title: 'Home' },
-    { route: '/puntos', title: 'Puntos de Interés' },
-    { route: '/balnearios', title: 'Balnearios' },
-    { route: '/users', title: 'Usuarios' },
-  ];
+  protected links = computed(() => {
+    const links = [ { route: '', title: 'Home' } ];
+
+    const user = this.auth.user();
+
+    if (!user) {
+      return links;
+    }
+
+    if (user.roles.some(x => x.nombre == 'Administrador')) {
+      links.push(
+        { route: '/puntos', title: 'Puntos de Interés' },
+        { route: '/balnearios', title: 'Balnearios' },
+        { route: '/users', title: 'Usuarios' },
+      )
+    }
+
+    return links;
+  });
 
   ngOnInit() {
     this.ngSelect.notFoundText = 'No se encontraron items';
