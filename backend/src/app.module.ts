@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AuthModule } from './modules/auth/auth.module';
-import { OrmModule } from './modules/orm/orm.module';
 import { BalneariosModule } from './modules/balnearios/balnearios.module';
+import { OrmModule } from './modules/orm/orm.module';
 import { PuntosInteresModule } from './modules/puntos-interes/puntos-interes.module';
 import { UsersModule } from './modules/users/users.module';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -14,8 +14,20 @@ import { UsersModule } from './modules/users/users.module';
     BalneariosModule,
     PuntosInteresModule,
     UsersModule,
+    ThrottlerModule.forRoot({
+      throttlers: [
+        {
+          ttl: 1000,
+          limit: 10,
+        },
+      ],
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

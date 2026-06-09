@@ -13,7 +13,7 @@ import { AuthGuard } from './auth.guard';
       global: true,
       secret: createSecretKey(Buffer.from('t0ps5cr3t')), // TODO ajustar para usar .env
       signOptions: {
-        expiresIn: '5m',
+        expiresIn: '6h',
       },
     })
   ],
