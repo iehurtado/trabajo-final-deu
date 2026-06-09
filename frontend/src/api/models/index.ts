@@ -20,6 +20,12 @@ export interface CreateBalnearioForm {
 export interface UpdateBalnearioForm {
 }
 
+export interface CreatePuntoInteresForm {
+}
+
+export interface UpdatePuntoInteresForm {
+}
+
 /** Request Options for Angular HttpClient requests */
 export interface RequestOptions<TResponseType extends 'arraybuffer' | 'blob' | 'json' | 'text'> {
     headers?: HttpHeaders;

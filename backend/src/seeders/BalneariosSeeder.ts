@@ -1,8 +1,8 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { Balneario } from 'src/entities';
+import { Balneario, PuntoInteres } from 'src/entities';
 
-export class DatabaseSeeder extends Seeder {
+export class BalneariosSeeder extends Seeder {
 
   async run(em: EntityManager): Promise<void> {
     const balnearios = [
@@ -30,7 +30,7 @@ export class DatabaseSeeder extends Seeder {
     ];
 
     for (const balneario of balnearios) {
-      em.create(Balneario, balneario);
+      await em.upsert(Balneario, balneario);
     }
 
     await em.flush();

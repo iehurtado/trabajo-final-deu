@@ -2,7 +2,8 @@
     <h1>Puntos de Interés</h1>
     @if (puntos$|async; as paginator) {
         <div class="card">
-            <div class="card-body p-0">
+            <div class="card-body" [class.p-0]="paginator.data.length > 0">
+              @if (paginator.data.length > 0) {
                 <div class="table-responsive">
                     <table class="table table-striped mb-0" summary="Listado de Puntos de Interés - Página {{ paginator.paginatorInfo.currentPage }}">
                         <thead>
@@ -37,10 +38,15 @@
                         </tbody>
                     </table>
                 </div>
+              } @else {
+                No hay puntos de interés cargados.
+              }
             </div>
-            <div class="card-footer d-flex justify-content-end">
-                <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
-            </div>
+            @if (paginator.data.length > 0) {
+              <div class="card-footer d-flex justify-content-end">
+                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
+              </div>
+            }
         </div>
     }
 </main>

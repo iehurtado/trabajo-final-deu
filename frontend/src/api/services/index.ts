@@ -10,3 +10,4 @@
 export { AppService } from "./app.service";
 export { AuthService } from "./auth.service";
 export { BalneariosService } from "./balnearios.service";
+export { PuntosInteresService } from "./puntosInteres.service";

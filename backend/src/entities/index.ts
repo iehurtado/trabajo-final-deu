@@ -30,3 +30,18 @@ export const Balneario = defineEntity({
 });
 
 export type Balneario = InferEntity<typeof Balneario>;
+
+export const PuntoInteres = defineEntity({
+  name: "PuntoInteres",
+  properties: {
+    id: p.integer().primary(),
+    nombre: p.string(),
+    latitud: p.float(),
+    longitud: p.float(),
+    categoria: p.string(),
+    subcategoria: p.string(),
+    descripcion: p.string().nullable(),
+  }
+});
+
+export type PuntoInteres = InferEntity<typeof PuntoInteres>;

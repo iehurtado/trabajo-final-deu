@@ -1,12 +1,12 @@
 import { defineConfig, PostgreSqlDriver } from "@mikro-orm/postgresql";
 import { Migrator } from "@mikro-orm/migrations";
-import { Balneario, User } from "./entities";
+import { Balneario, PuntoInteres, User } from "./entities";
 import { SeedManager } from "@mikro-orm/seeder";
 
 export default defineConfig({
   driver: PostgreSqlDriver,
   extensions: [Migrator, SeedManager],
-  entities: [Balneario, User],
+  entities: [Balneario, PuntoInteres, User],
   dbName: 'postgres',
   host: 'localhost',
   port: 5432,
