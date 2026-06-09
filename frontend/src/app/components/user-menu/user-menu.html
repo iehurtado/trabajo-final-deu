@@ -25,7 +25,9 @@
     </div>
   </div>
 } @else {
-  <button class="btn" (click)="login()">Iniciar Sesión</button>
-  <a class="btn btn-primary" routerLink="/signup">Crear Cuenta</a>
+  <div class="d-flex gap-1">
+    <a class="btn" routerLink="/signup">Crear Cuenta</a>
+    <button class="btn btn-primary" (click)="login()">Iniciar Sesión</button>
+  </div>
 }
 
