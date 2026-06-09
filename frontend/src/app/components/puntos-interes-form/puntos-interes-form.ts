@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, UrlSegment, UrlTree } from '@angular/router';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import * as L from 'leaflet';
@@ -26,11 +26,12 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
   private map!: L.Map;
   private marker?: L.Marker;
   private readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
-  
+
   protected readonly detectando = signal(false);
   protected readonly guardando = signal(false);
 
-  initialData = input<PuntoInteres>();
+  readonly backLink = input<string | readonly any[] | UrlTree>();
+  readonly initialData = input<PuntoInteres>();
   protected readonly guardado = output<Omit<PuntoInteres, 'id'>>();
 
   protected readonly form = this.fb.nonNullable.group({
@@ -79,6 +80,7 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
       maxZoom: 18,
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      className: 'map-tiles',
     }).addTo(this.map);
 
     this.map.addEventListener('click', e => {

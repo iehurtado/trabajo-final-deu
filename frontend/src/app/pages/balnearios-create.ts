@@ -10,7 +10,7 @@ import { ReportsUnsaved } from '../util';
   template: `
     <main class="container-fluid">
       <h1>Nuevo Balneario</h1>
-      <app-balnearios-form (guardado)="onSubmit($event)"/>
+      <app-balnearios-form [backLink]="['/balnearios']" (guardado)="onSubmit($event)"/>
     </main>
   `,
 })

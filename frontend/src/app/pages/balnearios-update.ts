@@ -11,7 +11,8 @@ import { ReportsUnsaved } from '../util';
     @if (balneario(); as balneario) {
       <main class="container-fluid">
         <h1>Editar Balneario #{{ balneario.id }}</h1>
-        <app-balnearios-form [initialData]="balneario" (guardado)="onSubmit($event)"/>
+        <app-balnearios-form [backLink]="['/balnearios', balneario.id]"
+          [initialData]="balneario" (guardado)="onSubmit($event)"/>
       </main>
     }
   `,

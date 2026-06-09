@@ -69,7 +69,7 @@
   <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
       <div class="ms-auto">
-        <a role="button" class="btn" [routerLink]="['/puntos']">Cancelar</a>
+        <a role="button" class="btn" [routerLink]="backLink()">Cancelar</a>
         <button type="submit" class="btn btn-primary" [disabled]="guardando()">
           Guardar
           @if (guardando()) {

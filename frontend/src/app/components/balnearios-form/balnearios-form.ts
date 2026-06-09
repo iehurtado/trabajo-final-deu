@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, UrlTree } from '@angular/router';
 import * as L from 'leaflet';
 import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
 import { Balneario } from '../../balnearios.service';
@@ -29,7 +29,8 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   protected readonly detectando = signal(false);
   protected readonly guardando = signal(false);
 
-  initialData = input<Balneario>();
+  readonly backLink = input<string | readonly any [] | UrlTree>();
+  readonly initialData = input<Balneario>();
   protected readonly guardado = output<Omit<Balneario, 'id'>>();
 
   protected readonly form = this.fb.group({
@@ -86,6 +87,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
       maxZoom: 18,
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      className: 'map-tiles',
     }).addTo(this.map);
 
     this.map.addEventListener('click', e => {

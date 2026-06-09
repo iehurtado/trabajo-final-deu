@@ -11,7 +11,7 @@ import { ReportsUnsaved } from '../util';
   template: `
   <main class="container-fluid">
     <h1>Nuevo Punto de Interés</h1>
-    <app-puntos-interes-form (guardado)="onSubmit($event)"/>
+    <app-puntos-interes-form [backLink]="['/puntos']" (guardado)="onSubmit($event)"/>
   </main>`,
 })
 export class PuntosInteresCreate implements ReportsUnsaved {

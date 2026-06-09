@@ -13,7 +13,9 @@ import { ReportsUnsaved } from '../util';
 
     <main class="container-fluid">
       <h1>Editar Punto de Interés #{{punto.id}}</h1>
-      <app-puntos-interes-form [initialData]="punto" (guardado)="onSubmit($event)"/>
+      <app-puntos-interes-form [initialData]="punto"
+        [backLink]="['/puntos', punto.id]"
+        (guardado)="onSubmit($event)"/>
     </main>
   `,
 })
