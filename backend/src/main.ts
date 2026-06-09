@@ -1,8 +1,14 @@
+import { MikroORM } from '@mikro-orm/postgresql';
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AppModule } from './app.module';
+import ormConfig from './mikro-orm.config';
 
 async function bootstrap() {
+  const orm = await MikroORM.init(ormConfig);
+  await orm.migrator.up();
+  await orm.close();
+
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
