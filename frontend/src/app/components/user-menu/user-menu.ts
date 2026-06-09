@@ -27,8 +27,9 @@ export class UserMenu {
   readonly working = signal(false);
 
   async login() {
-    await this.loginDialog.show();
-    this.router.navigate(['/']);
+    if (await this.loginDialog.show()) {
+      await this.router.navigate(['/']);
+    }
   }
 
   async logout() {

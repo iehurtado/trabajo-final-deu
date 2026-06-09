@@ -18,7 +18,7 @@ export class LoginDialogService {
       backdrop: 'static',
     });
 
-    await modalRef.result.catch(() => undefined);
+    return modalRef.result.catch(() => false);
   }
 }
 
@@ -60,7 +60,7 @@ export class LoginDialog {
       await this.auth.login({ email: value.email!, password: value.password! });
       const message = 'Se ha iniciado la sesión correctamente';
       this.toaster.show('Iniciar Sesión', message);
-      this.modal.close();
+      this.modal.close(true);
     } catch (e: unknown) {
       if (e instanceof UnauthorizedError) {
         this.invalidCredentials.set(true);

@@ -34,7 +34,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <a class="btn btn-link" routerLink="/signup">Crear Cuenta</a>
+    <a class="btn btn-link" routerLink="/signup" (click)="modal.dismiss()">Crear Cuenta</a>
     <div class="ms-auto">
       <button type="button" class="btn" (click)="modal.dismiss()" [disabled]="submitting()">Cancelar</button>
       <button type="submit" class="btn btn-primary" [disabled]="submitting()">
