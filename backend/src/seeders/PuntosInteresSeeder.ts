@@ -7,7 +7,6 @@ export class PuntosInteresSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
     const puntosInteres = [
       {
-        id: 1,
         nombre: "Punta Lara - Zona Camping",
         latitud: -34.820, longitud: -57.965,
         categoria: "Contaminantes",
@@ -15,7 +14,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Presencia masiva de microplásticos y residuos sólidos urbanos."
       },
       {
-        id: 2,
         nombre: "Desembocadura Arroyo El Gato",
         latitud: -34.835, longitud: -57.955,
         categoria: "Contaminantes",
@@ -23,7 +21,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Altos niveles de detergentes y descargas cloacales sin tratamiento."
       },
       {
-        id: 3,
         nombre: "Costa de Berisso - Palo Blanco",
         latitud: -34.860, longitud: -57.845,
         categoria: "Contaminantes",
@@ -31,7 +28,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Manchas de aceite y restos de hidrocarburos provenientes del puerto."
       },
       {
-        id: 4,
         nombre: "Ribera de Quilmes",
         latitud: -34.715, longitud: -58.235,
         categoria: "Contaminantes",
@@ -39,7 +35,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Acumulación de plásticos de un solo uso y restos de redes de pesca."
       },
       {
-        id: 5,
         nombre: "Costa de Hudson",
         latitud: -34.785, longitud: -58.155,
         categoria: "Contaminantes",
@@ -47,7 +42,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Descargas industriales y sedimentos contaminados."
       },
       {
-        id: 6,
         nombre: "Reserva Natural Integral Punta Lara",
         latitud: -34.780, longitud: -58.000,
         categoria: "Contaminantes",
@@ -55,7 +49,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Acumulación de basura transportada por la marea en zona protegida."
       },
       {
-        id: 7,
         nombre: "Arroyo del Medio - Berisso",
         latitud: -34.880, longitud: -57.820,
         categoria: "Contaminantes",
@@ -63,7 +56,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Descargas de efluentes industriales y residuos domésticos."
       },
       {
-        id: 8,
         nombre: "Playa La Balandra",
         latitud: -34.920, longitud: -57.780,
         categoria: "Contaminantes",
@@ -71,7 +63,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Presencia de plásticos y restos de fogatas en zona recreativa."
       },
       {
-        id: 9,
         nombre: "Puerto de La Plata - Canal de Acceso",
         latitud: -34.810, longitud: -57.900,
         categoria: "Contaminantes",
@@ -79,7 +70,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Efluentes de buques y sedimentos con metales pesados."
       },
       {
-        id: 10,
         nombre: "Desembocadura Arroyo Sarandí",
         latitud: -34.660, longitud: -58.330,
         categoria: "Contaminantes",
@@ -87,7 +77,6 @@ export class PuntosInteresSeeder extends Seeder {
         descripcion: "Altos niveles de contaminación química y cloacal."
       },
       {
-        id: 11,
         nombre: "Costa de Wilde",
         latitud: -34.680, longitud: -58.290,
         categoria: "Contaminantes",
