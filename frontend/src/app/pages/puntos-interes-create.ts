@@ -6,6 +6,7 @@ import { PuntosInteresForm } from '../components/puntos-interes-form/puntos-inte
 import { ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../auth.service';
+import { Toaster } from '../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-puntos-interes-create',
@@ -19,6 +20,7 @@ import { AuthService } from '../auth.service';
 export class PuntosInteresCreate implements ReportsUnsaved {
   private readonly puntosService = inject(PuntosInteresService);
   private readonly router = inject(Router);
+  private readonly toaster = inject(Toaster);
 
   private readonly auth = inject(AuthService);
   private readonly canViewList = this.auth.can('Administrador');
@@ -32,14 +34,16 @@ export class PuntosInteresCreate implements ReportsUnsaved {
   async onSubmit(data: Omit<PuntoInteres, 'id'>): Promise<void> {
     try {
       const { id } = await firstValueFrom(this.puntosService.addPuntoInteres(data));
+
       this.form().notifySubmissionCompleted();
 
       const url = this.canViewDetail()
         ? ['/puntos', id]
         : ['/'];
-
+      this.toaster.show('Nuevo Punto de Interés', 'Se agregó exitosamente el punto de interés');
       await this.router.navigate(url);
     } catch (e: unknown) {
+      this.toaster.show('Nuevo Punto de Interés', 'Ha ocurrido un error al agregar el punto de interés');
       this.form().notifySubmissionCompleted();
       throw e;
     }

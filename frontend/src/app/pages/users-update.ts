@@ -4,6 +4,7 @@ import { UserForm } from "../components/user-form/user-form";
 import { UpdateUserForm, User, UserService } from '../user.service';
 import { ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
+import { Toaster } from '../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-users-update',
@@ -20,6 +21,7 @@ import { firstValueFrom } from 'rxjs';
 export class UsersUpdate implements ReportsUnsaved {
   private readonly userService = inject(UserService);
   private readonly router = inject(Router);
+  private readonly toaster = inject(Toaster);
 
   private readonly form = viewChild.required(UserForm);
 
@@ -41,16 +43,12 @@ export class UsersUpdate implements ReportsUnsaved {
     try {
       await firstValueFrom(this.userService.updateUser(user.id, updateData));
 
-      // if (data.roles && data.roles.length > 0) {
-      //   const roleIds = data.roles.map(r => r.id);
-      //   await firstValueFrom(this.userService.updateUserRoles(user.id, roleIds));
-      // }
-
+      this.toaster.show('Editar Usuario', 'Se actualizó exitosamente el usuario');
       this.form().notifySubmissionCompleted();
-
       await this.router.navigate(['/users', user.id]);
     } catch (e: unknown) {
       this.form().notifySubmissionCompleted();
+      this.toaster.show('Editar Usuario', 'Ha ocurrido un error al actualizar el usuario');
       throw e;
     }
   }

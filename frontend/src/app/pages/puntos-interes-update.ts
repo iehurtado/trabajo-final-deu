@@ -5,6 +5,7 @@ import { PuntosInteresForm } from "../components/puntos-interes-form/puntos-inte
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
+import { Toaster } from '../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-puntos-interes-update',
@@ -23,6 +24,7 @@ import { firstValueFrom } from 'rxjs';
 export class PuntosInteresUpdate implements ReportsUnsaved {
   private readonly puntosService = inject(PuntosInteresService);
   private readonly router = inject(Router);
+  private readonly toaster = inject(Toaster);
 
   private readonly form = viewChild.required(PuntosInteresForm);
 
@@ -33,9 +35,11 @@ export class PuntosInteresUpdate implements ReportsUnsaved {
 
     try {
       await firstValueFrom(this.puntosService.updatePuntoInteres(id, data));
+      this.toaster.show('Editar Punto de Interés', 'Se actualizó exitosamente el punto de interés');
       this.form().notifySubmissionCompleted();
       await this.router.navigate(['/puntos', id]);
     } catch (e: unknown) {
+      this.toaster.show('Editar Punto de Interés', 'Ha ocurrido un error al actualizar el punto de interés');
       this.form().notifySubmissionCompleted();
       throw e;
     }

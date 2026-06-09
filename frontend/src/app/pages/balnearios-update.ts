@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { Balneario, BalneariosService } from '../balnearios.service';
 import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { ReportsUnsaved } from '../util';
+import { Toaster } from '../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-balnearios-update',
@@ -21,6 +22,7 @@ import { ReportsUnsaved } from '../util';
 export class BalneariosUpdate implements ReportsUnsaved {
   private readonly balneariosService = inject(BalneariosService);
   private readonly router = inject(Router);
+  private readonly toaster = inject(Toaster);
 
   private readonly form = viewChild.required(BalneariosForm);
 
@@ -31,9 +33,11 @@ export class BalneariosUpdate implements ReportsUnsaved {
 
     try {
       await firstValueFrom(this.balneariosService.updateBalneario(id, data));
+      this.toaster.show('Editar Balneario', 'Se actualizó exitosamente el balneario');
       this.form().notifySubmissionCompleted();
       await this.router.navigate(['/balnearios', id]);
     } catch (e: unknown) {
+      this.toaster.show('Editar Balneario', 'Ha ocurrido un error al actualizar el balneario');
       this.form().notifySubmissionCompleted();
       throw e;
     }

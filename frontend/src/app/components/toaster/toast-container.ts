@@ -12,8 +12,8 @@ import { NgbToast } from "@ng-bootstrap/ng-bootstrap";
   styles: `
     :host {
       position: fixed;
-      bottom: 64px;
-      right: 64px;
+      bottom: 10%;
+      right: 5%;
       z-index: 2000;
     }
   `,
