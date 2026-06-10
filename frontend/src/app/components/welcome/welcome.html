@@ -1,0 +1,71 @@
+<div class="modal-header">
+  <h1 class="modal-title h4">Bienvenido a App</h1>
+  <button type="button" class="btn-close" aria-label="Cerrar" (click)="modal.close({ dontShowAgain })"></button>
+</div>
+<div class="modal-body">
+
+  <div class="row">
+    <!-- <div class="col-12 col-md-5"> -->
+      <section id="proyecto" class="mb-2">
+        <div>
+          <h2>Proyecto</h2>
+          <p>
+            En el marco de nuestro proyecto de investigación, relevamos el estado
+            de la ribera sur del Río de la Plata con respecto a los problemas
+            ambientales que se presentan a lo largo de la costa.
+          </p>
+        </div>
+      </section>
+      <section id="objetivo" class="mb-2">
+        <div>
+          <h2>¿Qué es App?</h2>
+          <p>
+            El objetivo de App es poner esta información a disposición de la comunidad
+            que hace uso de este espacio geográfico a fin de generar conciencia y prevenir
+            accidentes, promoviendo un uso responsable para el disfrute de todos.
+          </p>
+          <div>
+            <p>Aquí encontrará información acerca de:</p>
+            <ul>
+              <li>
+                <strong>Puntos de Interés en nuestra investigación.</strong>
+                Situaciones relevantes que ocurren a lo largo de la ribera.
+                En general, presencia de contaminantes.
+              </li>
+              <li>
+                <strong>Balnearios.</strong>
+                Ponemos a disposición de la comunidad información relativa a balnearios.
+                En particular, servicios con los que cuenta y estado del agua.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    <!-- </div> -->
+    <!-- <section id="comenzar" class="col-12 col-md-7">
+      <div>
+        <h2>Comience a utilizar App</h2>
+        <p>
+          Ingrese ahora para ver la información en el mapa. Luego podrá crear una cuenta
+          y solicitar ser Colaborador
+        </p>
+      </div>
+      <figure class="figure">
+        <img src="assets/welcome-mapita.png" class="figure-img img-fluid rounded" aria-labelledby="welcome-map-caption">
+        <figcaption id="welcome-map-caption" class="figure-caption">
+          Ilustración de un mapa que muestra la ribera sur del Río de la Plata
+        </figcaption>
+      </figure>
+    </section> -->
+  </div>
+</div>
+<div class="modal-footer d-flex gap-1">
+  <div class="form-check form-check-inline">
+    <label for="noMostrarMas" class="form-check-label">No volver a mostrar</label>
+    <input type="checkbox" id="noMostrarMas" class="form-check-input" [(ngModel)]="dontShowAgain">
+  </div>
+  <button type="button" class="btn btn-primary btn-lg"
+    (click)="modal.close({ dontShowAgain })">
+    Comenzar Ahora
+  </button>
+</div>

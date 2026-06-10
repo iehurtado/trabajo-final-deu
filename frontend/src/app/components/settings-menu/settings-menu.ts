@@ -1,11 +1,11 @@
-import { Component, inject, OnDestroy, TemplateRef } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, TemplateRef } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faCog, faMoon, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { DarkModeSettingService } from '../../darkmode-setting.service';
 import { FontSizeSettingService } from '../../font-size-setting.service';
-import { Subscription } from 'rxjs';
+import { WelcomeService } from '../welcome/welcome';
 
 @Component({
   selector: 'app-settings-menu',
@@ -20,6 +20,7 @@ export class SettingsMenu {
 
   protected readonly settings = inject(FontSizeSettingService);
   protected readonly darkModeSetting = inject(DarkModeSettingService);
+  protected readonly welcome = inject(WelcomeService);
   protected readonly offcanvas = inject(NgbOffcanvas);
 
   protected open(content: TemplateRef<any>) {

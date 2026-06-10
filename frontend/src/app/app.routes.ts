@@ -1,7 +1,9 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, Routes } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from './auth.service';
 import { BalneariosService } from './balnearios.service';
+import { Toaster } from './components/toaster/toaster.service';
 import { BalneariosCreate } from './pages/balnearios-create';
 import { BalneariosDetail } from './pages/balnearios-detail/balnearios-detail';
 import { BalneariosList } from './pages/balnearios-list/balnearios-list';
@@ -12,16 +14,14 @@ import { PuntosInteresCreate } from './pages/puntos-interes-create';
 import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-interes-detail';
 import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
 import { PuntosInteresUpdate } from './pages/puntos-interes-update';
-import { PuntosInteresService } from './puntos-interes.service';
-import { UserService } from './user.service';
+import { Signup } from './pages/signup/signup';
 import { UsersCreate } from './pages/users-create';
 import { UsersDetail } from './pages/users-detail/users-detail';
 import { UsersList } from './pages/users-list/users-list';
 import { UsersUpdate } from './pages/users-update';
+import { PuntosInteresService } from './puntos-interes.service';
+import { UserService } from './user.service';
 import { confirmOnUnsavedChanges } from './util';
-import { Signup } from './pages/signup/signup';
-import { AuthService } from './auth.service';
-import { Toaster } from './components/toaster/toaster.service';
 
 const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
     const router = inject(Router);
@@ -119,6 +119,9 @@ export const routes: Routes = [
         component: Signup,
         path: 'signup',
         title: 'Crear Cuenta',
+        canActivate: [
+          () => inject(AuthService).user() === null || inject(Router).createUrlTree(['/']),
+        ],
     },
     {
       path: 'puntos',

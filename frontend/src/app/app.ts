@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { AfterViewInit, Component, computed, inject, OnInit, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -7,6 +7,7 @@ import { SettingsMenu } from "./components/settings-menu/settings-menu";
 import { UserMenu } from "./components/user-menu/user-menu";
 import { NgSelectConfig } from '@ng-select/ng-select';
 import { ToastContainer } from './components/toaster/toast-container';
+import { WelcomeService } from './components/welcome/welcome';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,9 @@ import { ToastContainer } from './components/toaster/toast-container';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   protected readonly auth = inject(AuthService);
+  private readonly welcome = inject(WelcomeService);
   private readonly ngSelect = inject(NgSelectConfig);
 
   protected readonly faRightFromBracket = faRightFromBracket;
@@ -46,6 +48,12 @@ export class App implements OnInit {
   ngOnInit() {
     this.ngSelect.notFoundText = 'No se encontraron items';
     this.ngSelect.loadingText = 'Cargando...';
+  }
+
+  async ngAfterViewInit() {
+    if (!this.welcome.dontShowAgain()) {
+      await this.welcome.show();
+    }
   }
 
   toggleNavbarCollapse() {
