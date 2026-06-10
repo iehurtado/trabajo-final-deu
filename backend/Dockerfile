@@ -1,7 +1,7 @@
 # ---- deps ----
 FROM node:26-trixie AS deps
 RUN npm i -g corepack && yarn set version stable
-WORKDIR /app
+WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./
 COPY backend/package.json ./backend/
 RUN yarn workspaces focus backend
@@ -20,8 +20,8 @@ RUN yarn workspace backend build
 # ---- runtime ----
 FROM node:26-trixie AS runtime
 EXPOSE 3000
-WORKDIR /app
-COPY --from=build /app/backend/dist ./dist
-COPY --from=deps /app/node_modules ./node_modules
+WORKDIR /home/node/app
+COPY --from=build /home/node/app/backend/dist ./dist
+COPY --from=deps /home/node/app/node_modules ./node_modules
 USER node
 CMD ["node", "dist/main"]

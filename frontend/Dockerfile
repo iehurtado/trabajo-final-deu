@@ -1,7 +1,7 @@
 # ---- deps ----
 FROM node:26-trixie AS deps
 RUN npm i -g corepack @angular/cli@^21 && yarn set version stable
-WORKDIR /app
+WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./
 COPY frontend/package.json ./frontend/
 RUN yarn workspaces focus frontend
@@ -20,6 +20,6 @@ RUN yarn workspace frontend build --configuration=production
 
 # ---- runtime (nginx) ----
 FROM nginx:stable-alpine AS runtime
-COPY --from=build /app/frontend/dist/trabajo-final-deu/browser /usr/share/nginx/html
+COPY --from=build /home/node/app/frontend/dist/trabajo-final-deu/browser /usr/share/nginx/html
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
