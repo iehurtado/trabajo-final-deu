@@ -46,6 +46,16 @@ Si todo salió bien, podemos acceder a la app a través de:
 - Puerto `8000` en caso de instalación productiva
 - Puerto `4200` en caso de instalación para desarrollo local
 
+## Usuarios de Prueba
+
+En caso de haber cargado la base con datos de prueba se dispone de tres usuarios de prueba:
+
+* `admin@example.com` con rol Administrador
+* `user1@example.com` con rol Colaborador
+* `user2@example.com` sin rol especial
+
+La contraseña en todos los casos es `password123`
+
 ## Instalación directa (desarrollo)
 
 En caso de no querer usar docker para desarrollar:
