@@ -27,7 +27,7 @@ export const Balneario = defineEntity({
   name: "Balneario",
   properties: {
     id: p.integer().primary(),
-    nombre: p.string(),
+    nombre: p.string().unique(),
     latitud: p.float(),
     longitud: p.float(),
     estadoAgua: p.enum(["APTO", "PRECAUCION", "NO_APTO"]),
@@ -46,7 +46,7 @@ export const PuntoInteres = defineEntity({
   name: "PuntoInteres",
   properties: {
     id: p.integer().primary(),
-    nombre: p.string(),
+    nombre: p.string().unique(),
     latitud: p.float(),
     longitud: p.float(),
     categoria: p.string(),
