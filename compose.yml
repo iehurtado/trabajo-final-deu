@@ -3,10 +3,13 @@ services:
     build:
       dockerfile: backend/Dockerfile
       context: .
+      target: runtime
     environment:
       DB_HOST: postgres
       DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
       JWT_SECRET: ${JWT_SECRET?}
+      NODE_ENV: production
+      SEED_DATABASE: ${SEED_DATABASE}
     networks:
       - local
     depends_on:
@@ -17,6 +20,7 @@ services:
     build:
       dockerfile: frontend/Dockerfile
       context: .
+      target: runtime
     ports:
       - "8000:80"
     networks:

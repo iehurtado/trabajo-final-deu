@@ -3,10 +3,16 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import ormConfig from './mikro-orm.config';
+import { DatabaseSeeder } from './seeders/DatabaseSeeder';
 
 async function bootstrap() {
   const orm = await MikroORM.init(ormConfig);
   await orm.migrator.up();
+
+  if (process.env.SEED_DATABASE) {
+    await orm.seeder.seed(DatabaseSeeder);
+  }
+
   await orm.close();
 
   const app = await NestFactory.create(AppModule);

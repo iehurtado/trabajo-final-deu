@@ -1,59 +1,67 @@
-# TrabajoFinalDeu
+# Trabajo Final DEU
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.10.
+Proyecto de trabajo final para Diseño de Experiencia de Usuario - Facultad de Informática UNLP.
 
-## Development server
+Se trata de una app basada en web para ingreso y visualización de hitos y reportes sobre la ribera sur del Río de la Plata.
 
-To start a local development server, run:
+## Arquitectura
 
-```bash
-ng serve
-```
+Se utilizó `yarn` para gestionar dos workspaces:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- `backend`: API NestJS. Utiliza MikroORM para mapear una base de datos PostgreSQL. La API cuenta con documentación OpenAPI (Swagger disponible en `{URL_BASE}/api/docs`)
 
-## Code scaffolding
+- `frontend`: aplicación Angular. Utiliza Bootstrap como design system y la biblioteca Leaflet para visualizar e interactuar con mapas de OpenStreetMap.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instalación (Docker)
 
-```bash
-ng generate component component-name
-```
+* Requiere [Docker](https://docs.docker.com/engine/) y [Docker Compose](https://docs.docker.com/compose/install).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. Generar archivo de variables de entorno:
 
-```bash
-ng generate --help
-```
+~~~
+cp .env.example .env
+~~~
 
-## Building
+2. Modificar `.env`, según sea necesario; en caso de que NO sea para desarrollo local:
 
-To build the project run:
+  * Descomentar la línea `COMPOSE_FILE` para no usar la config de desarrollo.
+  * Configurar una contraseña para la base de datos
+  * Configurar una secret key para los tokens JWT
+  * La variable `SEED_DATABASE` controla si se ingresarán datos de prueba al levantar la app
 
-```bash
-ng build
-```
+3. Compilar imágenes:
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+~~~
+docker compose build
+~~~
 
-## Running unit tests
+4. Levantar contenedores:
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+~~~
+docker compose up -d
+~~~
 
-```bash
-ng test
-```
+Si todo salió bien, podemos acceder a la app a través de:
 
-## Running end-to-end tests
+- Puerto `8000` en caso de instalación productiva
+- Puerto `4200` en caso de instalación para desarrollo local
 
-For end-to-end (e2e) testing, run:
+## Instalación directa (desarrollo)
 
-```bash
-ng e2e
-```
+En caso de no querer usar docker para desarrollar:
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+1. Instalar postgres 18 o levantar un contenedor postgres 18
+2. `yarn install` para instalar dependencias
+3. `yarn mikro-orm migrate:up` para generar la base de datos o actualizarla
+4. `yarn mikro-orm seeder:run` para cargar datos de prueba
+5. `yarn start:backend` inicia el servidor de desarrollo de backend (bloquea)
+6. `yarn start` inicia el servidor de desarrollo de frontend (bloquea)
 
-## Additional Resources
+## Comandos Importantes
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+* Agregar una dependencia:
+
+~~~
+yarn workspace <backend|frontend> add <...dependencias>
+~~~
+

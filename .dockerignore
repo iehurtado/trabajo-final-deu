@@ -1,0 +1,15 @@
+.agents/
+.angular/
+.git/
+.vscode/
+.yarn/
+dist/
+node_modules/
+.env
+.env.example
+.editorconfig
+.gitignore
+.prettierrc
+AGENTS.md
+README.md
+skills-lock.json

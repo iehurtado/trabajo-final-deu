@@ -1,0 +1,25 @@
+services:
+  backend:
+    build:
+      dockerfile: backend/Dockerfile
+      context: .
+      target: dev
+    environment:
+      NODE_ENV: development
+    ports:
+      - 127.0.0.1:3000:3000
+    volumes:
+      - .:/app:ro
+      - ./backend:/app/backend
+  frontend:
+    build:
+      dockerfile: frontend/Dockerfile
+      context: .
+      target: dev
+    environment:
+      BACKEND_HOST: backend
+    ports:
+      - 127.0.0.1:4200:4200
+    volumes:
+      - .:/app:ro
+      - ./frontend:/app/frontend

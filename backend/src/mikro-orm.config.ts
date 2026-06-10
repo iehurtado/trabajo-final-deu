@@ -9,11 +9,12 @@ export default defineConfig({
   entities: [Balneario, PuntoInteres, Rol, User],
   migrations: {
     path: 'dist/migrations',
-    pathTs: 'migrations',
+    pathTs: 'src/migrations',
   },
   seeder: {
     path: 'dist/seeders',
-    pathTs: 'seeders',
+    pathTs: 'src/seeders',
+    defaultSeeder: 'DatabaseSeeder',
   },
   dbName: 'postgres',
   host: process.env.DB_HOST ?? 'localhost',
