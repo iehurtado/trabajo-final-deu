@@ -3,13 +3,13 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideDefaultClient } from '../api';
 import { routes } from './app.routes';
-import { authorizeRequests } from './interceptors';
+import { authorizeRequests, prependBaseUrl } from './interceptors';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
-    provideHttpClient(withInterceptors([ authorizeRequests ])),
+    provideHttpClient(withInterceptors([ prependBaseUrl, authorizeRequests ])),
     provideDefaultClient({ basePath: '' }),
   ]
 };
