@@ -10,8 +10,7 @@ services:
     ports:
       - 127.0.0.1:3000:3000
     volumes:
-      - .:/home/node/app:ro
-      - ./backend:/home/node/app/backend
+      - .:/home/node/app
   frontend:
     image: trabajo-final-deu/frontend:dev
     build:
@@ -23,5 +22,4 @@ services:
     ports:
       - 127.0.0.1:4200:4200
     volumes:
-      - .:/home/node/app:ro
-      - ./frontend:/home/node/app/frontend
+      - .:/home/node/app
