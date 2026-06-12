@@ -1,11 +1,15 @@
 services:
   backend:
+    image: trabajo-final-deu/backend:staging
     build:
       dockerfile: backend/Dockerfile
       context: .
       target: runtime
     environment:
-      DB_HOST: postgres
+      DB_NAME: ${DB_NAME:-postgres}
+      DB_HOST: ${DB_HOST:-postgres}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_USER: ${DB_USER:-postgres}
       DB_PASSWORD: ${POSTGRES_PASSWORD:-password}
       JWT_SECRET: ${JWT_SECRET?}
       NODE_ENV: production
@@ -17,6 +21,7 @@ services:
         condition: service_healthy
 
   frontend:
+    image: trabajo-final-deu/frontend:staging
     build:
       dockerfile: frontend/Dockerfile
       context: .

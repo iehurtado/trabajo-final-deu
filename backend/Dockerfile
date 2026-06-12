@@ -1,5 +1,5 @@
 # ---- deps ----
-FROM node:26-trixie AS deps
+FROM node:26-alpine AS deps
 RUN npm i -g corepack && yarn set version stable
 WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./
@@ -18,7 +18,7 @@ COPY backend ./backend
 RUN yarn workspace backend build
 
 # ---- runtime ----
-FROM node:26-trixie AS runtime
+FROM node:26-alpine AS runtime
 EXPOSE 3000
 WORKDIR /home/node/app
 COPY --from=build /home/node/app/backend/dist ./dist
