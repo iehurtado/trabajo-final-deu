@@ -1,5 +1,7 @@
 # ---- deps ----
 FROM node:26-trixie AS deps
+ARG API_BASE_URL
+ENV VITE_API_BASE_URL=${API_BASE_URL}
 RUN npm i -g corepack @angular/cli@^21 && yarn set version stable
 WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./

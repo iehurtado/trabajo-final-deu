@@ -15,7 +15,12 @@ async function bootstrap() {
 
   await orm.close();
 
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: process.env.CORS_ORIGIN || 'localhost:4200',
+    }
+  });
+
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
@@ -32,6 +37,6 @@ async function bootstrap() {
     jsonDocumentUrl: 'api/docs/json',
   });
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
