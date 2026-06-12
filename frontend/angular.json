@@ -34,10 +34,7 @@
                 "output": "assets/"
               }
             ],
-            "styles": [
-              "node_modules/leaflet/dist/leaflet.css",
-              "src/styles.scss"
-            ],
+            "styles": ["node_modules/leaflet/dist/leaflet.css", "src/styles.scss"],
             "polyfills": ["@angular/localize/init"]
           },
           "configurations": {
@@ -66,9 +63,6 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
-          "options": {
-            "proxyConfig": "src/proxy.conf.js"
-          },
           "configurations": {
             "production": {
               "buildTarget": "trabajo-final-deu:build:production"

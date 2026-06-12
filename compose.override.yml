@@ -18,6 +18,8 @@ services:
       dockerfile: frontend/Dockerfile
       context: .
       target: dev
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://backend:3000}
     ports:
       - 127.0.0.1:4200:4200
     volumes:

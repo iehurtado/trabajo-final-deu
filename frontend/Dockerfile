@@ -1,8 +1,6 @@
 # ---- deps ----
 FROM node:26-trixie AS deps
-ARG API_BASE_URL
-ENV VITE_API_BASE_URL=${API_BASE_URL}
-RUN npm i -g corepack @angular/cli@^21 && yarn set version stable
+RUN npm i -g corepack @angular/cli@^21 && corepack enable && corepack prepare yarn@stable
 WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./
 COPY frontend/package.json ./frontend/
@@ -13,12 +11,16 @@ FROM deps AS dev
 EXPOSE 4200
 COPY frontend ./frontend
 USER node
-CMD ["yarn", "start", "--host", "0.0.0.0"]
+CMD [ "sh", "-c", "yarn start --host 0.0.0.0 --define API_BASE_URL=\\'$API_BASE_URL\\'" ]
 
 # ---- build ----
 FROM deps AS build
 COPY frontend ./frontend
-RUN yarn workspace frontend build --configuration=production
+ARG API_BASE_URL
+ENV API_BASE_URL=${API_BASE_URL}
+RUN yarn workspace frontend build \
+  --configuration=production \
+  --define API_BASE_URL='${API_BASE_URL}'
 
 # ---- runtime (nginx) ----
 FROM nginx:stable-alpine AS runtime

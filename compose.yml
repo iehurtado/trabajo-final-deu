@@ -14,7 +14,7 @@ services:
       JWT_SECRET: ${JWT_SECRET?}
       NODE_ENV: production
       SEED_DATABASE: ${SEED_DATABASE}
-      CORS_ORIGIN: ${FRONTEND_URL}
+      CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS}
     networks:
       - local
     depends_on:
@@ -29,8 +29,6 @@ services:
       target: runtime
       args:
         API_BASE_URL: ${API_BASE_URL}
-    environment:
-      BACKEND_URL: ${BACKEND_URL:-http://backend:3000}
     ports:
       - "8000:80"
     networks:

@@ -17,7 +17,7 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: process.env.CORS_ORIGIN || 'localhost:4200',
+      origin: process.env.CORS_ALLOW_ORIGINS?.split(',') || 'http://localhost:4200',
     }
   });
 
