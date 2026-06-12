@@ -4,6 +4,8 @@ Proyecto de trabajo final para Diseño de Experiencia de Usuario - Facultad de I
 
 Se trata de una app basada en web para ingreso y visualización de hitos y reportes sobre la ribera sur del Río de la Plata.
 
+Puede verse en funcionamiento en [Netlify](https://deu-grupo9.netlify.app/)
+
 ## Arquitectura
 
 Se utilizó `yarn` para gestionar dos workspaces:

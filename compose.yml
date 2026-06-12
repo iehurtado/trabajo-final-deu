@@ -1,6 +1,5 @@
 services:
   backend:
-    image: trabajo-final-deu/backend:staging
     build:
       dockerfile: backend/Dockerfile
       context: .
@@ -22,7 +21,6 @@ services:
         condition: service_healthy
 
   frontend:
-    image: trabajo-final-deu/frontend:staging
     build:
       dockerfile: frontend/Dockerfile
       context: .

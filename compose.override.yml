@@ -1,6 +1,5 @@
 services:
   backend:
-    image: trabajo-final-deu/backend:dev
     build:
       dockerfile: backend/Dockerfile
       context: .
@@ -12,7 +11,6 @@ services:
     volumes:
       - .:/home/node/app
   frontend:
-    image: trabajo-final-deu/frontend:dev
     build:
       dockerfile: frontend/Dockerfile
       context: .
