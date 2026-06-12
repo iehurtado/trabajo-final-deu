@@ -18,8 +18,6 @@ services:
       dockerfile: frontend/Dockerfile
       context: .
       target: dev
-    environment:
-      BACKEND_HOST: backend
     ports:
       - 127.0.0.1:4200:4200
     volumes:

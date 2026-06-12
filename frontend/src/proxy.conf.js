@@ -1,9 +1,8 @@
-const host = process.env.BACKEND_HOST ?? 'localhost';
-const port = parseInt(process.env.BACKEND_PORT ?? '3000');
+const url = process.env.BACKEND_URL ?? 'localhost:3000';
 
 export default {
   "/api/**": {
-    "target": `http://${host}:${port}`,
+    "target": `http://${url}`,
     "secure": false
   }
 }

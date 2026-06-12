@@ -26,6 +26,8 @@ services:
       dockerfile: frontend/Dockerfile
       context: .
       target: runtime
+    environment:
+      BACKEND_URL: ${BACKEND_URL:-backend:3000}
     ports:
       - "8000:80"
     networks:

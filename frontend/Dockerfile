@@ -21,5 +21,5 @@ RUN yarn workspace frontend build --configuration=production
 # ---- runtime (nginx) ----
 FROM nginx:stable-alpine AS runtime
 COPY --from=build /home/node/app/frontend/dist/trabajo-final-deu/browser /usr/share/nginx/html
-COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/nginx/default.conf.template /etc/nginx/templates/
 
