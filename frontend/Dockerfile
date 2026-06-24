@@ -4,7 +4,7 @@ RUN npm i -g corepack @angular/cli@^21 && corepack enable && corepack prepare ya
 WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./
 COPY frontend/package.json ./frontend/
-RUN yarn workspaces focus frontend
+RUN mkdir -p .yarn && yarn workspaces focus frontend
 
 # ---- dev ----
 FROM deps AS dev

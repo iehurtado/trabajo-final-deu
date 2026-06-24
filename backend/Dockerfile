@@ -4,7 +4,7 @@ RUN npm i -g corepack && yarn set version stable
 WORKDIR /home/node/app
 COPY package.json .yarnrc.yml yarn.lock ./
 COPY backend/package.json ./backend/
-RUN yarn workspaces focus backend
+RUN mkdir -p .yarn && yarn workspaces focus backend
 
 # ---- dev ----
 FROM deps AS dev
