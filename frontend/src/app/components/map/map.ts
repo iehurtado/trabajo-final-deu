@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, Directive, effect, ElementRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild } from '@angular/core';
+import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, Directive, effect, ElementRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild, ViewEncapsulation } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import * as L from 'leaflet';
 
@@ -90,7 +90,16 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
 @Component({
   selector: 'app-map',
   imports: [NgTemplateOutlet],
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    "[class.is-loading]": "loading()",
+  },
   template: `
+    @if (loading()) {
+      <div class="map-loading-overlay">
+        <div class="spinner-border" aria-role="status" aria-label="Cargando"></div>
+      </div>
+    }
     <div #mapContainer class="map-container"></div>
     @if (panelTemplate()) {
       <div class="map-overlay-panel" (mousedown)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()">
@@ -104,6 +113,7 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
 export class MapComponent implements AfterViewInit, OnDestroy {
   readonly center = input<[number, number]>([-34.820367674622, -57.96553512674702]);
   readonly zoom = input<number>(13);
+  readonly loading = input(false);
 
   readonly panelTemplate = contentChild(MapPanel, { read: TemplateRef });
 

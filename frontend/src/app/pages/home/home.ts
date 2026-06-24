@@ -1,5 +1,5 @@
 import { NgComponentOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, Type, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, resource, signal, Type, viewChild } from '@angular/core';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faExclamationCircle, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { Icon, IconOptions } from 'leaflet';
@@ -63,18 +63,26 @@ export class Home implements OnInit {
 
   protected readonly popup = signal<L.Popup|null>(null);
   protected readonly panel = signal<PanelMarcador | null>(null);
-  protected readonly marcadores = signal<Marcador[]>([]);
+
+  protected readonly marcadores = resource<Marcador[], unknown>({
+    defaultValue: [] as Marcador[],
+    loader: () => this.getMarkers(),
+  });
 
   protected readonly PuntoInteresIcon = PuntoInteresIcon;
   protected readonly BalnearioIcon = BalnearioIcon;
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit() {
+    //
+  }
+
+  private async getMarkers() {
     const [puntos, balnearios] = await Promise.all([
       this.fetchPuntosInteres(),
       this.fetchBalnearios()
     ]);
 
-    this.marcadores.set([...puntos, ...balnearios].sort(diagonally));
+    return [...puntos, ...balnearios].sort(diagonally);
   }
 
   private async fetchPuntosInteres() {

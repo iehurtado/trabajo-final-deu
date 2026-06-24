@@ -1,38 +1,57 @@
-:host {
+app-map {
   display: block;
   width: 100%;
   height: 100%;
   position: relative;
-}
 
-.map-container {
-  width: 100%;
-  height: 100%;
-  min-height: 400px;
-}
-
-.map-overlay-panel {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 900;
-  pointer-events: auto;
-  background: var(--bs-body-bg, white);
-  color: var(--bs-body-color, #212529);
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.15));
-  max-width: 80%;
-  font-family: inherit;
-
-  @supports (backdrop-filter: blur(8px)) {
-    background: rgba(var(--bs-body-bg-rgb, 255, 255, 255), 0.85);
-    backdrop-filter: blur(8px);
+  .map-container {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
   }
-}
 
-:host ::ng-deep {
+  .map-overlay-panel {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+    pointer-events: auto;
+    background: var(--bs-body-bg, white);
+    color: var(--bs-body-color, #212529);
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--bs-border-color, rgba(0, 0, 0, 0.15));
+    max-width: 80%;
+    font-family: inherit;
+
+    @supports (backdrop-filter: blur(8px)) {
+      background: rgba(var(--bs-body-bg-rgb, 255, 255, 255), 0.85);
+      backdrop-filter: blur(8px);
+    }
+  }
+
+  .map-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0%;
+    background: var(--bs-body-bg);
+    backdrop-filter: blur(3px);
+    transition: opacity 0.5s ease;
+    z-index: 2000;
+    display: none;
+  }
+
+  &.is-loading .map-loading-overlay {
+    opacity: 60% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .leaflet-popup-content-wrapper, .leaflet-popup-tip {
     display: none;
   }
@@ -58,4 +77,5 @@
     }
   }
 }
+
 
