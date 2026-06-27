@@ -1,48 +1,62 @@
 <main class="container-fluid">
-    <h1>Punto de Interés #{{ punto.id }}</h1>
-    <div class="row g-2">
-        <div class="col-12 col-md-4">
-            <section class="card">
-                <h5 class="card-header">Información Básica</h5>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label for="pid-nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="pid-nombre" [value]="punto.nombre" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="pid-categoria" class="form-label">Categoría</label>
-                        <input type="text" class="form-control" id="pid-categoria" [value]="punto.categoria" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="pid-subcategoria" class="form-label">Subcategoría</label>
-                        <input type="text" class="form-control" id="pid-subcategoria" [value]="punto.subcategoria" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="pid-descripcion" class="form-label">Descripción</label>
-                        <textarea class="form-control" id="pid-descripcion" readonly>{{punto.descripcion}}</textarea>
-                    </div>
-                </div>
-            </section>
-        </div>
-        <div class="col-12 col-md-8">
-            <section class="card">
-                <h5 class="card-header">Ubicación</h5>
-                <div class="card-body p-0">
-                    <app-map [center]="[punto.latitud, punto.longitud]" [zoom]="15">
-                        <app-map-marker
-                            [latlng]="[punto.latitud, punto.longitud]"
-                            [options]="markerOptions"/>
-                    </app-map>
-                </div>
-            </section>
-        </div>
-    </div>
+    <h1>Punto de Interés #{{ puntoId() }}</h1>
+    @if (punto.isLoading()) {
+      <div class="alert alert-light">
+        <span class="spinner-border spinner-border-sm"></span>
+        Cargando...
+      </div>
+    }
+    @if (punto.error(); as e) {
+      <div class="alert alert-danger">
+        <strong>Error al cargar el punto de interés</strong>
+        <p>{{e.message}}</p>
+      </div>
+    }
+    @if (punto.hasValue() && punto.value(); as punto) {
+      <div class="row g-2">
+          <div class="col-12 col-md-4">
+              <section class="card">
+                  <h5 class="card-header">Información Básica</h5>
+                  <div class="card-body">
+                      <div class="mb-3">
+                          <label for="pid-nombre" class="form-label">Nombre</label>
+                          <input type="text" class="form-control" id="pid-nombre" [value]="punto.nombre" readonly>
+                      </div>
+                      <div class="mb-3">
+                          <label for="pid-categoria" class="form-label">Categoría</label>
+                          <input type="text" class="form-control" id="pid-categoria" [value]="punto.categoria" readonly>
+                      </div>
+                      <div class="mb-3">
+                          <label for="pid-subcategoria" class="form-label">Subcategoría</label>
+                          <input type="text" class="form-control" id="pid-subcategoria" [value]="punto.subcategoria" readonly>
+                      </div>
+                      <div class="mb-3">
+                          <label for="pid-descripcion" class="form-label">Descripción</label>
+                          <textarea class="form-control" id="pid-descripcion" readonly>{{punto.descripcion}}</textarea>
+                      </div>
+                  </div>
+              </section>
+          </div>
+          <div class="col-12 col-md-8">
+              <section class="card">
+                  <h5 class="card-header">Ubicación</h5>
+                  <div class="card-body p-0">
+                      <app-map [center]="[punto.latitud, punto.longitud]" [zoom]="15">
+                          <app-map-marker
+                              [latlng]="[punto.latitud, punto.longitud]"
+                              [options]="markerOptions(punto)"/>
+                      </app-map>
+                  </div>
+              </section>
+          </div>
+      </div>
+    }
 </main>
 <app-fixed-footer>
     <div class="d-flex justify-content-end w-100">
         <div class="ms-auto">
             <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
-            <a role="button" class="btn btn-primary" [routerLink]="['/puntos', punto.id, 'update']">Editar</a>
+            <a role="button" class="btn btn-primary" [routerLink]="['/puntos', puntoId(), 'update']">Editar</a>
         </div>
     </div>
 </app-fixed-footer>

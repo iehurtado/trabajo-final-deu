@@ -5,6 +5,15 @@
         No tiene autorización para ver el contenido
       </div>
     }
+    @if (users.error(); as e) {
+        <div class="alert alert-danger">Error: {{ e.message }}</div>
+    }
+    @if (users.isLoading()) {
+        <div class="alert alert-light">
+            <span class="spinner-border spinner-border-sm"></span>
+            Cargando...
+        </div>
+    }
     @if (users.hasValue() && users.value(); as paginator) {
         <div class="card">
             <div class="card-body" [class.p-0]="paginator.data.length > 0">

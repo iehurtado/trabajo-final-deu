@@ -1,5 +1,18 @@
 <main class="container-fluid">
-  @if (user(); as user) {
+  <h1>Usuario #{{ userId() }}</h1>
+  @if (user.isLoading()) {
+    <div class="alert alert-light">
+      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Cargando...
+    </div>
+  }
+  @if (user.error(); as e) {
+    <div class="alert alert-danger">
+      <strong>Error al cargar el usuario</strong>
+      <p>{{ e.message }}</p>
+    </div>
+  }
+  @if (user.hasValue() && user.value(); as user) {
   <h1>{{ user.fullname }}</h1>
 
   <div class="card">

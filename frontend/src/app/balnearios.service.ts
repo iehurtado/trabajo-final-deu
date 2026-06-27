@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { map, Observable } from "rxjs";
 import { BalneariosService as BalneariosControllerService } from "../api";
+import { Paginator } from "./types";
 
 export interface Balneario {
     id: number;
@@ -15,15 +16,6 @@ export interface Balneario {
     parrillas: boolean;
     bus: boolean;
 }
-
-type Paginator<T> = {
-  data: T[];
-  paginatorInfo: {
-    currentPage: number;
-    perPage: number;
-    totalPages: number;
-  };
-};
 
 @Injectable({ providedIn: 'root' })
 export class BalneariosService {

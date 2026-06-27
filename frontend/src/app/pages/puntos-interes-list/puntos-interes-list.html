@@ -1,6 +1,15 @@
 <main class="container-fluid">
     <h1>Puntos de Interés</h1>
-    @if (puntos$|async; as paginator) {
+    @if (puntos.error(); as e) {
+        <div class="alert alert-danger">Error: {{ e.message }}</div>
+    }
+    @if (puntos.isLoading()) {
+        <div class="alert alert-light">
+            <span class="spinner-border spinner-border-sm"></span>
+            Cargando...
+        </div>
+    }
+    @if (puntos.hasValue() && puntos.value(); as paginator)  {
         <div class="card">
             <div class="card-body" [class.p-0]="paginator.data.length > 0">
               @if (paginator.data.length > 0) {
@@ -44,7 +53,7 @@
             </div>
             @if (paginator.data.length > 0) {
               <div class="card-footer d-flex justify-content-end">
-                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
+                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page.set($event)" />
               </div>
             }
         </div>

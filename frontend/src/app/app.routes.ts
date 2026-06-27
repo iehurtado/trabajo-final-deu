@@ -1,8 +1,6 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, Routes } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { CanActivateFn, Router, Routes } from '@angular/router';
 import { AuthService } from './auth.service';
-import { BalneariosService } from './balnearios.service';
 import { Toaster } from './components/toaster/toaster.service';
 import { BalneariosCreate } from './pages/balnearios-create';
 import { BalneariosDetail } from './pages/balnearios-detail/balnearios-detail';
@@ -19,60 +17,7 @@ import { UsersCreate } from './pages/users-create';
 import { UsersDetail } from './pages/users-detail/users-detail';
 import { UsersList } from './pages/users-list/users-list';
 import { UsersUpdate } from './pages/users-update';
-import { PuntosInteresService } from './puntos-interes.service';
-import { UserService } from './user.service';
 import { confirmOnUnsavedChanges } from './util';
-
-const resolvePuntoInteres = async (route: ActivatedRouteSnapshot) => {
-    const router = inject(Router);
-    const service = inject(PuntosInteresService);
-    const id = route.paramMap.get('id');
-    const punto = await firstValueFrom(service.getPuntoInteresById(Number(id)));
-
-    if (!punto) {
-        return router.navigate(['/error'], {
-            state: {
-                message: "Punto de Interés no encontrado"
-            },
-        });
-    }
-
-    return punto;
-};
-
-const resolveBalneario = async (route: ActivatedRouteSnapshot) => {
-    const router = inject(Router);
-    const service = inject(BalneariosService);
-    const id = route.paramMap.get('id');
-    const balneario = await firstValueFrom(service.getBalnearioById(Number(id)));
-
-    if (!balneario) {
-        return router.navigate(['/error'], {
-            state: {
-                message: "Balneario no encontrado"
-            },
-        });
-    }
-
-    return balneario;
-};
-
-const resolveUser = async (route: ActivatedRouteSnapshot) => {
-    const router = inject(Router);
-    const service = inject(UserService);
-    const id = route.paramMap.get('id');
-    const user = await firstValueFrom(service.getUserById(Number(id)));
-
-    if (!user) {
-        return router.navigate(['/error'], {
-            state: {
-                message: "Usuario no encontrado"
-            },
-        });
-    }
-
-    return user;
-};
 
 function requiereAutenticacion(): CanActivateFn {
   return () => {
@@ -144,18 +89,12 @@ export const routes: Routes = [
             component: PuntosInteresDetail,
             path: ':id',
             title: 'Puntos de Interés',
-            resolve: {
-                punto: resolvePuntoInteres
-            },
             canActivate: [requiereRol('Administrador')],
         },
         {
             component: PuntosInteresUpdate,
             path: ':id/update',
             title: 'Editar Punto de Interés',
-            resolve: {
-                punto: resolvePuntoInteres,
-            },
             canActivate: [requiereRol('Administrador')],
             canDeactivate: [confirmOnUnsavedChanges],
         },
@@ -181,17 +120,11 @@ export const routes: Routes = [
             component: BalneariosDetail,
             path: ':id',
             title: 'Balneario',
-            resolve: {
-                balneario: resolveBalneario
-            },
         },
         {
             component: BalneariosUpdate,
             path: ':id/update',
             title: 'Editar Balneario',
-            resolve: {
-                balneario: resolveBalneario,
-            },
             canDeactivate: [confirmOnUnsavedChanges],
         },
       ],
@@ -216,17 +149,11 @@ export const routes: Routes = [
             component: UsersDetail,
             path: ':id',
             title: 'Usuario',
-            resolve: {
-                user: resolveUser
-            }
         },
         {
             component: UsersUpdate,
             path: ':id/edit',
             title: 'Editar Usuario',
-            resolve: {
-                user: resolveUser,
-            },
             canDeactivate: [confirmOnUnsavedChanges]
         },
       ],

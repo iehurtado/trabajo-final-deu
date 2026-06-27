@@ -1,6 +1,15 @@
 <main class="container-fluid">
     <h1>Balnearios</h1>
-    @if (balnearios$|async; as paginator) {
+    @if (balnearios.error(); as e) {
+        <div class="alert alert-danger">Error: {{ e.message }}</div>
+    }
+    @if (balnearios.isLoading()) {
+        <div class="alert alert-light">
+            <span class="spinner-border spinner-border-sm"></span>
+            Cargando...
+        </div>
+    }
+    @if (balnearios.hasValue() && balnearios.value(); as paginator) {
         <div class="card">
             <div class="card-body" [class.p-0]="paginator.data.length > 0">
               @if (paginator.data.length > 0) {
@@ -21,16 +30,15 @@
                                     <td>{{ balneario.id }}</td>
                                     <td>{{ balneario.nombre }}</td>
                                     <td>
-                                      <app-estado-agua-badge [balneario]="balneario" />
+                                        <app-estado-agua-badge [balneario]="balneario" />
                                     </td>
                                     <td>
                                         <div class="d-flex gap-1">
-                                            @if (balneario.auxilio) { <span class="badge bg-secondary" title="Auxilio">AUXILIO</span> }
-                                            @if (balneario.banos) { <span class="badge bg-secondary" title="Baños">BAÑOS</span> }
-                                            @if (balneario.rampa) { <span class="badge bg-secondary" title="Rampa">RAMPA</span> }
-                                            @if (balneario.vigilancia) { <span class="badge bg-secondary" title="Vigilancia">VIGILANCIA</span> }
-                                            @if (balneario.parrillas) { <span class="badge bg-secondary" title="Parrillas">PARRILLAS</span> }
-                                            @if (balneario.bus) { <span class="badge bg-secondary" title="Bus">BUS</span> }
+                                            @for (service of services(balneario); track service.key) {
+                                            <span class="badge bg-secondary text-uppercase" [title]="service.name">
+                                                {{ service.name }}
+                                            </span>
+                                            }
                                         </div>
                                     </td>
                                     <td>
@@ -49,7 +57,7 @@
             </div>
             @if (paginator.data.length > 0) {
               <div class="card-footer d-flex justify-content-end">
-                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page$.next($event)" />
+                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page.set($event)" />
               </div>
             }
         </div>

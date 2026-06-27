@@ -1,28 +1,17 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, resource, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject, map, Observable, switchMap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Balneario, BalneariosService } from '../../balnearios.service';
+import { EstadoAguaBadge } from "../../components/estado-agua-badge";
 import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
-import { EstadoAguaBadge } from "../../components/estado-agua-badge";
-
-type BalneariosPaginator = {
-  data: Balneario[];
-  paginatorInfo: {
-    currentPage: number;
-    perPage: number;
-    totalPages: number;
-  }
-};
 
 const perPage = 10;
-
 @Component({
   selector: 'app-balnearios-list',
-  imports: [AsyncPipe, RouterLink, FixedFooter, FaIconComponent, Paginator, EstadoAguaBadge],
+  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, EstadoAguaBadge],
   templateUrl: './balnearios-list.html',
   styleUrl: './balnearios-list.scss',
 })
@@ -31,9 +20,25 @@ export class BalneariosList {
 
   private balneariosService = inject(BalneariosService);
 
-  protected readonly page$ = new BehaviorSubject(1);
+  protected readonly page = signal(1);
 
-  protected readonly balnearios$: Observable<BalneariosPaginator> = this.page$.pipe(
-    switchMap(page => this.balneariosService.getBalnearios(page, perPage)),
-  );
+  protected readonly balnearios = resource({
+    params: () => ({ page: this.page() }),
+    loader: ({ params }) => firstValueFrom(
+      this.balneariosService.getBalnearios(params.page, perPage)
+    ),
+  });
+
+  protected services(b: Balneario) {
+    const available = [
+      { key: 'auxilio' as const, name: 'Auxilio' },
+      { key: 'banos' as const, name: 'Baños' },
+      { key: 'rampa' as const, name: 'Rampa' },
+      { key: 'vigilancia' as const, name: 'Vigilancia' },
+      { key: 'parrillas' as const, name: 'Parrillas' },
+      { key: 'bus' as const, name: 'Bus' },
+    ];
+
+    return available.filter(x => b[x.key]);
+  }
 }

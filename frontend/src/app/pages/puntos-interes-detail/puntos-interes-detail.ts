@@ -1,10 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { ChangeDetectionStrategy, Component, computed, inject, input, resource } from '@angular/core';
+import { Router, RouterLink } from "@angular/router";
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { firstValueFrom } from 'rxjs';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
 import { PuntoInteres } from '../../puntos-interes.service';
 import { PuntoInteresIcon } from '../../components/map/util';
+import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
 
 @Component({
   selector: 'app-puntos-interes-detail',
@@ -16,10 +18,27 @@ import { PuntoInteresIcon } from '../../components/map/util';
 export class PuntosInteresDetail {
   protected readonly faPencilAlt = faPencilAlt;
 
-  @Input({ required: true }) punto!: PuntoInteres;
+  private readonly puntosInteresService = inject(PuntosInteresService);
 
-  get markerOptions(): L.MarkerOptions {
-    return { title: `Punto de Interés ${this.punto.nombre}`, icon: PuntoInteresIcon };
+  readonly puntoId = input.required<number>({alias: 'id'});
+
+  protected readonly punto = resource({
+    params: () => ({ puntoId: this.puntoId() }),
+    loader: async ({ params }) => {
+      const punto = await firstValueFrom(
+        this.puntosInteresService.getPuntoInteresById(params.puntoId)
+      );
+
+      if (!punto) {
+        throw new Error('Punto de interés no encontrado');
+      }
+
+      return punto;
+    },
+  });
+
+  markerOptions(punto: PuntoInteres): L.MarkerOptions {
+    return { title: `Punto de Interés ${punto.nombre}`, icon: PuntoInteresIcon };
   }
 }
 
