@@ -8,6 +8,7 @@ import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
 import { PuntoInteres } from '../../puntos-interes.service';
 import { PUNTA_LARA } from '../../util';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
+import { PuntoInteresIcon } from '../map/util';
 
 @Component({
   selector: 'app-puntos-interes-form',
@@ -93,7 +94,7 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
       startWith(this.form.value),
       map(x => ({ lat: x.latitud, lng: x.longitud })),
       distinctUntilChanged((x, y) => x?.lat === y?.lat && x?.lng === y?.lng),
-      map(({ lat, lng }) => lat && lng && L.marker([lat, lng])),
+      map(({ lat, lng }) => lat && lng && L.marker([lat, lng], { icon: PuntoInteresIcon })),
     );
 
     this.locationSubscription = marker$.subscribe(currentMarker => {

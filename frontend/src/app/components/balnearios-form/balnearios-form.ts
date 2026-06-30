@@ -8,6 +8,7 @@ import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { PUNTA_LARA } from '../../util';
+import { BalnearioIcon } from '../map/util';
 
 @Component({
   selector: 'app-balnearios-form',
@@ -100,7 +101,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
       startWith(this.form.value),
       map(x => ({ lat: x.latitud, lng: x.longitud })),
       distinctUntilChanged((x, y) => x?.lat === y?.lat && x?.lng === y?.lng),
-      map(({ lat, lng }) => lat && lng && L.marker([lat, lng])),
+      map(({ lat, lng }) => lat && lng && L.marker([lat, lng], { icon: BalnearioIcon })),
     );
 
     this.locationSubscription = marker$.subscribe(currentMarker => {
