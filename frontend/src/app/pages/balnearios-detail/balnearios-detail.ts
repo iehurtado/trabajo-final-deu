@@ -58,7 +58,7 @@ export class BalneariosDetail {
     }
 
     await firstValueFrom((this.balneariosService as any).deleteBalneario(this.balnearioId()));
-    this.toaster.show('Eliminar Balneario', 'El balneario se eliminó correctamente');
+    this.toaster.show('Eliminar Balneario', 'El balneario se eliminó correctamente', { class: 'text-bg-success' });
     await this.router.navigate(['/balnearios']);
   }
 

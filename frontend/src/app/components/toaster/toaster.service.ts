@@ -4,6 +4,7 @@ export interface ToastInfo {
   header: string;
   body: string;
   options?: {
+    class?: string;
     delay?: number;
   };
 }
@@ -13,7 +14,7 @@ export class Toaster {
   private readonly _toasts = signal<ToastInfo[]>([]);
   readonly toasts = this._toasts.asReadonly();
 
-  show(header: string, body: string, options?: { delay?: number }) {
+  show(header: string, body: string, options?: { class?: string; delay?: number }) {
     this._toasts.update(toasts => [ ...toasts, { header, body, options } ]);
   }
 

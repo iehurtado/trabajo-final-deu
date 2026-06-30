@@ -59,7 +59,7 @@ export class LoginDialog {
       const value = this.form.getRawValue();
       await this.auth.login({ email: value.email!, password: value.password! });
       const message = 'Se ha iniciado la sesión correctamente';
-      this.toaster.show('Iniciar Sesión', message);
+      this.toaster.show('Iniciar Sesión', message, { class: 'text-bg-success' });
       this.modal.close(true);
     } catch (e: unknown) {
       if (e instanceof UnauthorizedError) {

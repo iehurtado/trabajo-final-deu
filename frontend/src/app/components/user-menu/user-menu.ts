@@ -40,7 +40,7 @@ export class UserMenu {
 
       try {
         await this.auth.logout();
-        this.toaster.show('Cerrar Sesión', 'La sesión se cerró exitosamente');
+        this.toaster.show('Cerrar Sesión', 'La sesión se cerró exitosamente', { class: 'text-bg-success' });
         await this.router.navigate(['/']);
       } finally {
         this.working.set(false);

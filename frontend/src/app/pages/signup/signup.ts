@@ -53,7 +53,7 @@ export class Signup {
       const value = this.form.getRawValue();
       await firstValueFrom(this.authController.signup(value));
       const message = 'La cuenta se ha creado exitosamente. Utilice su correo y contraseña para iniciar sesión.';
-      this.toaster.show('Crear Cuenta', message);
+      this.toaster.show('Crear Cuenta', message, { class: 'text-bg-success' });
       await this.router.navigate(['/']);
     } finally {
       this.submitting.set(false);

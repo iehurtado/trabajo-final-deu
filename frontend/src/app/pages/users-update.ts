@@ -79,12 +79,12 @@ export class UsersUpdate implements ReportsUnsaved {
     try {
       await firstValueFrom(this.userService.updateUser(this.userId(), updateData));
 
-      this.toaster.show('Editar Usuario', 'Se actualizó exitosamente el usuario');
+      this.toaster.show('Editar Usuario', 'Se actualizó exitosamente el usuario', { class: 'text-bg-success' });
       form.notifySubmissionCompleted();
       await this.router.navigate(['/users', this.userId()]);
     } catch (e: unknown) {
       form.notifySubmissionCompleted();
-      this.toaster.show('Editar Usuario', getUserFriendlyErrorMessage(e, 'Usuario'));
+      this.toaster.show('Editar Usuario', getUserFriendlyErrorMessage(e, 'Usuario'), { class: 'text-bg-danger' });
       throw e;
     }
   }

@@ -68,11 +68,11 @@ export class PuntosInteresUpdate implements ReportsUnsaved {
 
     try {
       await firstValueFrom(this.puntosService.updatePuntoInteres(id, data));
-      this.toaster.show('Editar Punto de Interés', 'Se actualizó exitosamente el punto de interés');
+      this.toaster.show('Editar Punto de Interés', 'Se actualizó exitosamente el punto de interés', { class: 'text-bg-success' });
       form.notifySubmissionCompleted();
       await this.router.navigate(['/puntos', id]);
     } catch (e: unknown) {
-      this.toaster.show('Editar Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'));
+      this.toaster.show('Editar Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'), { class: 'text-bg-danger' });
       form.notifySubmissionCompleted();
       throw e;
     }

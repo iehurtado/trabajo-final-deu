@@ -72,11 +72,11 @@ export class BalneariosUpdate implements ReportsUnsaved {
 
     try {
       await firstValueFrom(this.balneariosService.updateBalneario(id, data));
-      this.toaster.show('Editar Balneario', 'Se actualizó exitosamente el balneario');
+      this.toaster.show('Editar Balneario', 'Se actualizó exitosamente el balneario', { class: 'text-bg-success' });
       form.notifySubmissionCompleted();
       await this.router.navigate(['/balnearios', id]);
     } catch (e: unknown) {
-      this.toaster.show('Editar Balneario', getUserFriendlyErrorMessage(e, 'Balneario'));
+      this.toaster.show('Editar Balneario', getUserFriendlyErrorMessage(e, 'Balneario'), { class: 'text-bg-danger' });
       form.notifySubmissionCompleted();
       throw e;
     }

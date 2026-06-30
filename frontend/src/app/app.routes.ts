@@ -27,7 +27,7 @@ function requiereAutenticacion(): CanActivateFn {
     const user = auth.user();
 
     if (user == null) {
-      toaster.show('No Autorizado', 'Inicie sesión para ver esta página');
+      toaster.show('No Autorizado', 'Inicie sesión para ver esta página', { class: 'text-bg-danger' });
       return router.createUrlTree(['/']);
     }
 
@@ -45,7 +45,7 @@ function requiereRol(nombre: string|string[]): CanActivateFn {
     const requeridos = !Array.isArray(nombre) ? [nombre] : nombre;
 
     if (user == null || !user.roles.some(x => requeridos.includes(x.nombre))) {
-      toaster.show('No Autorizado', 'No tiene autorización para acceder a esta página.');
+      toaster.show('No Autorizado', 'No tiene autorización para acceder a esta página.', { class: 'text-bg-danger' });
       return router.createUrlTree(['/']);
     }
 

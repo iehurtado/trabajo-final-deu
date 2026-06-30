@@ -58,7 +58,7 @@ export class PuntosInteresDetail {
     }
 
     await firstValueFrom(this.puntosInteresService.deletePuntoInteres(this.puntoId()));
-    this.toaster.show('Eliminar Punto de Interés', 'El punto de interés se eliminó correctamente');
+    this.toaster.show('Eliminar Punto de Interés', 'El punto de interés se eliminó correctamente', { class: 'text-bg-success' });
     await this.router.navigate(['/puntos']);
   }
 

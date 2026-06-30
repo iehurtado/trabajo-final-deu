@@ -36,8 +36,8 @@ export class App implements OnInit, AfterViewInit {
 
     if (user.roles.some(x => x.nombre == 'Administrador')) {
       links.push(
-        { route: '/puntos', title: 'Puntos de Interés' },
         { route: '/balnearios', title: 'Balnearios' },
+        { route: '/puntos', title: 'Puntos de Interés' },
         { route: '/users', title: 'Usuarios' },
       )
     }

@@ -15,7 +15,7 @@ export const authorizeRequests: HttpInterceptorFn = (req, next) => {
   return next(request).pipe(
     catchError((e: unknown) => {
       if (e instanceof HttpErrorResponse && e.status == 401) {
-        toaster.show('Error de Autenticación', 'La sesión es inválida. Se cerró la sesión.');
+        toaster.show('Error de Autenticación', 'La sesión es inválida. Se cerró la sesión.', { class: 'text-bg-danger' });
         return from(auth.logout()).pipe(
           switchMap(() => throwError(() => e)),
         );

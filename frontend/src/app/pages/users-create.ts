@@ -34,11 +34,11 @@ export class UsersCreate implements ReportsUnsaved {
         })
       );
 
-      this.toaster.show('Nuevo Usuario', 'Se creó exitosamente el usuario');
+      this.toaster.show('Nuevo Usuario', 'Se creó exitosamente el usuario', { class: 'text-bg-success' });
       this.form().notifySubmissionCompleted();
       await this.router.navigate(['/users', user.id]);
     } catch (e: unknown) {
-      this.toaster.show('Nuevo Usuario', getUserFriendlyErrorMessage(e, 'Usuario'));
+      this.toaster.show('Nuevo Usuario', getUserFriendlyErrorMessage(e, 'Usuario'), { class: 'text-bg-danger' });
       this.form().notifySubmissionCompleted();
       throw e;
     }

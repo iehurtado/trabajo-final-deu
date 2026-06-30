@@ -29,11 +29,11 @@ export class BalneariosCreate implements ReportsUnsaved {
     this.guardando.set(true);
     try {
       const { id } = await firstValueFrom(this.balneariosService.addBalneario(data));
-      this.toaster.show('Nuevo Balneario', 'Se agregó exitosamente el balneario');
+      this.toaster.show('Nuevo Balneario', 'Se agregó exitosamente el balneario', { class: 'text-bg-success' });
       this.form().notifySubmissionCompleted();
       await this.router.navigate(['/balnearios', id]);
     } catch (e: unknown) {
-      this.toaster.show('Nuevo Balneario', getUserFriendlyErrorMessage(e, 'Balneario'));
+      this.toaster.show('Nuevo Balneario', getUserFriendlyErrorMessage(e, 'Balneario'), { class: 'text-bg-danger' });
       this.form().notifySubmissionCompleted();
     } finally {
       this.guardando.set(false);

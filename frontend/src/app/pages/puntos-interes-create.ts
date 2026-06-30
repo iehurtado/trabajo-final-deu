@@ -40,10 +40,10 @@ export class PuntosInteresCreate implements ReportsUnsaved {
       const url = this.canViewDetail()
         ? ['/puntos', id]
         : ['/'];
-      this.toaster.show('Nuevo Punto de Interés', 'Se agregó exitosamente el punto de interés');
+      this.toaster.show('Nuevo Punto de Interés', 'Se agregó exitosamente el punto de interés', { class: 'text-bg-success' });
       await this.router.navigate(url);
     } catch (e: unknown) {
-      this.toaster.show('Nuevo Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'));
+      this.toaster.show('Nuevo Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'), { class: 'text-bg-danger' });
       this.form().notifySubmissionCompleted();
       throw e;
     }
