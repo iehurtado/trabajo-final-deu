@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, EntityManager } from '@mikro-orm/postgresql';
-import { Body, Controller, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { PuntoInteres } from 'src/entities';
 import { Public } from '../auth/decorators';
 
@@ -110,6 +110,21 @@ export class PuntosInteresController {
     }
 
     this.puntoInteresRepository.assign(puntoInteres, form);
+
+    await this.em.flush();
+
+    return puntoInteres;
+  }
+
+  @Delete(':id')
+  public async deletePuntoInteres(@Param('id') id: number): Promise<PuntoInteres> {
+    const puntoInteres = await this.puntoInteresRepository.findOne({ id });
+
+    if (puntoInteres == null) {
+      throw new NotFoundException();
+    }
+
+    this.em.remove(puntoInteres);
 
     await this.em.flush();
 

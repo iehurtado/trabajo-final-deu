@@ -4,9 +4,11 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { firstValueFrom } from 'rxjs';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
-import { PuntoInteres } from '../../puntos-interes.service';
 import { PuntoInteresIcon } from '../../components/map/util';
 import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
+import { DialogService } from '../../components/dialog/dialog.service';
+import { Toaster } from '../../components/toaster/toaster.service';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-puntos-interes-detail',
@@ -18,7 +20,11 @@ import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service
 export class PuntosInteresDetail {
   protected readonly faPencilAlt = faPencilAlt;
 
+  private readonly auth = inject(AuthService);
   private readonly puntosInteresService = inject(PuntosInteresService);
+  private readonly dialog = inject(DialogService);
+  private readonly router = inject(Router);
+  private readonly toaster = inject(Toaster);
 
   readonly puntoId = input.required<number>({alias: 'id'});
 
@@ -36,6 +42,23 @@ export class PuntosInteresDetail {
       return punto;
     },
   });
+
+  protected readonly canDeletePunto = computed(() => this.auth.can('Administrador'));
+
+  async deletePunto(): Promise<void> {
+    const confirmed = await this.dialog.confirm({
+      title: 'Eliminar Punto de Interés',
+      message: '¿Seguro deseas eliminar este punto de interés? Esta acción no se puede deshacer',
+    });
+
+    if (!confirmed) {
+      return;
+    }
+
+    await firstValueFrom(this.puntosInteresService.deletePuntoInteres(this.puntoId()));
+    this.toaster.show('Eliminar Punto de Interés', 'El punto de interés se eliminó correctamente');
+    await this.router.navigate(['/puntos']);
+  }
 
   markerOptions(punto: PuntoInteres): L.MarkerOptions {
     return { title: `Punto de Interés ${punto.nombre}`, icon: PuntoInteresIcon };

@@ -1,6 +1,6 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityRepository, EntityManager } from '@mikro-orm/postgresql';
-import { Body, Controller, Get, NotFoundException, Param, Patch, Post, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Res } from '@nestjs/common';
 import { Balneario } from 'src/entities';
 import { Public } from '../auth/decorators';
 import { Http2ServerResponse } from 'http2';
@@ -123,19 +123,21 @@ export class BalneariosController {
     }
 
     this.balnearioRepository.assign(balneario, form);
-    // {
-    //   nombre: form.nombre ?? balneario.nombre,
-    //   latitud: form.latitud ?? balneario.latitud,
-    //   longitud: form.longitud ?? balneario.longitud,
-    //   estadoAgua: form.estadoAgua ?? balneario.estadoAgua,
-    //   auxilio: form.auxilio ?? balneario.auxilio,
-    //   banos: form.banos ?? balneario.banos,
-    //   rampa: form.rampa ?? balneario.rampa,
-    //   vigilancia: form.vigilancia ?? balneario.vigilancia,
-    //   parrillas: form.parrillas ?? balneario.parrillas,
-    //   bus: form.bus ?? balneario.bus,
-    // });
 
+    await this.em.flush();
+
+    return balneario;
+  }
+
+  @Delete(':id')
+  public async deleteBalneario(@Param('id') id: number) {
+    const balneario = await this.balnearioRepository.findOne({ id });
+
+    if (balneario == null) {
+      throw new NotFoundException();
+    }
+
+    this.em.remove(balneario);
     await this.em.flush();
 
     return balneario;

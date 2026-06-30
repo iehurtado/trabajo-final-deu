@@ -32,9 +32,6 @@ export interface CreateUserForm {
 export interface UpdateUserForm {
 }
 
-export interface UpdateUserRolesForm {
-}
-
 /** Request Options for Angular HttpClient requests */
 export interface RequestOptions<TResponseType extends 'arraybuffer' | 'blob' | 'json' | 'text'> {
     headers?: HttpHeaders;

@@ -64,16 +64,4 @@ export class UserService {
     updateUser(id: number, data: UpdateUserForm): Observable<User> {
         return this.usersController.updateUser(id, data);
     }
-
-    updateUserRoles(id: number, roleIds: number[]): Observable<User> {
-        return this.usersController.updateUserRoles(id, { roleIds });
-    }
-
-    addRoleToUser(id: number, roleId: number): Observable<User> {
-        return this.usersController.addRoleToUser(id, roleId);
-    }
-
-    removeRoleFromUser(id: number, roleId: number): Observable<User> {
-        return this.usersController.removeRoleFromUser(id, roleId);
-    }
 }

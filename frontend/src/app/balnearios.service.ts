@@ -43,4 +43,8 @@ export class BalneariosService {
     updateBalneario(id: number, data: Omit<Balneario, 'id'>): Observable<Balneario> {
         return this.balneariosController.updateBalneario(id, data);
     }
+
+    deleteBalneario(id: number) {
+        return this.balneariosController.deleteBalneario(id);
+    }
 }

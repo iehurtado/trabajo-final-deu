@@ -47,4 +47,8 @@ export class PuntosInteresService {
     updatePuntoInteres(id: number, data: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {
         return this.puntosInteresController.updatePuntoInteres(id, data).pipe(delay(1200));
     }
+
+    deletePuntoInteres(id: number) {
+        return this.puntosInteresController.deletePuntoInteres(id).pipe(delay(1200));
+    }
 }
