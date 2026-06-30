@@ -82,6 +82,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     this.map = L.map(this.mapContainer().nativeElement, {
       center: PUNTA_LARA,
       zoom: 14,
+      dragging: true,
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
