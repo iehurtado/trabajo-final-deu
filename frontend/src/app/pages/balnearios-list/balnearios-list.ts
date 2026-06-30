@@ -7,6 +7,7 @@ import { Balneario, BalneariosService } from '../../balnearios.service';
 import { EstadoAguaBadge } from "../../components/estado-agua-badge";
 import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
+import { getUserFriendlyErrorMessage } from '../../util';
 
 const perPage = 10;
 @Component({
@@ -17,6 +18,7 @@ const perPage = 10;
 })
 export class BalneariosList {
   protected faEye = faEye;
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   private balneariosService = inject(BalneariosService);
 

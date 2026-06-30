@@ -2,7 +2,7 @@ import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { Balneario, BalneariosService } from '../balnearios.service';
-import { ReportsUnsaved } from '../util';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
 import { Toaster } from '../components/toaster/toaster.service';
 
@@ -33,7 +33,7 @@ export class BalneariosCreate implements ReportsUnsaved {
       this.form().notifySubmissionCompleted();
       await this.router.navigate(['/balnearios', id]);
     } catch (e: unknown) {
-      this.toaster.show('Nuevo Balneario', 'Ha ocurrido un error al agregar el balneario');
+      this.toaster.show('Nuevo Balneario', getUserFriendlyErrorMessage(e, 'Balneario'));
       this.form().notifySubmissionCompleted();
     } finally {
       this.guardando.set(false);

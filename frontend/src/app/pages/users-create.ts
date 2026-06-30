@@ -2,7 +2,7 @@ import { Component, inject, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserForm } from "../components/user-form/user-form";
 import { User, UserService } from '../user.service';
-import { ReportsUnsaved } from '../util';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
 import { Toaster } from '../components/toaster/toaster.service';
 
@@ -38,7 +38,7 @@ export class UsersCreate implements ReportsUnsaved {
       this.form().notifySubmissionCompleted();
       await this.router.navigate(['/users', user.id]);
     } catch (e: unknown) {
-      this.toaster.show('Nuevo Usuario', 'Ha ocurrido un error al crear el usuario');
+      this.toaster.show('Nuevo Usuario', getUserFriendlyErrorMessage(e, 'Usuario'));
       this.form().notifySubmissionCompleted();
       throw e;
     }

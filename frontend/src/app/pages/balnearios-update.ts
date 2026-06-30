@@ -1,14 +1,15 @@
 import { Component, inject, input, resource, viewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Balneario, BalneariosService } from '../balnearios.service';
 import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
-import { ReportsUnsaved } from '../util';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
 import { Toaster } from '../components/toaster/toaster.service';
+import { FixedFooter } from "../components/fixed-footer/fixed-footer";
 
 @Component({
   selector: 'app-balnearios-update',
-  imports: [BalneariosForm],
+  imports: [BalneariosForm, FixedFooter, RouterLink],
   template: `
     <main class="container-fluid">
       <h1>Editar Balneario #{{ balnearioId() }}</h1>
@@ -19,10 +20,17 @@ import { Toaster } from '../components/toaster/toaster.service';
         </div>
       }
       @if (balneario.error(); as e) {
-        <div class="alert alert-danger">
-          <strong>Error al cargar el balneario</strong>
-          <p>{{ e.message }}</p>
+        <div class="alert alert-danger" role="alert">
+          <strong>No se pudo cargar el balneario</strong>
+          <div>{{ getUserFriendlyErrorMessage(e, 'Balneario') }}</div>
         </div>
+        <app-fixed-footer>
+          <div class="d-flex justify-content-end w-100">
+            <div class="ms-auto">
+              <a role="button" class="btn focus-ring" routerLink="/balnearios">Volver</a>
+            </div>
+          </div>
+        </app-fixed-footer>
       }
       @if (balneario.hasValue() && balneario.value(); as balneario) {
         <app-balnearios-form [backLink]="['/balnearios', balneario.id]"
@@ -36,7 +44,8 @@ export class BalneariosUpdate implements ReportsUnsaved {
   private readonly router = inject(Router);
   private readonly toaster = inject(Toaster);
 
-  private readonly form = viewChild.required(BalneariosForm);
+  private readonly form = viewChild(BalneariosForm);
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   protected readonly balnearioId = input.required<number>({ alias: 'id' });
   protected readonly balneario = resource({
@@ -57,20 +66,24 @@ export class BalneariosUpdate implements ReportsUnsaved {
   async onSubmit(data: Omit<Balneario, 'id'>): Promise<void> {
     const id = this.balnearioId();
 
+    const form = this.form();
+
+    if (!form) throw new Error('Child query failed!');
+
     try {
       await firstValueFrom(this.balneariosService.updateBalneario(id, data));
       this.toaster.show('Editar Balneario', 'Se actualizó exitosamente el balneario');
-      this.form().notifySubmissionCompleted();
+      form.notifySubmissionCompleted();
       await this.router.navigate(['/balnearios', id]);
     } catch (e: unknown) {
-      this.toaster.show('Editar Balneario', 'Ha ocurrido un error al actualizar el balneario');
-      this.form().notifySubmissionCompleted();
+      this.toaster.show('Editar Balneario', getUserFriendlyErrorMessage(e, 'Balneario'));
+      form.notifySubmissionCompleted();
       throw e;
     }
   }
 
   hasUnsavedChanges(): boolean {
-    return this.form().hasUnsavedChanges();
+    return this.form()?.hasUnsavedChanges() ?? false;
   }
 }
 

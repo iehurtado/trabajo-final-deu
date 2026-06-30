@@ -1,7 +1,10 @@
 <main class="container-fluid">
     <h1>Balnearios</h1>
     @if (balnearios.error(); as e) {
-        <div class="alert alert-danger">Error: {{ e.message }}</div>
+        <div class="alert alert-danger" role="alert">
+            <strong>No se pudieron cargar los balnearios</strong>
+            <div>{{ getUserFriendlyErrorMessage(e, 'Balneario') }}</div>
+        </div>
     }
     @if (balnearios.isLoading()) {
         <div class="alert alert-light">

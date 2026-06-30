@@ -1,14 +1,15 @@
 import { Component, inject, input, resource, viewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { UserForm } from "../components/user-form/user-form";
 import { UpdateUserForm, User, UserService } from '../user.service';
-import { ReportsUnsaved } from '../util';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
 import { Toaster } from '../components/toaster/toaster.service';
+import { FixedFooter } from "../components/fixed-footer/fixed-footer";
 
 @Component({
   selector: 'app-users-update',
-  imports: [UserForm],
+  imports: [UserForm, FixedFooter, RouterLink],
   template: `
     <main class="container-fluid">
       <h1>Editar Usuario #{{ userId() }}</h1>
@@ -19,10 +20,17 @@ import { Toaster } from '../components/toaster/toaster.service';
         </div>
       }
       @if (user.error(); as e) {
-        <div class="alert alert-danger">
-          <strong>Error al cargar el usuario</strong>
-          <p>{{ e.message }}</p>
+        <div class="alert alert-danger" role="alert">
+          <strong>No se pudo cargar el usuario</strong>
+          <div>{{ getUserFriendlyErrorMessage(e, 'Usuario') }}</div>
         </div>
+        <app-fixed-footer>
+          <div class="d-flex justify-content-end w-100">
+            <div class="ms-auto">
+              <a role="button" class="btn focus-ring" routerLink="/users">Volver</a>
+            </div>
+          </div>
+        </app-fixed-footer>
       }
       @if (user.hasValue() && user.value(); as user) {
         <app-user-form [initialData]="user" [backLink]="['/users', user.id]" (guardado)="onSubmit($event)"/>
@@ -35,7 +43,8 @@ export class UsersUpdate implements ReportsUnsaved {
   private readonly router = inject(Router);
   private readonly toaster = inject(Toaster);
 
-  private readonly form = viewChild.required(UserForm);
+  private readonly form = viewChild(UserForm);
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   protected readonly userId = input.required<number>({ alias: 'id' });
   protected readonly user = resource({
@@ -63,20 +72,24 @@ export class UsersUpdate implements ReportsUnsaved {
       updateData.password = data.password;
     }
 
+    const form = this.form();
+
+    if (!form) throw new Error('Child query failed!');
+
     try {
       await firstValueFrom(this.userService.updateUser(this.userId(), updateData));
 
       this.toaster.show('Editar Usuario', 'Se actualizó exitosamente el usuario');
-      this.form().notifySubmissionCompleted();
+      form.notifySubmissionCompleted();
       await this.router.navigate(['/users', this.userId()]);
     } catch (e: unknown) {
-      this.form().notifySubmissionCompleted();
-      this.toaster.show('Editar Usuario', 'Ha ocurrido un error al actualizar el usuario');
+      form.notifySubmissionCompleted();
+      this.toaster.show('Editar Usuario', getUserFriendlyErrorMessage(e, 'Usuario'));
       throw e;
     }
   }
 
   hasUnsavedChanges(): boolean {
-    return this.form().hasUnsavedChanges();
+    return this.form()?.hasUnsavedChanges() ?? false;
   }
 }

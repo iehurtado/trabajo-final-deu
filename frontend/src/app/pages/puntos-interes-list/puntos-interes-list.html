@@ -1,7 +1,10 @@
 <main class="container-fluid">
     <h1>Puntos de Interés</h1>
     @if (puntos.error(); as e) {
-        <div class="alert alert-danger">Error: {{ e.message }}</div>
+        <div class="alert alert-danger" role="alert">
+            <strong>No se pudieron cargar los puntos de interés</strong>
+            <div>{{ getUserFriendlyErrorMessage(e, 'Punto de interés') }}</div>
+        </div>
     }
     @if (puntos.isLoading()) {
         <div class="alert alert-light">

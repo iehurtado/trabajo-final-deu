@@ -3,8 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, input, resource } from '@an
 import { RouterLink } from "@angular/router";
 import { firstValueFrom } from 'rxjs';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
-import { UserService } from '../../user.service';
-
+import { UserService } from '../../user.service';import { getUserFriendlyErrorMessage } from '../../util';
 @Component({
   selector: 'app-users-detail',
   imports: [CommonModule, FixedFooter, RouterLink],
@@ -13,6 +12,7 @@ import { UserService } from '../../user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UsersDetail {
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
   private readonly userService = inject(UserService);
   protected readonly userId = input.required<number>({ alias: 'id' });
   protected readonly user = resource({

@@ -7,6 +7,7 @@ import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
 import { BalnearioIcon } from '../../components/map/util';
 import { EstadoAguaBadge } from "../../components/estado-agua-badge";
+import { getUserFriendlyErrorMessage } from '../../util';
 import { DialogService } from '../../components/dialog/dialog.service';
 import { Toaster } from '../../components/toaster/toaster.service';
 import { AuthService } from '../../auth.service';
@@ -20,6 +21,7 @@ import { AuthService } from '../../auth.service';
 })
 export class BalneariosDetail {
   protected readonly faPencilAlt = faPencilAlt;
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   private readonly balneariosService = inject(BalneariosService);
   private readonly dialog = inject(DialogService);

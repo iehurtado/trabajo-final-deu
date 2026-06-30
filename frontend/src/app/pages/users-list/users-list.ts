@@ -7,6 +7,7 @@ import { firstValueFrom } from 'rxjs';
 import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
 import { UserService } from '../../user.service';
+import { getUserFriendlyErrorMessage } from '../../util';
 
 const perPage = 10;
 
@@ -18,6 +19,7 @@ const perPage = 10;
 })
 export class UsersList {
   protected faEye = faEye;
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   private userService = inject(UserService);
 

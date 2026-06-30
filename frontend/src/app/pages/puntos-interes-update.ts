@@ -1,15 +1,16 @@
 import { Component, inject, input, resource, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PuntosInteresForm } from "../components/puntos-interes-form/puntos-interes-form";
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
-import { ReportsUnsaved } from '../util';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
+import { FixedFooter } from "../components/fixed-footer/fixed-footer";
 import { firstValueFrom } from 'rxjs';
 import { Toaster } from '../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-puntos-interes-update',
-  imports: [ReactiveFormsModule, PuntosInteresForm],
+  imports: [ReactiveFormsModule, PuntosInteresForm, FixedFooter, RouterLink],
   template: `
     <main class="container-fluid">
       <h1>Editar Punto de Interés #{{puntoId()}}</h1>
@@ -20,10 +21,17 @@ import { Toaster } from '../components/toaster/toaster.service';
         </div>
       }
       @if (punto.error(); as e) {
-        <div class="alert alert-danger">
-          <strong>Error al cargar el punto de interés</strong>
-          <p>{{e.message}}</p>
+        <div class="alert alert-danger" role="alert">
+          <strong>No se pudo cargar el punto de interés</strong>
+          <div>{{ getUserFriendlyErrorMessage(e, 'Punto de interés') }}</div>
         </div>
+        <app-fixed-footer>
+          <div class="d-flex justify-content-end w-100">
+            <div class="ms-auto">
+              <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
+            </div>
+          </div>
+        </app-fixed-footer>
       }
       @if (punto.hasValue() && punto.value(); as punto) {
         <app-puntos-interes-form [initialData]="punto"
@@ -39,6 +47,7 @@ export class PuntosInteresUpdate implements ReportsUnsaved {
   private readonly toaster = inject(Toaster);
 
   private readonly form = viewChild.required(PuntosInteresForm);
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   readonly puntoId = input.required<number>({alias: 'id'});
   readonly punto = resource({
@@ -53,14 +62,18 @@ export class PuntosInteresUpdate implements ReportsUnsaved {
   async onSubmit(data: Omit<PuntoInteres, 'id'>): Promise<void> {
     const id = this.puntoId();
 
+    const form = this.form();
+
+    if (!form) throw new Error('Child query failed!');
+
     try {
       await firstValueFrom(this.puntosService.updatePuntoInteres(id, data));
       this.toaster.show('Editar Punto de Interés', 'Se actualizó exitosamente el punto de interés');
-      this.form().notifySubmissionCompleted();
+      form.notifySubmissionCompleted();
       await this.router.navigate(['/puntos', id]);
     } catch (e: unknown) {
-      this.toaster.show('Editar Punto de Interés', 'Ha ocurrido un error al actualizar el punto de interés');
-      this.form().notifySubmissionCompleted();
+      this.toaster.show('Editar Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'));
+      form.notifySubmissionCompleted();
       throw e;
     }
   }

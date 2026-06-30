@@ -7,9 +7,9 @@
       </div>
     }
     @if (punto.error(); as e) {
-      <div class="alert alert-danger">
-        <strong>Error al cargar el punto de interés</strong>
-        <p>{{e.message}}</p>
+      <div class="alert alert-danger" role="alert">
+        <strong>No se pudo cargar el punto de interés</strong>
+        <div>{{ getUserFriendlyErrorMessage(e, 'Punto de interés') }}</div>
       </div>
     }
     @if (punto.hasValue() && punto.value(); as punto) {
@@ -53,14 +53,16 @@
     }
 </main>
 <app-fixed-footer>
-    <div class="d-flex justify-content-end w-100">
-        <div class="ms-auto">
-            <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
-            <a role="button" class="btn btn-primary" [routerLink]="['/puntos', puntoId(), 'update']">Editar</a>
+        <div class="d-flex justify-content-end w-100">
+                <div class="ms-auto">
+                        <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
+                        @if (punto.hasValue() && punto.value(); as punto) {
+                            <a role="button" class="btn btn-primary" [routerLink]="['/puntos', puntoId(), 'update']">Editar</a>
 
-            @if (canDeletePunto()) {
-              <button type="button" class="btn btn-danger ms-2" (click)="deletePunto()">Eliminar</button>
-            }
+                            @if (canDeletePunto()) {
+                                <button type="button" class="btn btn-danger ms-2" (click)="deletePunto()">Eliminar</button>
+                            }
+                        }
+                </div>
         </div>
-    </div>
 </app-fixed-footer>

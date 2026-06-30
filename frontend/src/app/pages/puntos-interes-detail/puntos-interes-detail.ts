@@ -6,6 +6,7 @@ import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
 import { PuntoInteresIcon } from '../../components/map/util';
 import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
+import { getUserFriendlyErrorMessage } from '../../util';
 import { DialogService } from '../../components/dialog/dialog.service';
 import { Toaster } from '../../components/toaster/toaster.service';
 import { AuthService } from '../../auth.service';
@@ -19,6 +20,7 @@ import { AuthService } from '../../auth.service';
 })
 export class PuntosInteresDetail {
   protected readonly faPencilAlt = faPencilAlt;
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
 
   private readonly auth = inject(AuthService);
   private readonly puntosInteresService = inject(PuntosInteresService);

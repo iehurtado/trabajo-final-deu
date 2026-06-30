@@ -1,12 +1,15 @@
 <main class="container-fluid">
     <h1>Usuarios</h1>
     @if (unauthorized()) {
-      <div class="alert alert-danger">
-        No tiene autorización para ver el contenido
+      <div class="alert alert-danger" role="alert">
+        No tiene autorización para acceder a este recurso
       </div>
     }
     @if (users.error(); as e) {
-        <div class="alert alert-danger">Error: {{ e.message }}</div>
+        <div class="alert alert-danger" role="alert">
+            <strong>No se pudieron cargar los usuarios</strong>
+            <div>{{ getUserFriendlyErrorMessage(e, 'Usuario') }}</div>
+        </div>
     }
     @if (users.isLoading()) {
         <div class="alert alert-light">

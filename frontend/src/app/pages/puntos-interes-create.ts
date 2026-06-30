@@ -3,7 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { PuntosInteresForm } from '../components/puntos-interes-form/puntos-interes-form';
-import { ReportsUnsaved } from '../util';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { Toaster } from '../components/toaster/toaster.service';
@@ -43,7 +43,7 @@ export class PuntosInteresCreate implements ReportsUnsaved {
       this.toaster.show('Nuevo Punto de Interés', 'Se agregó exitosamente el punto de interés');
       await this.router.navigate(url);
     } catch (e: unknown) {
-      this.toaster.show('Nuevo Punto de Interés', 'Ha ocurrido un error al agregar el punto de interés');
+      this.toaster.show('Nuevo Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'));
       this.form().notifySubmissionCompleted();
       throw e;
     }

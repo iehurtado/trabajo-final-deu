@@ -5,6 +5,7 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { firstValueFrom } from 'rxjs';
 import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { Paginator } from "../../components/paginator/paginator";
+import { getUserFriendlyErrorMessage } from '../../util';
 import { PuntosInteresService } from '../../puntos-interes.service';
 
 const perPage = 10;
@@ -17,6 +18,7 @@ const perPage = 10;
 })
 export class PuntosInteresList {
   protected readonly faEye = faEye;
+  protected readonly getUserFriendlyErrorMessage = getUserFriendlyErrorMessage;
   private puntosService = inject(PuntosInteresService);
 
   protected readonly page = signal(1);
