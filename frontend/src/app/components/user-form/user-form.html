@@ -62,7 +62,8 @@
         @let items = (availableRoles$|async) ?? [];
 
         <label for="roles" class="form-label">Roles</label>
-        <ng-select labelForId="roles" [items]="items" [compareWith]="compareUsingId" bindLabel="nombre" multiple formControlName="roles">
+        <ng-select labelForId="roles" [items]="items" [compareWith]="compareUsingId"
+          [hideSelected]="true" bindLabel="nombre" multiple formControlName="roles">
           <ng-template ng-label-tmp let-item="item" let-clear="clear">
             <span class="ng-value-label">{{ item.nombre }}</span>
             <span class="ng-value-icon" title="Quitar" aria-role="button" aria-label="Quitar" (click)="clear(item)">
