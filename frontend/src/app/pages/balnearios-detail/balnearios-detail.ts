@@ -11,10 +11,11 @@ import { getUserFriendlyErrorMessage } from '../../util';
 import { DialogService } from '../../components/dialog/dialog.service';
 import { Toaster } from '../../components/toaster/toaster.service';
 import { AuthService } from '../../auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-balnearios-detail',
-  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent, EstadoAguaBadge],
+  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent, EstadoAguaBadge, DatePipe],
   templateUrl: './balnearios-detail.html',
   styleUrl: './balnearios-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

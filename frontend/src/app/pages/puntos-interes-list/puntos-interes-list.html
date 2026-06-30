@@ -24,7 +24,8 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Categoría</th>
                                 <th scope="col">Subcategoría</th>
-                                <th scope="col">Descripción</th>
+                                <th scope="col" class="text-center">Fecha de Alta</th>
+                                <th scope="col" class="text-center">Última Modificación</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -39,7 +40,8 @@
                                     <td>
                                         <div class="badge bg-secondary">{{ punto.subcategoria }}</div>
                                     </td>
-                                    <td>{{ punto.descripcion }}</td>
+                                    <td class="text-center">{{ punto.createdAt | date:'dd/MM/y HH:mm' }}</td>
+                                    <td class="text-center">{{ punto.updatedAt | date:'dd/MM/y HH:mm' }}</td>
                                     <td>
                                         <a [routerLink]="['/puntos', punto.id]" aria-label="Ver detalle">
                                             <fa-icon [icon]="faEye"></fa-icon>

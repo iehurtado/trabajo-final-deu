@@ -10,6 +10,8 @@ export interface PuntoInteres {
     categoria: string;
     subcategoria: string;
     descripcion?: string; // Opcional
+    createdAt: string;
+    updatedAt: string;
 }
 
 type Paginator<T> = {
@@ -40,15 +42,15 @@ export class PuntosInteresService {
         return this.puntosInteresController.findPuntoInteresById(id);
     }
 
-    addPuntoInteres(nuevoPunto: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {
-        return this.puntosInteresController.createPuntoInteres(nuevoPunto).pipe(delay(1200));
+    addPuntoInteres(nuevoPunto: Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>): Observable<PuntoInteres> {
+        return this.puntosInteresController.createPuntoInteres(nuevoPunto);
     }
 
-    updatePuntoInteres(id: number, data: Omit<PuntoInteres, 'id'>): Observable<PuntoInteres> {
-        return this.puntosInteresController.updatePuntoInteres(id, data).pipe(delay(1200));
+    updatePuntoInteres(id: number, data: Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>): Observable<PuntoInteres> {
+        return this.puntosInteresController.updatePuntoInteres(id, data);
     }
 
     deletePuntoInteres(id: number) {
-        return this.puntosInteresController.deletePuntoInteres(id).pipe(delay(1200));
+        return this.puntosInteresController.deletePuntoInteres(id);
     }
 }

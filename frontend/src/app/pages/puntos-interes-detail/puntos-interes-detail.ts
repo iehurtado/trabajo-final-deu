@@ -10,10 +10,11 @@ import { getUserFriendlyErrorMessage } from '../../util';
 import { DialogService } from '../../components/dialog/dialog.service';
 import { Toaster } from '../../components/toaster/toaster.service';
 import { AuthService } from '../../auth.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-puntos-interes-detail',
-  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent],
+  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent, DatePipe],
   templateUrl: './puntos-interes-detail.html',
   styleUrl: './puntos-interes-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -29,6 +29,8 @@
                                 <th scope="col">Correo Electrónico</th>
                                 <th scope="col">Nombre Completo</th>
                                 <th scope="col">Roles</th>
+                                <th scope="col">Fecha de Alta</th>
+                                <th scope="col">Últ. Modificación</th>
                                 <th scope="col" style="width: 5%"></th>
                             </tr>
                         </thead>
@@ -47,6 +49,8 @@
                                             }
                                         </div>
                                     </td>
+                                    <td>{{ user.createdAt | date:'dd/MM/y HH:mm' }}</td>
+                                    <td>{{ user.updatedAt | date:'dd/MM/y HH:mm' }}</td>
                                     <td>
                                         <a [routerLink]="['/users', user.id]" aria-label="Ver detalle">
                                             <fa-icon [icon]="faEye"></fa-icon>

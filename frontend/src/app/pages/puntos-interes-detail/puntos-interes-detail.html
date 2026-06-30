@@ -14,7 +14,7 @@
     }
     @if (punto.hasValue() && punto.value(); as punto) {
       <div class="row g-2">
-          <div class="col-12 col-md-4">
+          <div class="col-12 col-md-5">
               <section class="card">
                   <h5 class="card-header">Información Básica</h5>
                   <div class="card-body">
@@ -34,10 +34,20 @@
                           <label for="pid-descripcion" class="form-label">Descripción</label>
                           <textarea class="form-control" id="pid-descripcion" readonly>{{punto.descripcion}}</textarea>
                       </div>
+                      <div class="row g-2">
+                        <div class="col-12 col-md-6 mb-3">
+                          <label for="pid-createdAt" class="form-label">Fecha de Alta</label>
+                          <input type="text" id="pid-createdAt" class="form-control" [value]="punto.createdAt | date:'dd/MM/y HH:mm'" readonly>
+                        </div>
+                        <div class="col-12 col-md-6 mb-3">
+                          <label for="pid-updatedAt" class="form-label">Última Modificación</label>
+                          <input type="text" id="pid-updatedAt" class="form-control" [value]="punto.updatedAt | date:'dd/MM/y HH:mm'" readonly>
+                        </div>
+                      </div>
                   </div>
               </section>
           </div>
-          <div class="col-12 col-md-8">
+          <div class="col-12 col-md-7">
               <section class="card">
                   <h5 class="card-header">Ubicación</h5>
                   <div class="card-body p-0">

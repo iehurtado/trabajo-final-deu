@@ -15,6 +15,8 @@ export interface Balneario {
     vigilancia: boolean;
     parrillas: boolean;
     bus: boolean;
+    createdAt: string;
+    updatedAt: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -36,11 +38,11 @@ export class BalneariosService {
         return this.balneariosController.findBalnearioById(id);
     }
 
-    addBalneario(nuevo: Omit<Balneario, 'id'>): Observable<Balneario> {
+    addBalneario(nuevo: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Observable<Balneario> {
         return this.balneariosController.createBalneario(nuevo);
     }
 
-    updateBalneario(id: number, data: Omit<Balneario, 'id'>): Observable<Balneario> {
+    updateBalneario(id: number, data: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Observable<Balneario> {
         return this.balneariosController.updateBalneario(id, data);
     }
 

@@ -8,11 +8,12 @@ import { EstadoAguaBadge } from "../../components/estado-agua-badge";
 import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
 import { getUserFriendlyErrorMessage } from '../../util';
+import { DatePipe } from '@angular/common';
 
 const perPage = 10;
 @Component({
   selector: 'app-balnearios-list',
-  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, EstadoAguaBadge],
+  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, EstadoAguaBadge, DatePipe],
   templateUrl: './balnearios-list.html',
   styleUrl: './balnearios-list.scss',
 })

@@ -60,6 +60,7 @@ export class PuntosInteresController {
     const data = await this.puntoInteresRepository.findAll({
       offset: limit * (page - 1),
       limit: limit,
+      orderBy: { nombre: 'ASC', id: 'ASC' },
     });
 
     return {

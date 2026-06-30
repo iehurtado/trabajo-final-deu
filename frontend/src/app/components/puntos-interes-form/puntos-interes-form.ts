@@ -33,7 +33,7 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
 
   readonly backLink = input<string | readonly any[] | UrlTree>();
   readonly initialData = input<PuntoInteres>();
-  protected readonly guardado = output<Omit<PuntoInteres, 'id'>>();
+  protected readonly guardado = output<Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>>();
 
   protected readonly form = this.fb.nonNullable.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],

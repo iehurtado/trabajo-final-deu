@@ -63,7 +63,7 @@ export class BalneariosUpdate implements ReportsUnsaved {
     },
   });
 
-  async onSubmit(data: Omit<Balneario, 'id'>): Promise<void> {
+  async onSubmit(data: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Promise<void> {
     const id = this.balnearioId();
 
     const form = this.form();

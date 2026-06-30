@@ -31,7 +31,7 @@ export class PuntosInteresCreate implements ReportsUnsaved {
 
   protected readonly guardando = signal(false);
 
-  async onSubmit(data: Omit<PuntoInteres, 'id'>): Promise<void> {
+  async onSubmit(data: Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>): Promise<void> {
     try {
       const { id } = await firstValueFrom(this.puntosService.addPuntoInteres(data));
 

@@ -32,7 +32,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
 
   readonly backLink = input<string | readonly any [] | UrlTree>();
   readonly initialData = input<Balneario>();
-  protected readonly guardado = output<Omit<Balneario, 'id'>>();
+  protected readonly guardado = output<Omit<Balneario, 'id'|'createdAt'|'updatedAt'>>();
 
   protected readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],

@@ -69,6 +69,7 @@ export class BalneariosController {
     const data = await this.balnearioRepository.findAll({
       offset: limit * (page - 1),
       limit: limit,
+      orderBy: { nombre: 'ASC', id: 'ASC' },
     });
 
     return {

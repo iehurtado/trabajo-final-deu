@@ -13,6 +13,8 @@ export interface User {
     fullname: string;
     password: string;
     roles: Rol[];
+    updatedAt: string;
+    createdAt: string;
 }
 
 export type CreateUserForm = {

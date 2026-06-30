@@ -18,6 +18,8 @@ export const User = defineEntity({
     fullname: p.string(),
     password: p.string().hidden(),
     roles: () => p.manyToMany(Rol).eager(),
+    createdAt: p.datetime().onCreate(() => new Date()),
+    updatedAt: p.datetime().onCreate(() => new Date()).onUpdate(() => new Date()),
   }
 });
 
@@ -37,6 +39,8 @@ export const Balneario = defineEntity({
     vigilancia: p.boolean(),
     parrillas: p.boolean(),
     bus: p.boolean(),
+    createdAt: p.datetime().onCreate(() => new Date()),
+    updatedAt: p.datetime().onCreate(() => new Date()).onUpdate(() => new Date()),
   }
 });
 
@@ -52,6 +56,8 @@ export const PuntoInteres = defineEntity({
     categoria: p.string(),
     subcategoria: p.string(),
     descripcion: p.string().nullable(),
+    createdAt: p.datetime().onCreate(() => new Date()),
+    updatedAt: p.datetime().onCreate(() => new Date()).onUpdate(() => new Date()),
   }
 });
 

@@ -25,7 +25,7 @@ export class BalneariosCreate implements ReportsUnsaved {
 
   protected readonly guardando = signal(false);
 
-  async onSubmit(data: Omit<Balneario, 'id'>): Promise<void> {
+  async onSubmit(data: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Promise<void> {
     this.guardando.set(true);
     try {
       const { id } = await firstValueFrom(this.balneariosService.addBalneario(data));

@@ -34,6 +34,16 @@
             }
           </div>
         </div>
+        <div class="row g-2">
+          <div class="col-12 col-md-6 mb-3">
+            <label for="createdAt" class="form-label">Fecha de Alta</label>
+            <input type="text" id="createdAt" class="form-control" [value]="user.createdAt | date:'dd/MM/y HH:mm'" readonly />
+          </div>
+          <div class="col-12 col-md-6 mb-3">
+            <label for="updatedAt" class="form-label">Última Modificación</label>
+            <input type="text" id="updatedAt" class="form-control" [value]="user.updatedAt | date:'dd/MM/y HH:mm'" readonly />
+          </div>
+        </div>
       </div>
     </div>
   }

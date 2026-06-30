@@ -7,12 +7,13 @@ import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { Paginator } from "../../components/paginator/paginator";
 import { getUserFriendlyErrorMessage } from '../../util';
 import { PuntosInteresService } from '../../puntos-interes.service';
+import { DatePipe } from '@angular/common';
 
 const perPage = 10;
 
 @Component({
   selector: 'app-puntos-interes-list',
-  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator],
+  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, DatePipe],
   templateUrl: './puntos-interes-list.html',
   styleUrl: './puntos-interes-list.scss',
 })

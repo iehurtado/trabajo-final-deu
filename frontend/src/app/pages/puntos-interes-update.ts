@@ -59,7 +59,7 @@ export class PuntosInteresUpdate implements ReportsUnsaved {
     }
   });
 
-  async onSubmit(data: Omit<PuntoInteres, 'id'>): Promise<void> {
+  async onSubmit(data: Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>): Promise<void> {
     const id = this.puntoId();
 
     const form = this.form();

@@ -8,12 +8,13 @@ import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
 import { UserService } from '../../user.service';
 import { getUserFriendlyErrorMessage } from '../../util';
+import { DatePipe } from '@angular/common';
 
 const perPage = 10;
 
 @Component({
   selector: 'app-users-list',
-  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator],
+  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, DatePipe],
   templateUrl: './users-list.html',
   styleUrl: './users-list.scss',
 })

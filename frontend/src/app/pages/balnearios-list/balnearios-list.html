@@ -24,6 +24,8 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Estado del Agua</th>
                                 <th scope="col">Servicios</th>
+                                <th scope="col" class="text-center">Fecha de Alta</th>
+                                <th scope="col" class="text-center">Última Modificación</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -44,6 +46,8 @@
                                             }
                                         </div>
                                     </td>
+                                    <td class="text-center">{{ balneario.createdAt | date:'dd/MM/y HH:mm' }}</td>
+                                    <td class="text-center">{{ balneario.updatedAt | date:'dd/MM/y HH:mm' }}</td>
                                     <td>
                                         <a [routerLink]="['/balnearios', balneario.id]" aria-label="Ver detalle">
                                             <fa-icon [icon]="faEye"></fa-icon>
