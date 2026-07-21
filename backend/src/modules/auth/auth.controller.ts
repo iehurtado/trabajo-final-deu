@@ -3,7 +3,7 @@ import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
 import { Body, Controller, Get, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/entities';
+import { Rol, User } from 'src/entities';
 import { AuthGuard } from './auth.guard';
 import { Public } from './decorators';
 
@@ -33,6 +33,7 @@ export class AuthController {
 
   constructor(
     @InjectRepository(User) private readonly userRepository: EntityRepository<User>,
+    @InjectRepository(Rol) private readonly rolesRepository: EntityRepository<Rol>,
     private readonly em: EntityManager,
     private readonly jwtService: JwtService,
   ) {}
@@ -69,8 +70,10 @@ export class AuthController {
       password: await bcrypt.hash(form.password, 10),
     });
 
+    const roles = await this.rolesRepository.find({ nombre: "Colaborador" });
+    user.roles.set(roles);
+
     await this.em.flush();
-    // await this.em.populate(user, ['roles']);
 
     return user;
   }
