@@ -18,7 +18,9 @@ const servicios = [
   template: `
     <h6 class="fw-bold mb-1 text-nowrap">{{ balneario.nombre }}</h6>
     <div class="mb-2 text-nowrap">
-      Estado Actual: <span class="badge {{ estadoClass }}">{{ balneario.estadoAgua }}</span>
+      Estado Actual: <span class="badge {{ estadoClass(balneario.estadoAgua) }}">
+        {{ estadoText.get(balneario.estadoAgua) }}
+      </span>
     </div>
     <div class="d-flex flex-wrap mb-2">
       @for (s of servicios; track s) {
@@ -38,17 +40,24 @@ export class PopupBalneario {
 
   @Input({ required: true }) balneario!: Balneario;
 
-  get estadoClass() {
-    if (this.balneario.estadoAgua === 'Apto') {
-      return 'bg-success';
-    }
-
-    return this.balneario.estadoAgua === 'Precaución'
-      ? 'bg-warning text-dark'
-      : 'bg-danger';
-  }
 
   get servicios() {
     return servicios.filter(x => (this.balneario as any)[x.key]);
+  }
+
+  protected readonly estadoText = new Map([
+    ['APTO' as const, 'Apto'],
+    ['NO_APTO' as const, 'No Apto'],
+    ['PRECAUCION' as const, 'Precaución'],
+  ]);
+
+  estadoClass(estado: 'APTO'|'NO_APTO'|'PRECAUCION') {
+    if (estado === 'APTO') {
+      return 'text-bg-success';
+    }
+
+    return estado === 'PRECAUCION'
+      ? 'text-bg-warning'
+      : 'text-bg-danger';
   }
 }

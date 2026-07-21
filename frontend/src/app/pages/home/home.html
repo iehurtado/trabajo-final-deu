@@ -1,28 +1,31 @@
-<main>
+<main class="container-fluid">
   <h1 class="visually-hidden">Home</h1>
-  <div>
-    <app-map id="map" [loading]="marcadores.isLoading()">
-      <ng-template appMapPanel>
-        @if (panel(); as panel) {
-          <div class="d-flex justify-content-end">
-            <button class="btn btn-close btn-sm" aria-label="Cerrar" (click)="closePanel()"></button>
-          </div>
-          <ng-container *ngComponentOutlet="panel.component; inputs: panel.inputs"></ng-container>
-        } @else {
-          <fa-icon [icon]="faInfoCircle" alt=""/>
-          Seleccione un marcador en el mapa para ver la información disponible
-        }
-      </ng-template>
-      @for (marcador of marcadores.value(); track marcador) {
-        <app-map-marker [latlng]="[marcador.lat, marcador.long]"
-          [options]="{ title: marcador.nombre, icon: marcador.icono }"
-          (popup)="onPopupOpened($event, marcador)">
-          <ng-template appMapPopup>
-            <div></div>
-          </ng-template>
-        </app-map-marker>
+  <div class="my-3">
+    <label for="buscar" class="form-label">Buscar</label>
+    <ng-select labelForId="buscar" [compareWith]="compareWith" groupBy="tipo" (change)="selectMarker($event)">
+      @for (element of searchableElems; track element.marker) {
+        <ng-option [value]="element">{{ element.label }}</ng-option>
       }
-    </app-map>
+    </ng-select>
+  </div>
+  <div>
+    <div class="card">
+      <div class="card-body p-0">
+        <app-map id="map" [loading]="loading()">
+          <ng-template appMapPanel>
+            @if (panel(); as panel) {
+              <div class="d-flex justify-content-end">
+                <button class="btn btn-close btn-sm" aria-label="Cerrar" (click)="closePanel()"></button>
+              </div>
+              <ng-container *ngComponentOutlet="panel.component; inputs: panel.inputs"></ng-container>
+            } @else {
+              <fa-icon [icon]="faInfoCircle" alt=""/>
+              Seleccione un marcador en el mapa para ver la información disponible
+            }
+          </ng-template>
+        </app-map>
+      </div>
+    </div>
   </div>
 </main>
 @if (canAddPuntos()) {

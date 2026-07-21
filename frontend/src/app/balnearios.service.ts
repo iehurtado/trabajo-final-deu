@@ -8,7 +8,7 @@ export interface Balneario {
     nombre: string;
     latitud: number;
     longitud: number;
-    estadoAgua: string;
+    estadoAgua: 'APTO'|'NO_APTO'|'PRECAUCION';
     auxilio: boolean;
     banos: boolean;
     rampa: boolean;

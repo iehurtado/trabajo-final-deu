@@ -36,7 +36,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
 
   protected readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)]],
-    estadoAgua: ['Apto', [Validators.required]],
+    estadoAgua: ['APTO' as 'APTO'|'NO_APTO'|'PRECAUCION', [Validators.required]],
     latitud: [null as number|null, [Validators.required]],
     longitud: [null as number|null, [Validators.required]],
     auxilio: [false],

@@ -43,6 +43,10 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  openPopup() {
+    this.marker?.openPopup();
+  }
+
   private addToMap({ latlng, options }: { latlng: L.LatLngExpression, options?: L.MarkerOptions }) {
     if (this.marker) {
       this.marker.remove();
@@ -138,8 +142,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map?.remove();
   }
 
+  addControl(control: L.Control) {
+    this.map?.addControl(control);
+  }
+
+  addLayer(layer: L.Layer) {
+    this.map?.addLayer(layer);
+  }
+
   addMarker(marker: L.Marker) {
     marker.addTo(this.map!);
+  }
+
+  flyTo(latlng: L.LatLngExpression, zoom?: number, options?: L.ZoomPanOptions) {
+    this.map?.flyTo(latlng, zoom, options)
   }
 
   setView(latlng: L.LatLngExpression, zoom?: number) {
@@ -152,13 +168,15 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       zoom: this.zoom(),
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       className: 'map-tiles',
       referrerPolicy: 'origin',
-    }).addTo(this.map);
+    });
+
+    this.map.addLayer(tileLayer);
 
     // Force a resize check to avoid display issues in hidden containers
     setTimeout(() => this.map?.invalidateSize());
