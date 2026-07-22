@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from "@angular/common/http";
-import { computed, effect, inject, Injectable, signal } from "@angular/core";
+import { computed, effect, inject, Injectable, Injector, Signal, signal, WritableSignal } from "@angular/core";
 import { firstValueFrom, Observable } from "rxjs";
 import { AuthService as AuthControllerService } from "../api/services/auth.service";
+import { HttpClient, HttpContext, HttpContextToken, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 
 export class UnauthorizedError extends Error {
   //
@@ -14,9 +14,11 @@ type AuthState = {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly http = inject(HttpClient);
   private readonly authController = inject(AuthControllerService);
+  private readonly injector = inject(Injector);
 
-  private readonly state = signal<AuthState>({
+  private readonly state: WritableSignal<AuthState> = signal<AuthState>({
     user: JSON.parse(localStorage.getItem("user") ?? 'null'),
     token: JSON.parse(localStorage.getItem("token") ?? 'null'),
   });
@@ -24,12 +26,27 @@ export class AuthService {
   public readonly user = computed(() => this.state().user);
   public readonly token = computed(() => this.state().token);
 
-  constructor() {
+  public async initialize() {
     effect(() => {
       const { user, token } = this.state();
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", JSON.stringify(token));
-    });
+    }, { injector: this.injector });
+
+    const token = JSON.parse(localStorage.getItem("token") ?? 'null');
+
+    if (token !== null) {
+      try {
+        const user = await firstValueFrom(this.authController.profile());
+        this.state.set({ token, user });
+      } catch (e: unknown) {
+        if (e instanceof HttpErrorResponse && e.status === 401) {
+          return;
+        }
+
+        throw e;
+      };
+    }
   }
 
   public can(role: string|string[]) {
@@ -46,16 +63,8 @@ export class AuthService {
   }
 
   public async login(credentials: { email: string, password: string }): Promise<void> {
-    try {
-      const response = await firstValueFrom(this.authController.login(credentials));
-      this.state.set({ token: response.access_token, user: response.user });
-    } catch (e: unknown) {
-      if (e instanceof HttpErrorResponse) {
-        throw new UnauthorizedError();
-      }
-
-      throw e;
-    }
+    const response = await firstValueFrom(this.authController.login(credentials));
+    this.state.set({ token: response.access_token, user: response.user });
   }
 
   public async signup(form: { email: string, fullname: string, password: string, password_repeat: string }) {

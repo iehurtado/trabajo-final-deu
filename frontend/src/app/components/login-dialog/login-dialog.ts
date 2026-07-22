@@ -4,6 +4,7 @@ import { RouterLink } from "@angular/router";
 import { NgbActiveModal, NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService, UnauthorizedError } from '../../auth.service';
 import { Toaster } from '../toaster/toaster.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 type LoginDialogState = {
   status: 'waiting'|'submitting'|'error'
@@ -34,7 +35,7 @@ export class LoginDialog {
   protected readonly modal = inject(NgbActiveModal);
   private readonly toaster = inject(Toaster);
 
-  protected readonly invalidCredentials = signal(false);
+  protected readonly error = signal<string|null>(null);
   protected readonly submitting = signal(false);
 
   protected readonly form = this.fb.group({
@@ -46,7 +47,7 @@ export class LoginDialog {
   protected readonly password = this.form.controls.password;
 
   async continuar() {
-    this.invalidCredentials.set(false);
+    this.error.set(null);
 
     if (!this.form.valid) {
       this.form.markAllAsTouched();
@@ -62,8 +63,8 @@ export class LoginDialog {
       this.toaster.show('Iniciar Sesión', message, { class: 'text-bg-success' });
       this.modal.close(true);
     } catch (e: unknown) {
-      if (e instanceof UnauthorizedError) {
-        this.invalidCredentials.set(true);
+      if (e instanceof HttpErrorResponse) {
+        this.error.set(e.error.message);
         return;
       }
 

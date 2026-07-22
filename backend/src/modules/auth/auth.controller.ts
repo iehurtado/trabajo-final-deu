@@ -1,12 +1,11 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { EntityManager, EntityRepository, raw } from '@mikro-orm/postgresql';
-import { Body, Controller, Get, Post, Query, Req, UnauthorizedException, UnprocessableEntityException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req, UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Rol, User } from 'src/entities';
 import { AuthGuard } from './auth.guard';
 import { Public } from './decorators';
-import { ApiProperty, ApiResponse } from '@nestjs/swagger';
 
 class LoginCredentials {
   constructor(
@@ -49,7 +48,7 @@ export class AuthController {
     const user = await this.userRepository.findOne({ email: credentials.email });
 
     if (user == null || ! await bcrypt.compare(credentials.password, user.password)) {
-      throw new UnauthorizedException("Credenciales inválidas");
+      throw new UnprocessableEntityException("Credenciales inválidas");
     }
 
     const payload = { sub: user.id, username: user.email };

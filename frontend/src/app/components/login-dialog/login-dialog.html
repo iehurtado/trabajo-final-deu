@@ -3,10 +3,8 @@
     <h5>Iniciar Sesión</h5>
   </div>
   <div class="modal-body">
-    @if (invalidCredentials()) {
-      <div class="alert alert-danger">
-        Los datos ingresados no coinciden con nuestros registros
-      </div>
+    @if (error(); as error) {
+      <div class="alert alert-danger">{{ error }}</div>
     }
     <div class="mb-3">
       <label for="loginEmail" class="form-label">Correo Electrónico</label>
