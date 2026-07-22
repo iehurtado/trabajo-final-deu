@@ -26,7 +26,7 @@
                                 <th scope="col">Subcategoría</th>
                                 <th scope="col" class="text-center">Fecha de Alta</th>
                                 <th scope="col" class="text-center">Última Modificación</th>
-                                <th scope="col"></th>
+                                <th scope="col"><span class="visually-hidden">Acciones</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,10 +35,10 @@
                                     <td>{{ punto.id }}</td>
                                     <td>{{ punto.nombre }}</td>
                                     <td>
-                                        <div class="badge bg-danger">{{ punto.categoria }}</div>
+                                        <div class="badge text-bg-danger">{{ punto.categoria }}</div>
                                     </td>
                                     <td>
-                                        <div class="badge bg-secondary">{{ punto.subcategoria }}</div>
+                                        <div class="badge text-bg-secondary">{{ punto.subcategoria }}</div>
                                     </td>
                                     <td class="text-center">{{ punto.createdAt | date:'dd/MM/y HH:mm' }}</td>
                                     <td class="text-center">{{ punto.updatedAt | date:'dd/MM/y HH:mm' }}</td>

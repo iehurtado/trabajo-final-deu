@@ -1,9 +1,9 @@
 <div class="modal-header">
-  <h1 class="modal-title h4">Bienvenido a App</h1>
+  <h1 class="modal-title h4">¡Gracias por visitarnos!</h1>
   <button type="button" class="btn-close" aria-label="Cerrar" (click)="modal.close({ dontShowAgain })"></button>
 </div>
 <div class="modal-body">
-
+  <img class="img-fluid mb-4" src="assets/brand.svg" alt="Carcará">
   <div class="row">
     <!-- <div class="col-12 col-md-5"> -->
       <section id="proyecto" class="mb-2">
@@ -18,9 +18,9 @@
       </section>
       <section id="objetivo" class="mb-2">
         <div>
-          <h2>¿Qué es App?</h2>
+          <h2>¿Qué es Carcará?</h2>
           <p>
-            El objetivo de App es poner esta información a disposición de la comunidad
+            Carcará es un mapa colaborativo que busca poner esta información a disposición de la comunidad
             que hace uso de este espacio geográfico a fin de generar conciencia y prevenir
             accidentes, promoviendo un uso responsable para el disfrute de todos.
           </p>
@@ -64,7 +64,7 @@
     <label for="noMostrarMas" class="form-check-label">No volver a mostrar</label>
     <input type="checkbox" id="noMostrarMas" class="form-check-input" [(ngModel)]="dontShowAgain">
   </div>
-  <button type="button" class="btn btn-primary btn-lg"
+  <button type="button" class="btn btn-primary"
     (click)="modal.close({ dontShowAgain })">
     Comenzar Ahora
   </button>

@@ -9,8 +9,8 @@ import { AuthService } from "../auth.service";
   template: `
     <h6 class="fw-bold mb-1 text-nowrap">{{ punto.nombre }}</h6>
     <div class="mb-2 text-nowrap">
-      <span class="badge bg-danger me-1">{{ punto.categoria }}</span>
-      <span class="badge bg-secondary">{{ punto.subcategoria }}</span>
+      <span class="badge text-bg-danger me-1">{{ punto.categoria }}</span>
+      <span class="badge text-bg-secondary">{{ punto.subcategoria }}</span>
     </div>
     <p class="small text-muted mb-2">{{ punto.descripcion || '' }}</p>
     @if (canViewDetail()) {

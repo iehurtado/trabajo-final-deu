@@ -31,7 +31,7 @@
                                 <th scope="col">Roles</th>
                                 <th scope="col">Fecha de Alta</th>
                                 <th scope="col">Últ. Modificación</th>
-                                <th scope="col" style="width: 5%"></th>
+                                <th scope="col" style="width: 5%"><span class="visually-hidden">Acciones</span></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,7 +43,7 @@
                                     <td>
                                         <div class="d-flex gap-1">
                                             @for (role of user.roles; track role.id) {
-                                                <span class="badge bg-secondary">{{ role.nombre }}</span>
+                                                <span class="badge text-bg-secondary">{{ role.nombre }}</span>
                                             } @empty {
                                               <span class="text-muted">(ninguno)</span>
                                             }
