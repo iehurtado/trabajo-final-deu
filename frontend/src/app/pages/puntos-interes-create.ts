@@ -25,7 +25,13 @@ export class PuntosInteresCreate implements ReportsUnsaved {
   private readonly auth = inject(AuthService);
   private readonly canViewList = this.auth.can('Administrador');
   private readonly canViewDetail = this.canViewList;
-  protected readonly backLink = computed(() => this.canViewList() ? ['/puntos'] : ['/']);
+  protected readonly backLink = computed(() => {
+    if (history.state?.backlink) {
+      return history.state.backlink as string[];
+    }
+
+    return this.canViewList() ? ['/puntos'] : ['/'];
+  });
 
   private readonly form = viewChild.required(PuntosInteresForm);
 
@@ -37,9 +43,7 @@ export class PuntosInteresCreate implements ReportsUnsaved {
 
       this.form().notifySubmissionCompleted();
 
-      const url = this.canViewDetail()
-        ? ['/puntos', id]
-        : ['/'];
+      const url = this.backLink();
       this.toaster.show('Nuevo Punto de Interés', 'Se agregó exitosamente el punto de interés', { class: 'text-bg-success' });
       await this.router.navigate(url);
     } catch (e: unknown) {

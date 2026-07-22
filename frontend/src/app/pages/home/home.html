@@ -31,7 +31,7 @@
 @if (canAddPuntos()) {
   <app-fixed-footer>
     <div class="w-100 text-end">
-      <a role="button" class="btn btn-primary d-block d-sm-inline" routerLink="/puntos/create">
+      <a role="button" class="btn btn-primary d-block d-sm-inline" routerLink="/puntos/create" [state]="{ backlink: ['/'] }">
         Agregar Punto de Interés...
       </a>
     </div>
