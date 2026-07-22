@@ -25,10 +25,10 @@ export class PuntosInteresService {
         return context.set(this.clientContextToken, 'default');
     }
 
-    findAllPuntosInteres(page: number, limit: number, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
-    findAllPuntosInteres(page: number, limit: number, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
-    findAllPuntosInteres(page: number, limit: number, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
-    findAllPuntosInteres(page: number, limit: number, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+    findAllPuntosInteres(page: number, limit: number, nombre?: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    findAllPuntosInteres(page: number, limit: number, nombre?: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    findAllPuntosInteres(page: number, limit: number, nombre?: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    findAllPuntosInteres(page: number, limit: number, nombre?: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
         const url = `${this.basePath}/api/puntos-interes`;
 
         let params = new HttpParams();
@@ -37,6 +37,9 @@ export class PuntosInteresService {
         }
         if (limit != null) {
             params = HttpParamsBuilder.addToHttpParams(params, limit, 'limit');
+        }
+        if (nombre != null) {
+            params = HttpParamsBuilder.addToHttpParams(params, nombre, 'nombre');
         }
 
         let headers: HttpHeaders;

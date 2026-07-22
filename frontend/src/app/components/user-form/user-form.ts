@@ -3,8 +3,9 @@ import { Component, effect, inject, input, OnInit, output, signal } from '@angul
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, UrlTree } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AuthService } from '../../auth.service';
 import { Rol, User, UserService } from '../../user.service';
-import { equals } from "../../validators";
+import { equals, createUserEmailValidator } from "../../validators";
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 
 const PASSWD_VALIDATORS = [Validators.required, Validators.minLength(6)];
@@ -20,6 +21,7 @@ export class UserForm implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
 
   protected readonly guardando = signal(false);
 
@@ -30,7 +32,7 @@ export class UserForm implements OnInit {
   protected readonly guardado = output<Partial<User>>();
 
   protected readonly form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email], [createUserEmailValidator(this.authService)]],
     fullname: ['', [Validators.required, Validators.minLength(3)]],
     password: ['', PASSWD_VALIDATORS],
     password_repeat: ['', Validators.required],
@@ -61,10 +63,12 @@ export class UserForm implements OnInit {
         // Make password optional when editing
         this.password.setValidators([]);
         this.passwordRepeat.setValidators([]);
+        this.email.setAsyncValidators([ createUserEmailValidator(this.authService, [data.email]) ]);
         this.form.updateValueAndValidity();
       } else {
         this.password.setValidators(PASSWD_VALIDATORS);
         this.passwordRepeat.setValidators(PASSWD_R_VALIDATORS);
+        this.email.setAsyncValidators([ createUserEmailValidator(this.authService) ]);
         this.form.updateValueAndValidity();
       }
     });

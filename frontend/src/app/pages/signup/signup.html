@@ -1,5 +1,8 @@
 <main class="container">
   <h1>Crear Cuenta</h1>
+  @if (error(); as error) {
+    <div class="alert alert-danger">{{ error }}</div>
+  }
   <form [formGroup]="form" (ngSubmit)="crearCuenta()">
     <section class="card">
       <div class="card-body">
@@ -10,7 +13,9 @@
           @if (email.touched && email.errors; as errors) {
           <div class="invalid-feedback">
             @if (errors['required'] || errors['email']) {
-            Ingrese un correo electrónico válido
+              Ingrese un correo electrónico válido
+            } @else if (errors['emailTaken']) {
+              Esta dirección ya está registrada
             }
           </div>
           }

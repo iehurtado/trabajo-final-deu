@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { computed, effect, inject, Injectable, signal } from "@angular/core";
-import { firstValueFrom } from "rxjs";
+import { firstValueFrom, Observable } from "rxjs";
 import { AuthService as AuthControllerService } from "../api/services/auth.service";
 
 export class UnauthorizedError extends Error {
@@ -41,6 +41,10 @@ export class AuthService {
     });
   }
 
+  public checkEmail(email: string): Observable<{ available: boolean }> {
+    return this.authController.checkEmail(email);
+  }
+
   public async login(credentials: { email: string, password: string }): Promise<void> {
     try {
       const response = await firstValueFrom(this.authController.login(credentials));
@@ -52,6 +56,10 @@ export class AuthService {
 
       throw e;
     }
+  }
+
+  public async signup(form: { email: string, fullname: string, password: string, password_repeat: string }) {
+    return firstValueFrom(this.authController.signup(form));
   }
 
   public async logout(): Promise<void> {

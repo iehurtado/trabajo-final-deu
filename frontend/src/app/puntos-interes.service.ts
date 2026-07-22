@@ -42,6 +42,12 @@ export class PuntosInteresService {
         return this.puntosInteresController.findPuntoInteresById(id);
     }
 
+    getPuntoInteresByNombre(nombre: string): Observable<PuntoInteres> {
+        return this.puntosInteresController.findAllPuntosInteres(1, Infinity, nombre).pipe(
+          map(x => x.data[0])
+        );
+    }
+
     addPuntoInteres(nuevoPunto: Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>): Observable<PuntoInteres> {
         return this.puntosInteresController.createPuntoInteres(nuevoPunto);
     }

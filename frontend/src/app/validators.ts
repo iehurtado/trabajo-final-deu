@@ -1,4 +1,21 @@
-import { ValidatorFn, AbstractControl, FormGroup } from "@angular/forms";
+import { AbstractControl, AsyncValidatorFn, FormGroup, ValidatorFn } from "@angular/forms";
+import { delay, map, of, switchMap } from "rxjs";
+import { AuthService } from "./auth.service";
+
+export function createUserEmailValidator(authService: AuthService, forgiven: string[] = []): AsyncValidatorFn {
+  return control => {
+    if (!control.value || forgiven.includes(control.value.toLowerCase())) {
+      return of(null);
+    }
+
+    return of(control.value).pipe(
+      delay(200),
+      switchMap(value => authService.checkEmail(value).pipe(
+        map(({ available }) => available ? null : { emailTaken: true })
+      ))
+    )
+  }
+}
 
 export function equals(a: string, b: string): ValidatorFn {
   return (form: AbstractControl) => {

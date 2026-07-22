@@ -17,6 +17,9 @@
                             @else if (errors['minlength']; as e) {
                               Debe tener al menos {{ e.required }} caracteres.
                             }
+                            @else if (errors['balnearioNameExists']) {
+                              Ya se cargó un balneario con este nombre.
+                            }
                           </div>
                         }
                     </div>

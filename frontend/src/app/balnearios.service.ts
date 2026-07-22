@@ -38,6 +38,10 @@ export class BalneariosService {
         return this.balneariosController.findBalnearioById(id);
     }
 
+    getBalnearioByNombre(nombre: string): Observable<Balneario | undefined> {
+        return this.balneariosController.findAllBalnearios(1, Infinity, nombre).pipe(map(x => x.data[0]));
+    }
+
     addBalneario(nuevo: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Observable<Balneario> {
         return this.balneariosController.createBalneario(nuevo);
     }

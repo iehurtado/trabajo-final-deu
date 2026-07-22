@@ -8,9 +8,15 @@
         <label for="email" class="form-label">Correo Electrónico</label>
         <input type="email" class="form-control" id="email" formControlName="email"
           [class.is-invalid]="email.invalid && email.touched" />
-        @if (email.touched && (email.hasError('required') || email.hasError('email'))) {
-        <div class="invalid-feedback d-block">Debe ingresar un correo electrónico válido</div>
-        }
+          @if (email.touched && email.errors; as errors) {
+            <div class="invalid-feedback d-block">
+              @if (errors['required'] || errors['email']) {
+                Debe ingresar un correo electrónico válido
+              } @else if (errors['emailTaken']) {
+                Esta dirección ya está siendo utilizada
+              }
+            </div>
+          }
       </div>
 
       <!-- Nombre Completo -->

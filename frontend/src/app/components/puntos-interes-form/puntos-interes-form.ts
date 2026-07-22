@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, UrlSegment, UrlTree } from '@angular/router';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import * as L from 'leaflet';
-import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
-import { PuntoInteres } from '../../puntos-interes.service';
+import { delay, distinctUntilChanged, map, of, startWith, Subscription, switchMap } from 'rxjs';
+import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
 import { PUNTA_LARA } from '../../util';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { PuntoInteresIcon } from '../map/util';
@@ -23,6 +23,7 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
 
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly puntosInteresService = inject(PuntosInteresService);
 
   private map!: L.Map;
   private marker?: L.Marker;
@@ -36,13 +37,15 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
   protected readonly guardado = output<Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>>();
 
   protected readonly form = this.fb.nonNullable.group({
-    nombre: ['', [Validators.required, Validators.minLength(3)]],
+    nombre: ['', [Validators.required, Validators.minLength(3)], [this.puntoInteresNameValidator()]],
     categoria: ['Contaminantes', [Validators.required]],
     subcategoria: ['', [Validators.required]],
     latitud: [null as number|null, [Validators.required]],
     longitud: [null as number|null, [Validators.required]],
     descripcion: ['', [Validators.maxLength(500)]],
   });
+
+  protected readonly nombre = this.form.controls['nombre'];
 
   constructor() {
     effect(() => {
@@ -68,6 +71,23 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.locationSubscription.unsubscribe();
+  }
+
+  private puntoInteresNameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      const value = control.value;
+
+      if (!value || value === this.initialData()?.nombre) {
+        return of(null);
+      }
+
+      return of(value).pipe(
+        delay(200),
+        switchMap(value => this.puntosInteresService.getPuntoInteresByNombre(value).pipe(
+          map(puntoInteres => puntoInteres ? { puntoInteresNameExists: { message: 'Ya se cargó un punto de interés con este nombre' } } : null)
+        )),
+      );
+    };
   }
 
   private initMap(): void {

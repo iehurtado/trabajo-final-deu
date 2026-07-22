@@ -1,9 +1,9 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository, EntityManager } from '@mikro-orm/postgresql';
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Res } from '@nestjs/common';
+import { EntityManager, EntityRepository, FindAllOptions, raw } from '@mikro-orm/postgresql';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { Balneario } from 'src/entities';
 import { Public } from '../auth/decorators';
-import { Http2ServerResponse } from 'http2';
+import { ApiQuery } from '@nestjs/swagger';
 
 interface Paginator<T> {
   data: T[];
@@ -54,11 +54,15 @@ export class BalneariosController {
     private readonly em: EntityManager,
   ) {}
 
+  @ApiQuery({ name: "page", default: 1 })
+  @ApiQuery({ name: "limit", default: 10 })
+  @ApiQuery({ name: "nombre", required: false })
   @Public()
   @Get()
   public async findAllBalnearios(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
+    @Query('nombre') nombre?: string,
   ): Promise<Paginator<Balneario>> {
     const count = await this.balnearioRepository.count();
 
@@ -66,11 +70,17 @@ export class BalneariosController {
     const totalPages = Math.ceil(count / limit);
     page = Math.max(1, Math.min(page, totalPages));
 
-    const data = await this.balnearioRepository.findAll({
+    const options: FindAllOptions<Balneario> = {
       offset: limit * (page - 1),
       limit: limit,
       orderBy: { nombre: 'ASC', id: 'ASC' },
-    });
+    };
+
+    if (nombre) {
+      options['where'] = { [raw('lower(nombre)')]: nombre.toLowerCase() };
+    }
+
+    const data = await this.balnearioRepository.findAll(options);
 
     return {
       data,

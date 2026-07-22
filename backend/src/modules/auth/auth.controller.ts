@@ -1,11 +1,12 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
-import { Body, Controller, Get, Post, Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { EntityManager, EntityRepository, raw } from '@mikro-orm/postgresql';
+import { Body, Controller, Get, Post, Query, Req, UnauthorizedException, UnprocessableEntityException, UseGuards } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Rol, User } from 'src/entities';
 import { AuthGuard } from './auth.guard';
 import { Public } from './decorators';
+import { ApiProperty, ApiResponse } from '@nestjs/swagger';
 
 class LoginCredentials {
   constructor(
@@ -26,6 +27,10 @@ class SignupForm {
 type LoginResponse = {
   access_token: string;
   user: User;
+}
+
+type CheckEmailResponse = {
+  available: boolean;
 }
 
 @Controller('auth')
@@ -64,6 +69,14 @@ export class AuthController {
   @Public()
   @Post('signup')
   public async signup(@Body() form: SignupForm): Promise<User> {
+    const count = await this.userRepository.createQueryBuilder()
+      .where({ [raw('lower(email)')]: form.email.toLowerCase() })
+      .getCount();
+
+    if (count > 0) {
+      throw new UnprocessableEntityException("La dirección de email ya está registrada");
+    }
+
     const user = this.userRepository.create({
       email: form.email,
       fullname: form.fullname,
@@ -76,6 +89,16 @@ export class AuthController {
     await this.em.flush();
 
     return user;
+  }
+
+  @Public()
+  @Get('check-email')
+  public async checkEmail(@Query('email') email: string): Promise<CheckEmailResponse> {
+    const count = await this.userRepository.createQueryBuilder()
+      .where({ [raw('lower(email)')]: email.toLowerCase() })
+      .getCount();
+
+    return { available: count === 0 };
   }
 }
 

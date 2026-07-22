@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, UrlTree } from '@angular/router';
 import * as L from 'leaflet';
-import { distinctUntilChanged, map, startWith, Subscription } from 'rxjs';
-import { Balneario } from '../../balnearios.service';
+import { delay, distinctUntilChanged, map, of, startWith, Subscription, switchMap } from 'rxjs';
+import { Balneario, BalneariosService } from '../../balnearios.service';
 import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
@@ -22,6 +22,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
 
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
+  private readonly balneariosService = inject(BalneariosService);
 
   private map!: L.Map;
   private marker?: L.Marker;
@@ -35,7 +36,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   protected readonly guardado = output<Omit<Balneario, 'id'|'createdAt'|'updatedAt'>>();
 
   protected readonly form = this.fb.group({
-    nombre: ['', [Validators.required, Validators.minLength(3)]],
+    nombre: ['', [Validators.required, Validators.minLength(3)], [this.balnearioNameValidator()]],
     estadoAgua: ['APTO' as 'APTO'|'NO_APTO'|'PRECAUCION', [Validators.required]],
     latitud: [null as number|null, [Validators.required]],
     longitud: [null as number|null, [Validators.required]],
@@ -76,6 +77,23 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     if (this.locationSubscription) {
       this.locationSubscription.unsubscribe();
     }
+  }
+
+  private balnearioNameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      const value = control.value;
+
+      if (!value || value === this.initialData()?.nombre) {
+        return of(null);
+      }
+
+      return of(value).pipe(
+        delay(200),
+        switchMap(value => this.balneariosService.getBalnearioByNombre(value).pipe(
+          map(balneario => balneario ? { balnearioNameExists: { message: 'Ya se cargó un balneario con este nombre' } } : null)
+        )),
+      );
+    };
   }
 
   private initMap(): void {

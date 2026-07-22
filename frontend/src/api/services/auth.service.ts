@@ -104,4 +104,34 @@ export class AuthService {
 
         return this.httpClient.post(url, signupForm, requestOptions);
     }
+
+    checkEmail(email: string, observe?: 'body', options?: RequestOptions<'json'>): Observable<any>;
+    checkEmail(email: string, observe?: 'response', options?: RequestOptions<'json'>): Observable<HttpResponse<any>>;
+    checkEmail(email: string, observe?: 'events', options?: RequestOptions<'json'>): Observable<HttpEvent<any>>;
+    checkEmail(email: string, observe?: 'body' | 'events' | 'response', options?: RequestOptions<'arraybuffer' | 'blob' | 'json' | 'text'>): Observable<any> {
+        const url = `${this.basePath}/api/auth/check-email`;
+
+        let params = new HttpParams();
+        if (email != null) {
+            params = HttpParamsBuilder.addToHttpParams(params, email, 'email');
+        }
+
+        let headers: HttpHeaders;
+        if (options?.headers instanceof HttpHeaders) {
+            headers = options.headers;
+        } else {
+            headers = new HttpHeaders(options?.headers);
+        }
+
+        const requestOptions: any = {
+            observe: observe as any,
+            headers,
+            params,
+            reportProgress: options?.reportProgress,
+            withCredentials: options?.withCredentials,
+            context: this.createContextWithClientId(options?.context)
+        };
+
+        return this.httpClient.get(url, requestOptions);
+    }
 }
