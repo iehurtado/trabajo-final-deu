@@ -63,16 +63,17 @@
     }
 </main>
 <app-fixed-footer>
-        <div class="d-flex justify-content-end w-100">
-                <div class="ms-auto">
-                        <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
-                        @if (punto.hasValue() && punto.value(); as punto) {
-                            <a role="button" class="btn btn-primary" [routerLink]="['/puntos', puntoId(), 'update']">Editar</a>
-
-                            @if (canDeletePunto()) {
-                                <button type="button" class="btn btn-danger ms-2" (click)="deletePunto()">Eliminar</button>
-                            }
-                        }
-                </div>
-        </div>
+  <div class="d-flex justify-content-between w-100">
+    <div>
+      @if (canDeletePunto() && punto.hasValue() && punto.value(); as punto) {
+        <button type="button" class="btn btn-danger ms-2" (click)="deletePunto()">Eliminar</button>
+      }
+    </div>
+    <div class="ms-auto">
+      <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
+      @if (punto.hasValue() && punto.value(); as punto) {
+        <a role="button" class="btn btn-primary" [routerLink]="['/puntos', puntoId(), 'update']">Editar</a>
+      }
+    </div>
+  </div>
 </app-fixed-footer>
