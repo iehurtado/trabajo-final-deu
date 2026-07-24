@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, resource }
 import { Router, RouterLink } from "@angular/router";
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { firstValueFrom } from 'rxjs';
-import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { MapComponent, MarkerComponent } from '../../components/map/map';
 import { PuntoInteresIcon } from '../../components/map/util';
 import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
@@ -14,7 +13,7 @@ import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-puntos-interes-detail',
-  imports: [MapComponent, FixedFooter, RouterLink, MarkerComponent, DatePipe],
+  imports: [MapComponent, RouterLink, MarkerComponent, DatePipe],
   templateUrl: './puntos-interes-detail.html',
   styleUrl: './puntos-interes-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

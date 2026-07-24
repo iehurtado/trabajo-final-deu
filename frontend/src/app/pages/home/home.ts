@@ -1,5 +1,4 @@
-import { NgComponentOutlet } from '@angular/common';
-import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, computed, createComponent, effect, EnvironmentInjector, inject, Injector, inputBinding, OnChanges, OnInit, resource, signal, Type, viewChild } from '@angular/core';
+import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, computed, createComponent, effect, EnvironmentInjector, inject, Injector, inputBinding, OnInit, resource, signal, Type, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
@@ -9,7 +8,6 @@ import L, { Icon, IconOptions } from 'leaflet';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../auth.service';
 import { BalneariosService } from '../../balnearios.service';
-import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { MapComponent, MapPanel } from '../../components/map/map';
 import { BalnearioIcon, PuntoInteresIcon } from '../../components/map/util';
 import { PopupBalneario } from '../../components/popup-balneario';
@@ -41,8 +39,6 @@ type SearchOption = {
     MapComponent,
     FaIconComponent,
     MapPanel,
-    NgComponentOutlet,
-    FixedFooter,
     RouterLink,
     NgSelectComponent,
     ReactiveFormsModule,

@@ -5,11 +5,11 @@ import { Balneario, BalneariosService } from '../balnearios.service';
 import { BalneariosForm } from "../components/balnearios-form/balnearios-form";
 import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
 import { Toaster } from '../components/toaster/toaster.service';
-import { FixedFooter } from "../components/fixed-footer/fixed-footer";
+
 
 @Component({
   selector: 'app-balnearios-update',
-  imports: [BalneariosForm, FixedFooter, RouterLink],
+  imports: [BalneariosForm, RouterLink],
   template: `
     <main class="container-fluid">
       <h1>Editar Balneario #{{ balnearioId() }}</h1>
@@ -23,14 +23,9 @@ import { FixedFooter } from "../components/fixed-footer/fixed-footer";
         <div class="alert alert-danger" role="alert">
           <strong>No se pudo cargar el balneario</strong>
           <div>{{ getUserFriendlyErrorMessage(e, 'Balneario') }}</div>
+          <br>
+          <a class="btn btn-link" routerLink="/balnearios">Volver</a>
         </div>
-        <app-fixed-footer>
-          <div class="d-flex justify-content-end w-100">
-            <div class="ms-auto">
-              <a role="button" class="btn focus-ring" routerLink="/balnearios">Volver</a>
-            </div>
-          </div>
-        </app-fixed-footer>
       }
       @if (balneario.hasValue() && balneario.value(); as balneario) {
         <app-balnearios-form [backLink]="['/balnearios', balneario.id]"

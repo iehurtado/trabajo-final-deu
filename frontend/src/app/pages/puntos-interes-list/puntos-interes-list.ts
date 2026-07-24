@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { firstValueFrom } from 'rxjs';
-import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { Paginator } from "../../components/paginator/paginator";
 import { getUserFriendlyErrorMessage } from '../../util';
 import { PuntosInteresService } from '../../puntos-interes.service';
@@ -13,7 +12,7 @@ const perPage = 10;
 
 @Component({
   selector: 'app-puntos-interes-list',
-  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, DatePipe],
+  imports: [RouterLink, FaIconComponent, Paginator, DatePipe],
   templateUrl: './puntos-interes-list.html',
   styleUrl: './puntos-interes-list.scss',
 })

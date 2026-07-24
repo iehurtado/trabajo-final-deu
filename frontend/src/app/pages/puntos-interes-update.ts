@@ -4,13 +4,13 @@ import { Router, RouterLink } from '@angular/router';
 import { PuntosInteresForm } from "../components/puntos-interes-form/puntos-interes-form";
 import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { getUserFriendlyErrorMessage, ReportsUnsaved } from '../util';
-import { FixedFooter } from "../components/fixed-footer/fixed-footer";
+
 import { firstValueFrom } from 'rxjs';
 import { Toaster } from '../components/toaster/toaster.service';
 
 @Component({
   selector: 'app-puntos-interes-update',
-  imports: [ReactiveFormsModule, PuntosInteresForm, FixedFooter, RouterLink],
+  imports: [ReactiveFormsModule, PuntosInteresForm, RouterLink],
   template: `
     <main class="container-fluid">
       <h1>Editar Punto de Interés #{{puntoId()}}</h1>
@@ -24,14 +24,9 @@ import { Toaster } from '../components/toaster/toaster.service';
         <div class="alert alert-danger" role="alert">
           <strong>No se pudo cargar el punto de interés</strong>
           <div>{{ getUserFriendlyErrorMessage(e, 'Punto de interés') }}</div>
+          <br>
+          <a class="btn btn-link" routerLink="/puntos">Volver</a>
         </div>
-        <app-fixed-footer>
-          <div class="d-flex justify-content-end w-100">
-            <div class="ms-auto">
-              <a role="button" class="btn focus-ring" routerLink="/puntos">Volver</a>
-            </div>
-          </div>
-        </app-fixed-footer>
       }
       @if (punto.hasValue() && punto.value(); as punto) {
         <app-puntos-interes-form [initialData]="punto"

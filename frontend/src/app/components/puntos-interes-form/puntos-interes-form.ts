@@ -7,12 +7,11 @@ import * as L from 'leaflet';
 import { delay, distinctUntilChanged, map, of, startWith, Subscription, switchMap } from 'rxjs';
 import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
 import { PUNTA_LARA } from '../../util';
-import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { PuntoInteresIcon } from '../map/util';
 
 @Component({
   selector: 'app-puntos-interes-form',
-  imports: [ReactiveFormsModule, RouterLink, FixedFooter, FaIconComponent],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent],
   templateUrl: './puntos-interes-form.html',
   styleUrl: './puntos-interes-form.scss',
 })

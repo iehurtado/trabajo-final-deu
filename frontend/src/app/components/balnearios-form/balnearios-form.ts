@@ -4,7 +4,6 @@ import { Router, RouterLink, UrlTree } from '@angular/router';
 import * as L from 'leaflet';
 import { delay, distinctUntilChanged, map, of, startWith, Subscription, switchMap } from 'rxjs';
 import { Balneario, BalneariosService } from '../../balnearios.service';
-import { FixedFooter } from "../fixed-footer/fixed-footer";
 import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { PUNTA_LARA } from '../../util';
@@ -12,7 +11,7 @@ import { BalnearioIcon } from '../map/util';
 
 @Component({
   selector: 'app-balnearios-form',
-  imports: [ReactiveFormsModule, RouterLink, FixedFooter, FaIconComponent],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent],
   templateUrl: './balnearios-form.html',
   styleUrl: './balnearios-form.scss',
 })

@@ -4,7 +4,6 @@ import { RouterLink } from '@angular/router';
 import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { firstValueFrom } from 'rxjs';
-import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
 import { UserService } from '../../user.service';
 import { getUserFriendlyErrorMessage } from '../../util';
@@ -14,7 +13,7 @@ const perPage = 10;
 
 @Component({
   selector: 'app-users-list',
-  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, DatePipe],
+  imports: [RouterLink, FaIconComponent, Paginator, DatePipe],
   templateUrl: './users-list.html',
   styleUrl: './users-list.scss',
 })

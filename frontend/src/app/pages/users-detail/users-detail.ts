@@ -2,11 +2,10 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, resource } from '@angular/core';
 import { RouterLink } from "@angular/router";
 import { firstValueFrom } from 'rxjs';
-import { FixedFooter } from '../../components/fixed-footer/fixed-footer';
 import { UserService } from '../../user.service';import { getUserFriendlyErrorMessage } from '../../util';
 @Component({
   selector: 'app-users-detail',
-  imports: [CommonModule, FixedFooter, RouterLink, DatePipe],
+  imports: [CommonModule, RouterLink, DatePipe],
   templateUrl: './users-detail.html',
   styleUrl: './users-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

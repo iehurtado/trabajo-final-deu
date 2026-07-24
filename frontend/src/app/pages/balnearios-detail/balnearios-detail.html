@@ -13,7 +13,7 @@
       </div>
     }
     @if (balneario.hasValue() && balneario.value(); as balneario) {
-      <div class="row g-3">
+      <div class="row g-2">
           <div class="col-12 col-md-5">
               <section class="card mb-2">
                   <h5 class="card-header">Información Básica</h5>
@@ -40,7 +40,7 @@
                     </div>
                 </div>
             </section>
-            <section class="card">
+            <section class="card mb-2">
                 <h5 class="card-header">Servicios Disponibles</h5>
                 <div class="card-body p-0">
                     <ul class="list-group list-group-flush">
@@ -84,7 +84,7 @@
                 </div>
             </section>
         </div>
-        <div class="col-12 col-md-7">
+        <div class="col-12 col-md-7 mb-2">
             <section class="card h-100">
                 <h5 class="card-header">Ubicación</h5>
                 <div class="card-body p-0">
@@ -97,20 +97,24 @@
             </section>
         </div>
     </div>
-    }
-</main>
-<app-fixed-footer>
-    <div class="d-flex justify-content-between w-100">
-      <div>
-        @if (canDeleteBalneario() && balneario.hasValue() && balneario.value(); as balneario) {
-          <button type="button" class="btn btn-danger ms-2" (click)="deleteBalneario()">Eliminar</button>
+  }
+  <section class="card mb-2">
+    <h5 class="card-header visually-hidden">Acciones</h5>
+    <div class="card-body">
+      <div class="d-flex">
+        <div>
+          <a role="button" class="btn btn-primary" routerLink="/balnearios">Volver</a>
+        </div>
+        @if (balneario.hasValue() && balneario.value(); as balneario) {
+          <div class="ms-auto">
+            @if (canDeleteBalneario()) {
+              <button type="button" class="btn btn-danger me-1" (click)="deleteBalneario()">Eliminar</button>
+            }
+            <a role="button" class="btn btn-primary" [routerLink]="['/balnearios', balneario.id, 'update']">Editar</a>
+          </div>
         }
       </div>
-      <div>
-        <a role="button" class="btn focus-ring" routerLink="/balnearios">Volver</a>
-          @if (balneario.hasValue() && balneario.value(); as balneario) {
-            <a role="button" class="btn btn-primary" [routerLink]="['/balnearios', balneario.id, 'update']">Editar</a>
-          }
-        </div>
     </div>
-</app-fixed-footer>
+  </section>
+</main>
+

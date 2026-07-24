@@ -56,18 +56,13 @@
                 No hay puntos de interés cargados.
               }
             </div>
-            @if (paginator.data.length > 0) {
-              <div class="card-footer d-flex justify-content-end">
-                  <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page.set($event)" />
-              </div>
-            }
+            <div class="card-footer d-flex justify-content-end">
+              @if (paginator.data.length > 0) {
+                <app-paginator [info]="paginator.paginatorInfo" (pageChange)="page.set($event)" />
+                <span class="vr mx-2"></span>
+              }
+              <a role="button" class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar...</a>
+            </div>
         </div>
     }
 </main>
-<app-fixed-footer>
-    <div class="d-flex justify-content-end w-100">
-        <div class="ms-auto">
-            <a role="button" class="btn btn-primary" [routerLink]="['/puntos/create']">Agregar...</a>
-        </div>
-    </div>
-</app-fixed-footer>

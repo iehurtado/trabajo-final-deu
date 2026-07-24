@@ -5,7 +5,6 @@ import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { firstValueFrom } from 'rxjs';
 import { Balneario, BalneariosService } from '../../balnearios.service';
 import { EstadoAguaBadge } from "../../components/estado-agua-badge";
-import { FixedFooter } from "../../components/fixed-footer/fixed-footer";
 import { Paginator } from "../../components/paginator/paginator";
 import { getUserFriendlyErrorMessage } from '../../util';
 import { DatePipe } from '@angular/common';
@@ -13,7 +12,7 @@ import { DatePipe } from '@angular/common';
 const perPage = 10;
 @Component({
   selector: 'app-balnearios-list',
-  imports: [RouterLink, FixedFooter, FaIconComponent, Paginator, EstadoAguaBadge, DatePipe],
+  imports: [RouterLink, FaIconComponent, Paginator, EstadoAguaBadge, DatePipe],
   templateUrl: './balnearios-list.html',
   styleUrl: './balnearios-list.scss',
 })
