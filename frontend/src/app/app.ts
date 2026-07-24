@@ -26,7 +26,7 @@ export class App implements OnInit, AfterViewInit {
   protected isNavbarCollapsed = signal(true);
 
   protected links = computed(() => {
-    const links = [ { route: '', title: 'Home' } ];
+    const links = [ { route: '', title: 'Mapa' } ];
 
     const user = this.auth.user();
 

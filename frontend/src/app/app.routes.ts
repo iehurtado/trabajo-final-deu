@@ -159,6 +159,10 @@ export const routes: Routes = [
       ],
     },
     {
+      path: 'mapa',
+      redirectTo: '',
+    },
+    {
         component: ErrorPage,
         path: 'error',
         title: 'Error',
