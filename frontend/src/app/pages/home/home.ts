@@ -1,5 +1,5 @@
 import { NgComponentOutlet } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, computed, createComponent, effect, inject, Injector, inputBinding, OnChanges, OnInit, resource, signal, Type, viewChild } from '@angular/core';
+import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, computed, createComponent, effect, EnvironmentInjector, inject, Injector, inputBinding, OnChanges, OnInit, resource, signal, Type, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
@@ -56,7 +56,9 @@ export class Home implements OnInit, AfterViewInit {
   private readonly auth = inject(AuthService);
   protected readonly canAddPuntos = this.auth.can(['Colaborador', 'Administrador']);
 
+  private readonly app = inject(ApplicationRef);
   private readonly injector = inject(Injector);
+  private readonly environmentInjector = inject(EnvironmentInjector);
   private readonly puntosService = inject(PuntosInteresService);
   private readonly balneariosService = inject(BalneariosService);
   private readonly map = viewChild.required(MapComponent);
@@ -138,40 +140,6 @@ export class Home implements OnInit, AfterViewInit {
     item.marker.openPopup();
   }
 
-  private createLayerGroup(puntos: Marcador[]) {
-    const markers: L.Marker[] = [];
-
-    for (const punto of puntos) {
-      const marker = this.createMarker(punto);
-      markers.push(marker);
-    }
-
-    return L.layerGroup(markers);
-  }
-
-  private createMarker(marcador: Marcador) {
-    const marker = L.marker([marcador.lat, marcador.long], {
-      title: marcador.nombre,
-      icon: marcador.icono,
-    });
-
-    const el = document.createElement('div');
-    el.classList.add('leaflet-popup-custom');
-
-    const popup = L.popup({
-      content: el,
-      autoPan: false,
-      closeButton: false,
-      closeOnClick: false,
-    });
-
-    marker.on('popupopen', (e) => this.onPopupOpened(e, marcador));
-    marker.bindPopup(popup);
-    marker.bindTooltip(marcador.nombre);
-
-    return marker;
-  }
-
   private async fetchPuntosInteres() {
     const puntos = await firstValueFrom(this.puntosService.getPuntosInteres());
 
@@ -229,15 +197,65 @@ export class Home implements OnInit, AfterViewInit {
     this.popup()?.close();
   }
 
-  private onPopupOpened(e: L.PopupEvent, marcador: Marcador) {
-    e.popup.once('remove', () => {
-      this.popup.set(null);
-      this.panel.set(null);
+  private createLayerGroup(puntos: Marcador[]) {
+    const markers: L.Marker[] = [];
+
+    for (const punto of puntos) {
+      const marker = this.createMarker(punto);
+      markers.push(marker);
+    }
+
+    return L.layerGroup(markers);
+  }
+
+  private createMarker(marcador: Marcador) {
+    const marker = L.marker([marcador.lat, marcador.long], {
+      title: marcador.nombre,
+      icon: marcador.icono,
     });
 
-    this.map().flyTo(e.popup.getLatLng()!);
-    this.panel.set(marcador.panel);
-    this.popup.set(e.popup);
+    const popup = this.createPopup(marker, marcador);
+    marker.bindPopup(popup);
+    marker.bindTooltip(marcador.nombre);
+
+    return marker;
+  }
+
+  private createPopup(marker: L.Marker<any>, marcador: Marcador) {
+    const el = document.createElement('div');
+    el.classList.add('leaflet-popup-custom');
+
+    const popup = L.popup({
+      content: el,
+      autoPan: false,
+      closeButton: true,
+      closeOnClick: false,
+    });
+
+    marker.on('popupopen', (e) => {
+      const component = createComponent(marcador.panel.component, {
+        hostElement: el,
+        environmentInjector: this.environmentInjector,
+        bindings: Object.entries(marcador.panel.inputs).map(([name, value]) => {
+          return inputBinding(name, () => value);
+        }),
+      });
+
+      this.app.attachView(component.hostView);
+
+      e.popup.once('remove', () => {
+        this.app.detachView(component.hostView);
+
+        this.popup.set(null);
+        this.panel.set(null);
+      });
+
+      this.map().flyTo(e.popup.getLatLng()!);
+      this.panel.set(marcador.panel);
+      this.popup.set(e.popup);
+    });
+
+    return popup;
   }
 }
 

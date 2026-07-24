@@ -28,6 +28,7 @@ const servicios = [
       }
     </div>
     @if (canViewDetail()) {
+      <hr>
       <div class="text-end">
         <a [routerLink]="['/balnearios', balneario.id ]" class="btn btn-primary btn-sm text-white">Ir a detalle</a>
       </div>

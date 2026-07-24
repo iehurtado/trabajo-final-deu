@@ -14,6 +14,7 @@ import { AuthService } from "../auth.service";
     </div>
     <p class="small text-muted mb-2">{{ punto.descripcion || '' }}</p>
     @if (canViewDetail()) {
+      <hr>
       <div class="text-end">
         <a [routerLink]="['/puntos', punto.id]" class="btn btn-sm btn-primary text-white">Ir a detalle</a>
       </div>

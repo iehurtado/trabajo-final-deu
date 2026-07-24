@@ -62,7 +62,7 @@ app-map {
     box-shadow: var(--bs-focus-ring-x, 0) var(--bs-focus-ring-y, 0) var(--bs-focus-ring-blur, 0) var(--bs-focus-ring-width) var(--bs-focus-ring-color)
   }
 
-  .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  .leaflet-popup-tip {
     display: none;
   }
 

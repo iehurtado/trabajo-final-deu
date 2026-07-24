@@ -12,17 +12,12 @@
     <div class="card">
       <div class="card-body p-0">
         <app-map id="map" [loading]="loading()">
+          @if (!panel()) {
           <ng-template appMapPanel>
-            @if (panel(); as panel) {
-              <div class="d-flex justify-content-end">
-                <button class="btn btn-close btn-sm" aria-label="Cerrar" (click)="closePanel()"></button>
-              </div>
-              <ng-container *ngComponentOutlet="panel.component; inputs: panel.inputs"></ng-container>
-            } @else {
               <fa-icon [icon]="faInfoCircle" alt=""/>
               Seleccione un marcador en el mapa para ver la información disponible
-            }
-          </ng-template>
+            </ng-template>
+          }
         </app-map>
       </div>
     </div>
