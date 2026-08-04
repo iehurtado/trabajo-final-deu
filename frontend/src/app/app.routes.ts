@@ -58,7 +58,7 @@ export const routes: Routes = [
         component: Home,
         path: '',
         pathMatch: 'full',
-        title: 'Home',
+        title: 'Carcará',
     },
     {
         component: Signup,

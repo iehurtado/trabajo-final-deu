@@ -1,31 +1,29 @@
-<main class="container-fluid">
+<main class="h-100">
   <h1 class="visually-hidden">Mapa</h1>
-  <div class="card my-3">
-    <div class="card-body p-0">
-      <div class="p-3">
-        <label for="buscar" class="form-label">Buscar</label>
-        <ng-select labelForId="buscar" [compareWith]="compareWith" groupBy="tipo" (change)="selectMarker($event)">
-          @for (element of searchableElems; track element.marker) {
+  <app-map id="map" class="h-100 w-100" [loading]="loading()">
+    <ng-template appMapControl position="topleft">
+      <div class="search-control">
+        <label for="buscar" class="visually-hidden">Buscar</label>
+        <ng-select labelForId="buscar" placeholder="Buscar lugares..." [compareWith]="compareWith" groupBy="tipo" (change)="selectMarker($event)">
+          @for (element of searchableElems(); track element.marker) {
             <ng-option [value]="element">{{ element.label }}</ng-option>
           }
         </ng-select>
       </div>
-      <app-map id="map" [loading]="loading()">
-        @if (!panel()) {
-        <ng-template appMapPanel>
-            <fa-icon [icon]="faInfoCircle" alt=""/>
-            Seleccione un marcador en el mapa para ver la información disponible
-          </ng-template>
-        }
-      </app-map>
-    </div>
-    @if (canAddPuntos()) {
-      <div class="card-footer d-flex justify-content-end">
-        <a role="button" class="btn btn-primary d-block d-sm-inline" routerLink="/puntos/create" [state]="{ backlink: ['/'] }">
-          Agregar Punto de Interés...
-        </a>
-      </div>
+    </ng-template>
+    @if (false && !panel()) {
+      <ng-template appMapPanel>
+        <fa-icon [icon]="faInfoCircle" alt=""/>
+        Seleccione un marcador en el mapa para ver la información disponible
+      </ng-template>
     }
-  </div>
+  </app-map>
+  @if (false && canAddPuntos()) {
+    <div class="card-footer d-flex justify-content-end">
+      <a role="button" class="btn btn-primary d-block d-sm-inline" routerLink="/puntos/create" [state]="{ backlink: ['/'] }">
+        Agregar Punto de Interés...
+      </a>
+    </div>
+  }
 </main>
 

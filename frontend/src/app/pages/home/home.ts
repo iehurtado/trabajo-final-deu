@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, computed, createComponent, effect, EnvironmentInjector, inject, Injector, inputBinding, OnInit, resource, signal, Type, viewChild } from '@angular/core';
+import { afterNextRender, afterRenderEffect, AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, computed, createComponent, effect, EnvironmentInjector, inject, Injector, inputBinding, linkedSignal, OnInit, resource, ResourceRef, Signal, signal, Type, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
@@ -8,7 +8,7 @@ import L, { Icon, IconOptions } from 'leaflet';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from '../../auth.service';
 import { BalneariosService } from '../../balnearios.service';
-import { MapComponent, MapPanel } from '../../components/map/map';
+import { MapComponent, MapControl, MapPanel } from '../../components/map/map';
 import { BalnearioIcon, PuntoInteresIcon } from '../../components/map/util';
 import { PopupBalneario } from '../../components/popup-balneario';
 import { PopupPuntoInteres } from '../../components/popup-punto-interes';
@@ -42,13 +42,14 @@ type SearchOption = {
     RouterLink,
     NgSelectComponent,
     ReactiveFormsModule,
-    NgOptionComponent
+    NgOptionComponent,
+    MapControl
 ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Home implements OnInit, AfterViewInit {
+export class Home {
   private readonly auth = inject(AuthService);
   protected readonly canAddPuntos = this.auth.can(['Colaborador', 'Administrador']);
 
@@ -81,59 +82,57 @@ export class Home implements OnInit, AfterViewInit {
 
   protected readonly compareWith = <T extends SearchOption>(a: T, b: T) => a.marker === b.marker;
 
-  protected balneariosLayer?: L.LayerGroup;
-  protected puntosInteresLayer?: L.LayerGroup;
+  protected balneariosLayer = linkedSignal({
+    source: this.balnearios.value,
+    computation: this.computeLayerGroup.bind(this),
+  });
 
-  protected searchableElems: SearchOption[] = [];
+  protected puntosInteresLayer = linkedSignal({
+    source: this.puntosInteres.value,
+    computation: this.computeLayerGroup.bind(this),
+  })
+
+  protected readonly searchableElems = computed<SearchOption[]>(() => {
+    const elems = [] as Array<SearchOption>;
+
+    const sources = [
+      [this.balneariosLayer(), 'Balnearios'] as const,
+      [this.puntosInteresLayer(), 'Puntos de Interés'] as const,
+    ];
+
+    for (const [ layer, name ] of sources) {
+      elems.push(...layer.getLayers().map(layer => mapMarker(layer, name)));
+    }
+
+    return elems;
+
+    function mapMarker(layer: L.Layer, tipo: string) {
+      const marker = layer as L.Marker;
+      return { marker, label: marker.options.title!, tipo };
+    }
+  });
 
   protected layersControl: L.Control.Layers = L.control.layers(undefined, undefined, {
     collapsed: false,
     position: 'bottomright',
   });
 
-  ngOnInit() {
-    //
+  constructor() {
+    const createEffect = (name: string, source: Signal<L.LayerGroup>) => {
+      return () => {
+        const layer = source();
+        this.map().addLayer(layer);
+        this.layersControl.addOverlay(layer, name);
+      }
+    };
+
+    afterRenderEffect(createEffect('Balnearios', this.balneariosLayer));
+    afterRenderEffect(createEffect('Puntos de Interés', this.puntosInteresLayer));
+    afterNextRender({ read: () => this.map().addControl(this.layersControl) });
   }
 
-  async ngAfterViewInit() {
-    const map = this.map();
-
-    map.addControl(this.layersControl);
-
-    effect(() => {
-      if (this.balneariosLayer) {
-        this.balneariosLayer.remove();
-        this.layersControl.removeLayer(this.balneariosLayer);
-      }
-
-      if (this.balnearios.hasValue()) {
-        const balnearios = this.balnearios.value();
-        this.balneariosLayer = this.createLayerGroup(balnearios);
-        map.addLayer(this.balneariosLayer);
-        this.layersControl.addOverlay(this.balneariosLayer, 'Balnearios');
-        this.updateSearchableElements();
-      }
-    }, { injector: this.injector });
-
-    effect(() => {
-      if (this.puntosInteresLayer) {
-        this.puntosInteresLayer.remove();
-        this.layersControl.removeLayer(this.puntosInteresLayer);
-        this.puntosInteresLayer = undefined;
-      }
-
-      if (this.puntosInteres.hasValue()) {
-        const puntos = this.puntosInteres.value();
-        this.puntosInteresLayer = this.createLayerGroup(puntos);
-        map.addLayer(this.puntosInteresLayer);
-        this.layersControl.addOverlay(this.puntosInteresLayer, 'Puntos de Interés');
-        this.updateSearchableElements();
-      }
-    }, { injector: this.injector });
-  }
-
-  selectMarker(item: SearchOption) {
-    item.marker.openPopup();
+  selectMarker(item: SearchOption|undefined) {
+    item?.marker.openPopup();
   }
 
   private async fetchPuntosInteres() {
@@ -170,27 +169,17 @@ export class Home implements OnInit, AfterViewInit {
     });
   }
 
-  private updateSearchableElements() {
-    const elems = [] as Array<SearchOption>;
-
-    if (this.balneariosLayer) {
-      elems.push(...this.balneariosLayer.getLayers().map(layer => mapMarker(layer, 'Balnearios')));
-    }
-
-    if (this.puntosInteresLayer) {
-      elems.push(...this.puntosInteresLayer.getLayers().map(layer => mapMarker(layer, 'Puntos de Interés')));
-    }
-
-    this.searchableElems = elems;
-
-    function mapMarker(layer: L.Layer, tipo: string) {
-      const marker = layer as L.Marker;
-      return { marker, label: marker.options.title!, tipo };
-    }
-  }
-
   closePanel() {
     this.popup()?.close();
+  }
+
+  private computeLayerGroup(data: Marcador[], previous: { source: Marcador[], value: L.LayerGroup } | undefined): L.LayerGroup {
+    if (previous?.value) {
+      previous.value.remove();
+      this.layersControl.removeLayer(previous.value);
+    }
+
+    return this.createLayerGroup(data);
   }
 
   private createLayerGroup(puntos: Marcador[]) {

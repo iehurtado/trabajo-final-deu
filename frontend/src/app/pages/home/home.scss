@@ -1,10 +1,16 @@
-:host {
-  display: block;
-}
 
-#map {
-  width: 100%;
-  // height: calc(100vh - 100px); // Altura estimada del navbar de Bootstrap + altura estimada del footer
-  height: 540px;
-}
+.search-control {
+  width: 200px;
 
+  @media (min-width: 576px) {
+    width: 280px;
+  }
+
+  @media (min-width: 768px) {
+    width: 360px;
+  }
+
+  @media (min-width: 992px) {
+    width: 480px;
+  }
+}

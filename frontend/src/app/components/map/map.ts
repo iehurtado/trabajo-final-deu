@@ -1,4 +1,4 @@
-import { AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, Directive, effect, ElementRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild, ViewEncapsulation } from '@angular/core';
+import { afterRenderEffect, AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, contentChildren, Directive, effect, ElementRef, EmbeddedViewRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild, ViewEncapsulation, ViewRef } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import * as L from 'leaflet';
 
@@ -91,6 +91,56 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
   }
 }
 
+class CustomControl extends L.Control {
+  constructor(private readonly viewRef: EmbeddedViewRef<any>, options?: L.ControlOptions) {
+    super(options);
+  }
+
+  override onAdd(map: L.Map): HTMLElement {
+    const element = document.createElement('div');
+    L.DomEvent.disableClickPropagation(element);
+    L.DomEvent.disableScrollPropagation(element);
+
+    element.append(...this.viewRef.rootNodes);
+
+    return element;
+  }
+
+  override onRemove(map: L.Map): void {
+    this.viewRef?.destroy();
+  }
+}
+
+@Directive({
+  selector: 'ng-template[appMapControl]',
+})
+export class MapControl {
+  private readonly appRef = inject(ApplicationRef);
+  readonly injector = inject(Injector);
+  readonly templateRef = inject(TemplateRef);
+  readonly position = input<L.ControlPosition>();
+
+  private control?: CustomControl;
+  private viewRef?: EmbeddedViewRef<any>;
+
+  constructor() {
+    afterRenderEffect(() => {
+      const position = this.position();
+
+      if (position && position != this.control?.getPosition()) {
+        this.control?.setPosition(position);
+      }
+    })
+  }
+
+  addTo(map: L.Map) {
+    this.viewRef = this.templateRef.createEmbeddedView({}, this.injector);
+    this.appRef.attachView(this.viewRef);
+    this.control = new CustomControl(this.viewRef, { position: this.position() });
+    this.control.addTo(map);
+  }
+}
+
 @Component({
   selector: 'app-map',
   imports: [NgTemplateOutlet],
@@ -120,16 +170,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   readonly loading = input(false);
 
   readonly panelTemplate = contentChild(MapPanel, { read: TemplateRef });
+  readonly controls = contentChildren(MapControl);
 
   private mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
   private map?: L.Map;
 
   constructor() {
-    effect(() => {
+    afterRenderEffect(() => {
       const center = this.center();
       const zoom = this.zoom();
-      if (this.map) {
-        this.map.setView(center, zoom);
+      this.map!.setView(center, zoom);
+    });
+
+    afterRenderEffect(() => {
+      for (const control of this.controls()) {
+        control.addTo(this.map!);
       }
     });
   }
@@ -166,6 +221,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     this.map = L.map(this.mapContainer().nativeElement, {
       center: this.center(),
       zoom: this.zoom(),
+      zoomControl: false,
     });
 
     const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
