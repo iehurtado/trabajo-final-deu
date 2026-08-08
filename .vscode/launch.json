@@ -3,19 +3,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "firefox",
-      "request": "attach",
-      "name": "Attach to Firefox",
-      "url": "http://localhost:4200/",
-      "webRoot": "${workspaceFolder}/frontend",
-      "pathMappings": [
-          {
-              "url": "webpack:///src",
-              "path": "${workspaceFolder}/frontend/src"
-          }
-      ]
-    },
-    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",
@@ -37,8 +24,8 @@
       "webRoot": "${workspaceFolder}/frontend",
       "pathMappings": [
         {
-          "url": "webpack:///src",
-          "path": "${workspaceFolder}/frontend/src"
+          "url": "http://localhost:4200/frontend",
+          "path": "${workspaceFolder}/frontend"
         }
       ]
     }
