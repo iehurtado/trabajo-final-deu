@@ -4,11 +4,12 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../auth.service';
 import { Toaster } from '../../components/toaster/toaster.service';
-import { equals, createUserEmailValidator } from '../../validators';
+import { AutoTrim } from '../../components/autotrim';
+import { createUserEmailValidator, equals } from '../../validators';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, AutoTrim],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })
@@ -31,7 +32,7 @@ export class Signup {
   protected readonly password_repeat = this.form.controls['password_repeat'];
 
   protected readonly submitting = signal(false);
-  protected readonly error = signal<string|null>(null)
+  protected readonly error = signal<string|null>(null);
 
   constructor() {
     effect(() => {
@@ -52,8 +53,12 @@ export class Signup {
     try {
       this.error.set(null);
       this.submitting.set(true);
+
       const value = this.form.getRawValue();
-      await this.authService.signup(value);
+      const email = value.email.trim();
+      const fullname = value.fullname.trim();
+
+      await this.authService.signup({...value, email, fullname});
       const message = 'La cuenta se ha creado exitosamente. Utilice su correo y contraseña para iniciar sesión.';
       this.toaster.show('Crear Cuenta', message, { class: 'text-bg-success' });
       await this.router.navigate(['/']);

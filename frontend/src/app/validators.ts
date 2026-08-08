@@ -3,12 +3,16 @@ import { delay, map, of, switchMap } from "rxjs";
 import { AuthService } from "./auth.service";
 
 export function createUserEmailValidator(authService: AuthService, forgiven: string[] = []): AsyncValidatorFn {
-  return control => {
-    if (!control.value || forgiven.includes(control.value.toLowerCase())) {
+  forgiven = forgiven.map(x => x.toLowerCase());
+
+  return (control: AbstractControl<string>) => {
+    const value = control.value?.trim();
+
+    if (!value || forgiven.includes(value.toLowerCase())) {
       return of(null);
     }
 
-    return of(control.value).pipe(
+    return of(value).pipe(
       delay(200),
       switchMap(value => authService.checkEmail(value).pipe(
         map(({ available }) => available ? null : { emailTaken: true })

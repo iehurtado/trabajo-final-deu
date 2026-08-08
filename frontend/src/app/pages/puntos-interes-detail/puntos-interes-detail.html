@@ -18,32 +18,34 @@
               <section class="card mb-2">
                   <h5 class="card-header">Información Básica</h5>
                   <div class="card-body">
-                      <div class="mb-3">
-                          <label for="pid-nombre" class="form-label">Nombre</label>
-                          <input type="text" class="form-control" id="pid-nombre" [value]="punto.nombre" readonly>
-                      </div>
-                      <div class="mb-3">
-                          <label for="pid-categoria" class="form-label">Categoría</label>
-                          <input type="text" class="form-control" id="pid-categoria" [value]="punto.categoria" readonly>
-                      </div>
-                      <div class="mb-3">
-                          <label for="pid-subcategoria" class="form-label">Subcategoría</label>
-                          <input type="text" class="form-control" id="pid-subcategoria" [value]="punto.subcategoria" readonly>
-                      </div>
-                      <div class="mb-3">
-                          <label for="pid-descripcion" class="form-label">Descripción</label>
-                          <textarea class="form-control" id="pid-descripcion" readonly>{{punto.descripcion}}</textarea>
-                      </div>
-                      <div class="row g-2">
-                        <div class="col-12 col-md-6 mb-3">
-                          <label for="pid-createdAt" class="form-label">Fecha de Alta</label>
-                          <input type="text" id="pid-createdAt" class="form-control" [value]="punto.createdAt | date:'dd/MM/y HH:mm'" readonly>
+                      <dl>
+                        <div class="mb-3">
+                            <dt>Nombre</dt>
+                            <dd>{{ punto.nombre }}</dd>
                         </div>
-                        <div class="col-12 col-md-6 mb-3">
-                          <label for="pid-updatedAt" class="form-label">Última Modificación</label>
-                          <input type="text" id="pid-updatedAt" class="form-control" [value]="punto.updatedAt | date:'dd/MM/y HH:mm'" readonly>
+                        <div class="mb-3">
+                            <dt>Categoría</dt>
+                            <dd>{{ punto.categoria }}</dd>
                         </div>
-                      </div>
+                        <div class="mb-3">
+                            <dt>Subcategoría</dt>
+                            <dd>{{ punto.subcategoria }}</dd>
+                        </div>
+                        <div class="mb-3">
+                            <dt>Descripción</dt>
+                            <dd>{{ punto.descripcion }}</dd>
+                        </div>
+                        <div class="row g-2">
+                          <div class="col-12 col-md-6 mb-3">
+                            <dt>Fecha de Alta</dt>
+                            <dd>{{ punto.createdAt | date:'dd/MM/y HH:mm' }}</dd>
+                          </div>
+                          <div class="col-12 col-md-6 mb-3">
+                            <dt>Última Modificación</dt>
+                            <dd>{{ punto.updatedAt | date:'dd/MM/y HH:mm' }}</dd>
+                          </div>
+                        </div>
+                      </dl>
                   </div>
               </section>
           </div>

@@ -8,10 +8,11 @@ import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { PUNTA_LARA } from '../../util';
 import { BalnearioIcon } from '../map/util';
+import { AutoTrim } from '../autotrim';
 
 @Component({
   selector: 'app-balnearios-form',
-  imports: [ReactiveFormsModule, RouterLink, FaIconComponent],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim],
   templateUrl: './balnearios-form.html',
   styleUrl: './balnearios-form.scss',
 })
@@ -79,17 +80,17 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   }
 
   private balnearioNameValidator(): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      const value = control.value;
+    return (control: AbstractControl<string>) => {
+      const value = control.value?.trim();
 
-      if (!value || value === this.initialData()?.nombre) {
+      if (!value || value.toLowerCase() === this.initialData()?.nombre.toLowerCase()) {
         return of(null);
       }
 
       return of(value).pipe(
         delay(200),
         switchMap(value => this.balneariosService.getBalnearioByNombre(value).pipe(
-          map(balneario => balneario ? { balnearioNameExists: { message: 'Ya se cargó un balneario con este nombre' } } : null)
+          map(balneario => balneario ? { balnearioNameExists: true } : null)
         )),
       );
     };
@@ -160,7 +161,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     const formValue = this.form.getRawValue();
 
     this.guardado.emit({
-      nombre: formValue.nombre!,
+      nombre: formValue.nombre!.trim(),
       estadoAgua: formValue.estadoAgua!,
       latitud: Number(formValue.latitud),
       longitud: Number(formValue.longitud),

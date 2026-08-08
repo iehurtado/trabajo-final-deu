@@ -17,34 +17,36 @@
     <div class="card">
       <h5 class="card-header">Información Básica</h5>
       <div class="card-body">
-        <div class="mb-3">
-          <label for="email" class="form-label">Correo Electrónico</label>
-          <input type="text" id="email" class="form-control" [value]="user.email" readonly />
-        </div>
-        <div class="mb-3">
-          <label for="fullname" class="form-label">Nombre Completo</label>
-          <input type="text" id="fullname" class="form-control" [value]="user.fullname" readonly />
-        </div>
-        <div class="mb-3">
-          <label id="roles-label" class="form-label">Roles</label>
-          <div class="form-control" aria-labelledby="roles-label">
-            @for (role of user.roles; track role.id) {
-            <span class="badge text-bg-primary">{{ role.nombre }}</span>
-            } @empty {
-            <span class="text-muted">Sin roles asignados</span>
-            }
+        <dl>
+          <div class="mb-3">
+            <dt>Correo Electrónico</dt>
+            <dd>{{ user.email }}</dd>
           </div>
-        </div>
-        <div class="row g-2">
-          <div class="col-12 col-md-6 mb-3">
-            <label for="createdAt" class="form-label">Fecha de Alta</label>
-            <input type="text" id="createdAt" class="form-control" [value]="user.createdAt | date:'dd/MM/y HH:mm'" readonly />
+          <div class="mb-3">
+            <dt>Nombre Completo</dt>
+            <dd>{{ user.fullname }}</dd>
           </div>
-          <div class="col-12 col-md-6 mb-3">
-            <label for="updatedAt" class="form-label">Última Modificación</label>
-            <input type="text" id="updatedAt" class="form-control" [value]="user.updatedAt | date:'dd/MM/y HH:mm'" readonly />
+          <div class="mb-3">
+            <dt>Roles</dt>
+            <dd>
+              @for (role of user.roles; track role.id) {
+              <span class="badge text-bg-primary">{{ role.nombre }}</span>
+              } @empty {
+              <span class="text-muted">Sin roles asignados</span>
+              }
+            </dd>
           </div>
-        </div>
+          <div class="row g-2">
+            <div class="col-12 col-md-6 mb-3">
+              <dt>Fecha de Alta</dt>
+              <dd>{{ user.createdAt | date:'dd/MM/y HH:mm' }}</dd>
+            </div>
+            <div class="col-12 col-md-6 mb-3">
+              <dt>Última Modificación</dt>
+              <dd>{{ user.updatedAt | date:'dd/MM/y HH:mm' }}</dd>
+            </div>
+          </div>
+        </dl>
       </div>
       <div class="card-footer">
         <div class="d-flex justify-content-end">

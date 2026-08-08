@@ -8,7 +8,7 @@
                 <div class="mb-3">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" id="nombre" class="form-control" formControlName="nombre"
-                        [class.is-invalid]="nombre.touched && nombre.invalid">
+                        [class.is-invalid]="nombre.touched && nombre.invalid" autotrim>
                     @if (nombre.touched && nombre.errors; as errors) {
                       <div class="form-text text-danger small">
                         @if (errors['required']) {
@@ -18,7 +18,7 @@
                           Debe tener al menos {{ e.required }} caracteres.
                         }
                         @else if (errors['balnearioNameExists']) {
-                          Ya se cargó un balneario con este nombre.
+                          Este nombre ya está siendo utilizado.
                         }
                       </div>
                     }

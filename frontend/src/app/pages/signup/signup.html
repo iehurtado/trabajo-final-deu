@@ -9,7 +9,7 @@
         <div class="mb-3">
           <label for="email" class="form-label">Correo Electrónico</label>
           <input type="text" id="email" class="form-control" [class.is-invalid]="email.touched && email.errors"
-            formControlName="email">
+            formControlName="email" autotrim [disallowSpaces]="true">
           @if (email.touched && email.errors; as errors) {
           <div class="invalid-feedback">
             @if (errors['required'] || errors['email']) {
@@ -23,7 +23,7 @@
         <div class="mb-3">
           <label for="fullname" class="form-label">Nombre Completo</label>
           <input type="text" id="fullname" class="form-control" [class.is-invalid]="fullname.touched && fullname.errors"
-            formControlName="fullname">
+            formControlName="fullname"  autotrim>
           @if (fullname.touched && fullname.errors; as errors) {
           <div class="invalid-feedback">
             @if (errors['required']) { Ingrese su nombre completo }

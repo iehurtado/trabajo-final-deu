@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off">
   <div class="card">
     <h5 class="card-header">Información Básica</h5>
     <div class="card-body">
@@ -7,7 +7,7 @@
       <div class="mb-3">
         <label for="email" class="form-label">Correo Electrónico</label>
         <input type="email" class="form-control" id="email" formControlName="email"
-          [class.is-invalid]="email.invalid && email.touched" />
+          [class.is-invalid]="email.touched && email.errors" autotrim [disallowSpaces]="true" />
           @if (email.touched && email.errors; as errors) {
             <div class="invalid-feedback d-block">
               @if (errors['required'] || errors['email']) {
@@ -23,14 +23,16 @@
       <div class="mb-3">
         <label for="fullname" class="form-label">Nombre Completo</label>
         <input type="text" class="form-control" id="fullname" formControlName="fullname"
-          [class.is-invalid]="fullname.invalid && fullname.touched" />
+          [class.is-invalid]="fullname.touched && fullname.errors" autotrim />
         @if (fullname.touched && fullname.errors; as errors) {
-        @if (errors['required']) {
-        <div class="invalid-feedback d-block">El nombre es requerido</div>
-        }
-        @if (errors['minlength']; as ml) {
-        <div class="invalid-feedback d-block">El nombre debe tener al menos {{ ml.required }} caracteres</div>
-        }
+          <div class="invalid-feedback d-block">
+          @if (errors['required']) {
+            El nombre es requerido
+          }
+          @if (errors['minlength']; as ml) {
+            El nombre debe tener al menos {{ ml.required }} caracteres
+          }
+        </div>
         }
       </div>
 
@@ -43,11 +45,16 @@
           }
         </label>
         <input type="password" class="form-control" id="password" formControlName="password"
-          [class.is-invalid]="password.invalid && password.touched" />
+          [class.is-invalid]="password.touched && password.errors" autocomplete="new-password" />
         @if (password.touched && password.errors; as errors) {
-          @if (errors['minlength']; as err) {
-            <div class="invalid-feedback d-block">La contraseña debe tener al menos {{ err.required }} caracteres</div>
-          }
+          <div class="invalid-feedback d-block">
+            @if (errors['required']) {
+              Debe ingresar una contraseña válida.
+            }
+            @if (errors['minlength']; as err) {
+              La contraseña debe tener al menos {{ err.required }} caracteres.
+            }
+          </div>
         }
       </div>
       <div class="mb-3">
@@ -55,11 +62,13 @@
           Repetir Contraseña
         </label>
         <input type="password" class="form-control" id="password_repeat" formControlName="password_repeat"
-          [class.is-invalid]="passwordRepeat.invalid && passwordRepeat.touched" />
+          [class.is-invalid]="passwordRepeat.touched && (passwordRepeat.errors || form.errors)" autocomplete="new-password" />
         @if (passwordRepeat.touched && (passwordRepeat.errors || form.errors); as errors) {
-          @if (errors['equals']) {
-            <div class="invalid-feedback d-block">Las contraseñas no coinciden</div>
-          }
+          <div class="invalid-feedback d-block">
+            @if (errors['equals']) {
+              Las contraseñas no coinciden
+            }
+          </div>
         }
       </div>
 
@@ -78,12 +87,8 @@
           </ng-template>
           </ng-select>
       </div>
-
     </div>
-  </div>
-  <section class="card mb-2">
-    <h5 class="card-header visually-hidden">Acciones</h5>
-    <div class="card-body">
+    <div class="card-footer">
       <div class="d-flex justify-content-end">
         <div class="ms-auto">
           <a role="button" class="btn focus-ring" [routerLink]="backLink()">Cancelar</a>
@@ -96,6 +101,6 @@
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </form>
 

@@ -8,10 +8,11 @@ import { delay, distinctUntilChanged, map, of, startWith, Subscription, switchMa
 import { PuntoInteres, PuntosInteresService } from '../../puntos-interes.service';
 import { PUNTA_LARA } from '../../util';
 import { PuntoInteresIcon } from '../map/util';
+import { AutoTrim } from '../autotrim';
 
 @Component({
   selector: 'app-puntos-interes-form',
-  imports: [ReactiveFormsModule, RouterLink, FaIconComponent],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim],
   templateUrl: './puntos-interes-form.html',
   styleUrl: './puntos-interes-form.scss',
 })
@@ -73,17 +74,17 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
   }
 
   private puntoInteresNameValidator(): AsyncValidatorFn {
-    return (control: AbstractControl) => {
-      const value = control.value;
+    return (control: AbstractControl<string>) => {
+      const value = control.value?.trim();
 
-      if (!value || value === this.initialData()?.nombre) {
+      if (!value || value.toLowerCase() === this.initialData()?.nombre.toLowerCase()) {
         return of(null);
       }
 
       return of(value).pipe(
         delay(200),
         switchMap(value => this.puntosInteresService.getPuntoInteresByNombre(value).pipe(
-          map(puntoInteres => puntoInteres ? { puntoInteresNameExists: { message: 'Ya se cargó un punto de interés con este nombre' } } : null)
+          map(puntoInteres => puntoInteres ? { puntoInteresNameExists: true } : null)
         )),
       );
     };
@@ -156,9 +157,9 @@ export class PuntosInteresForm implements AfterViewInit, OnDestroy {
     const formValue = this.form.getRawValue();
 
     this.guardado.emit({
-      nombre: formValue.nombre,
+      nombre: formValue.nombre.trim(),
       categoria: formValue.categoria,
-      subcategoria: formValue.subcategoria,
+      subcategoria: formValue.subcategoria.trim(),
       latitud: Number(formValue.latitud),
       longitud: Number(formValue.longitud),
       descripcion: formValue.descripcion,

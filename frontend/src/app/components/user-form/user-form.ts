@@ -5,14 +5,15 @@ import { Router, RouterLink, UrlTree } from '@angular/router';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AuthService } from '../../auth.service';
 import { Rol, User, UserService } from '../../user.service';
-import { equals, createUserEmailValidator } from "../../validators";
+import { createUserEmailValidator, equals } from "../../validators";
+import { AutoTrim } from '../autotrim';
 
 const PASSWD_VALIDATORS = [Validators.required, Validators.minLength(6)];
 const PASSWD_R_VALIDATORS = [Validators.required];
 
 @Component({
   selector: 'app-user-form',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgSelectModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgSelectModule, AutoTrim],
   templateUrl: './user-form.html',
   styleUrl: './user-form.scss',
 })
@@ -88,8 +89,8 @@ export class UserForm implements OnInit {
     const formValue = this.form.getRawValue();
 
     this.guardado.emit({
-      email: formValue.email!,
-      fullname: formValue.fullname!,
+      email: formValue.email!.trim(),
+      fullname: formValue.fullname!.trim(),
       password: formValue.password || undefined,
       roles: formValue.roles!,
     });
