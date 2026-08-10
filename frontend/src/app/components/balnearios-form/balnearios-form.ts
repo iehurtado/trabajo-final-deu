@@ -1,32 +1,28 @@
-import { AfterViewInit, Component, effect, ElementRef, inject, input, OnDestroy, output, signal, viewChild } from '@angular/core';
+import { Component, effect, inject, input, output, signal } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink, UrlTree } from '@angular/router';
-import * as L from 'leaflet';
-import { delay, distinctUntilChanged, map, of, startWith, Subscription, switchMap } from 'rxjs';
-import { Balneario, BalneariosService } from '../../balnearios.service';
-import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { PUNTA_LARA } from '../../util';
-import { BalnearioIcon } from '../map/util';
+import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import * as L from 'leaflet';
+import { delay, map, of, switchMap } from 'rxjs';
+import { Balneario, BalneariosService } from '../../balnearios.service';
 import { AutoTrim } from '../autotrim';
+import { MapInput } from '../map/input';
+import { BalnearioIcon } from '../map/util';
 
 @Component({
   selector: 'app-balnearios-form',
-  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim, MapInput],
   templateUrl: './balnearios-form.html',
   styleUrl: './balnearios-form.scss',
 })
-export class BalneariosForm implements AfterViewInit, OnDestroy {
-  private locationSubscription!: Subscription;
+export class BalneariosForm {
   protected readonly faLocationCrosshairs = faLocationCrosshairs;
+  protected readonly BalnearioIcon = BalnearioIcon;
 
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly balneariosService = inject(BalneariosService);
-
-  private map!: L.Map;
-  private marker?: L.Marker;
-  private readonly mapContainer = viewChild.required<ElementRef<HTMLDivElement>>('mapContainer');
 
   protected readonly detectando = signal(false);
   protected readonly guardando = signal(false);
@@ -38,8 +34,7 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
   protected readonly form = this.fb.group({
     nombre: ['', [Validators.required, Validators.minLength(3)], [this.balnearioNameValidator()]],
     estadoAgua: ['APTO' as 'APTO'|'NO_APTO'|'PRECAUCION', [Validators.required]],
-    latitud: [null as number|null, [Validators.required]],
-    longitud: [null as number|null, [Validators.required]],
+    ubicacion: [null as L.LatLngLiteral | null, [Validators.required]],
     auxilio: [false],
     banos: [false],
     rampa: [false],
@@ -55,7 +50,10 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     effect(() => {
       const data = this.initialData();
       if (data) {
-        this.form.patchValue(data);
+        this.form.patchValue({
+          ...data,
+          ubicacion: { lat: data.latitud, lng: data.longitud },
+        });
       }
     });
 
@@ -66,17 +64,6 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
         this.form.enable();
       }
     })
-  }
-
-  ngAfterViewInit(): void {
-    this.initMap();
-    this.observeMarker();
-  }
-
-  ngOnDestroy(): void {
-    if (this.locationSubscription) {
-      this.locationSubscription.unsubscribe();
-    }
   }
 
   private balnearioNameValidator(): AsyncValidatorFn {
@@ -96,56 +83,13 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
     };
   }
 
-  private initMap(): void {
-    this.map = L.map(this.mapContainer().nativeElement, {
-      center: PUNTA_LARA,
-      zoom: 14,
-      dragging: true,
-    });
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      minZoom: 3,
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      className: 'map-tiles',
-    }).addTo(this.map);
-
-    this.map.addEventListener('click', e => {
-      this.form.patchValue({ latitud: e.latlng.lat, longitud: e.latlng.lng });
-    });
-  }
-
-  private observeMarker() {
-    const marker$ = this.form.valueChanges.pipe(
-      startWith(this.form.value),
-      map(x => ({ lat: x.latitud, lng: x.longitud })),
-      distinctUntilChanged((x, y) => x?.lat === y?.lat && x?.lng === y?.lng),
-      map(({ lat, lng }) => lat && lng && L.marker([lat, lng], { icon: BalnearioIcon })),
-    );
-
-    this.locationSubscription = marker$.subscribe(currentMarker => {
-      if (this.marker) {
-        this.marker.remove();
-      }
-
-      if (currentMarker) {
-        this.marker = currentMarker;
-        this.marker.addTo(this.map);
-
-        const { lat, lng } = this.marker.getLatLng()!;
-        this.map.setView([lat, lng], 14, { duration: 800 });
-        this.map.invalidateSize();
-      }
-    });
-  }
-
   protected detectarUbicacion() {
     if (navigator.geolocation) {
       this.detectando.set(true);
       navigator.geolocation.getCurrentPosition(e => {
-        this.form.patchValue({ latitud: e.coords.latitude, longitud: e.coords.longitude });
+        this.form.patchValue({ ubicacion: { lat: e.coords.latitude, lng: e.coords.longitude } });
         this.detectando.set(false);
-      }, e => {
+      }, () => {
         this.detectando.set(false);
       });
     }
@@ -159,12 +103,13 @@ export class BalneariosForm implements AfterViewInit, OnDestroy {
 
     this.guardando.set(true);
     const formValue = this.form.getRawValue();
+    const ubicacion = formValue.ubicacion!;
 
     this.guardado.emit({
       nombre: formValue.nombre!.trim(),
       estadoAgua: formValue.estadoAgua!,
-      latitud: Number(formValue.latitud),
-      longitud: Number(formValue.longitud),
+      latitud: Number(ubicacion.lat),
+      longitud: Number(ubicacion.lng),
       auxilio: !!formValue.auxilio,
       banos: !!formValue.banos,
       rampa: !!formValue.rampa,
