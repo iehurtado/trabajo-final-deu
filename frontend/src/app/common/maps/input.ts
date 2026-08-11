@@ -1,4 +1,4 @@
-import { afterNextRender, afterRenderEffect, Component, forwardRef, inject, Injector, input, ViewContainerRef } from '@angular/core';
+import { afterNextRender, afterRenderEffect, ChangeDetectionStrategy, Component, forwardRef, inject, Injector, input, ViewContainerRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { PUNTA_LARA } from '@common/util';
 import * as L from 'leaflet';
@@ -7,6 +7,7 @@ import { defaultIcon } from './defaults';
 
 @Component({
   selector: 'app-map-input',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -27,7 +28,7 @@ export class MapInput implements ControlValueAccessor {
 
   readonly markerIcon = input<L.Icon>(defaultIcon);
 
-  private map: L.Map;
+  private map!: L.Map;
   private marker?: L.Marker;
   private ghost?: L.Marker;
 
@@ -39,6 +40,8 @@ export class MapInput implements ControlValueAccessor {
   constructor() {
     this.map = this.createMap();
     this.setMapClickable(!this.disabled);
+
+    afterNextRender({ read: () => this.map.invalidateSize() });
 
     afterRenderEffect({ read: () => {
       const markerIcon = this.markerIcon();
@@ -87,13 +90,14 @@ export class MapInput implements ControlValueAccessor {
       dragging: true,
     });
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       className: 'map-tiles',
-    }).addTo(map);
+    });
 
+    map.addLayer(tileLayer);
     map.addEventListener('mouseup', () => this.onTouched?.());
 
     return map;
