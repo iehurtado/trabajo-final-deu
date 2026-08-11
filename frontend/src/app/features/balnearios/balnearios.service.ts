@@ -1,0 +1,56 @@
+import { inject, Injectable } from "@angular/core";
+import { map, Observable } from "rxjs";
+import { BalneariosService as BalneariosControllerService } from "@api/services";
+import { Paginator } from "@common/types";
+
+export interface Balneario {
+    id: number;
+    nombre: string;
+    latitud: number;
+    longitud: number;
+    estadoAgua: 'APTO'|'NO_APTO'|'PRECAUCION';
+    auxilio: boolean;
+    banos: boolean;
+    rampa: boolean;
+    vigilancia: boolean;
+    parrillas: boolean;
+    bus: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+@Injectable({ providedIn: 'root' })
+export class BalneariosService {
+
+    private balneariosController = inject(BalneariosControllerService);
+
+    getBalnearios(): Observable<Balneario[]>
+    getBalnearios(page: number, perPage?: number): Observable<Paginator<Balneario>>
+    getBalnearios(page?: number, perPage?: number): Observable<Paginator<Balneario>|Balneario[]> {
+        if (page == undefined) {
+          return this.balneariosController.findAllBalnearios(1, Infinity).pipe(map(x => x.data));
+        }
+
+        return this.balneariosController.findAllBalnearios(page, perPage ?? 10);
+    }
+
+    getBalnearioById(id: number): Observable<Balneario | undefined> {
+        return this.balneariosController.findBalnearioById(id);
+    }
+
+    getBalnearioByNombre(nombre: string): Observable<Balneario | undefined> {
+        return this.balneariosController.findAllBalnearios(1, Infinity, nombre).pipe(map(x => x.data[0]));
+    }
+
+    addBalneario(nuevo: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Observable<Balneario> {
+        return this.balneariosController.createBalneario(nuevo);
+    }
+
+    updateBalneario(id: number, data: Omit<Balneario, 'id'|'createdAt'|'updatedAt'>): Observable<Balneario> {
+        return this.balneariosController.updateBalneario(id, data);
+    }
+
+    deleteBalneario(id: number) {
+        return this.balneariosController.deleteBalneario(id);
+    }
+}

@@ -2,12 +2,12 @@ import { AfterViewInit, Component, computed, inject, OnInit, signal } from '@ang
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { faCog, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import { NgbCollapseModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from './auth.service';
-import { SettingsMenu } from "./components/settings-menu/settings-menu";
-import { UserMenu } from "./components/user-menu/user-menu";
+import { AuthService } from '@features/auth/auth.service';
+import { SettingsMenu } from "@features/settings/settings-menu/settings-menu";
+import { UserMenu } from "@features/auth/user-menu/user-menu";
 import { NgSelectConfig } from '@ng-select/ng-select';
-import { ToastContainer } from './components/toaster/toast-container';
-import { WelcomeService } from './components/welcome/welcome';
+import { ToastContainer } from '@common/ui/toaster/toast-container';
+import { WelcomeService } from '@features/home/welcome/welcome';
 
 @Component({
   selector: 'app-root',

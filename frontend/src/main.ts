@@ -4,7 +4,7 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import * as L from 'leaflet';
 import { App } from './app/app';
 import { appConfig } from './app/app.config';
-import { defaultIcon } from './app/components/map/defaults';
+import { defaultIcon } from '@common/maps/defaults';
 
 
 L.Marker.prototype.options.icon = defaultIcon;

@@ -1,0 +1,59 @@
+import { Component, computed, inject, signal, viewChild } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PuntoInteres, PuntosInteresService } from './puntos-interes.service';
+import { PuntosInteresForm } from './puntos-interes-form/puntos-interes-form';
+import { getUserFriendlyErrorMessage, ReportsUnsaved } from '@common/util';
+import { firstValueFrom } from 'rxjs';
+import { AuthService } from '@features/auth/auth.service';
+import { Toaster } from '@common/ui/toaster/toaster.service';
+
+@Component({
+  selector: 'app-puntos-interes-create',
+  imports: [ReactiveFormsModule, PuntosInteresForm],
+  template: `
+  <main class="container-fluid">
+    <h1>Nuevo Punto de Interés</h1>
+    <app-puntos-interes-form [backLink]="backLink()" (guardado)="onSubmit($event)"/>
+  </main>`,
+})
+export class PuntosInteresCreate implements ReportsUnsaved {
+  private readonly puntosService = inject(PuntosInteresService);
+  private readonly router = inject(Router);
+  private readonly toaster = inject(Toaster);
+
+  private readonly auth = inject(AuthService);
+  private readonly canViewList = this.auth.can('Administrador');
+  private readonly canViewDetail = this.canViewList;
+  protected readonly backLink = computed(() => {
+    if (history.state?.backlink) {
+      return history.state.backlink as string[];
+    }
+
+    return this.canViewList() ? ['/puntos'] : ['/'];
+  });
+
+  private readonly form = viewChild.required(PuntosInteresForm);
+
+  protected readonly guardando = signal(false);
+
+  async onSubmit(data: Omit<PuntoInteres, 'id'|'createdAt'|'updatedAt'>): Promise<void> {
+    try {
+      const { id } = await firstValueFrom(this.puntosService.addPuntoInteres(data));
+
+      this.form().notifySubmissionCompleted();
+
+      const url = this.backLink();
+      this.toaster.show('Nuevo Punto de Interés', 'Se agregó exitosamente el punto de interés', { class: 'text-bg-success' });
+      await this.router.navigate(url);
+    } catch (e: unknown) {
+      this.toaster.show('Nuevo Punto de Interés', getUserFriendlyErrorMessage(e, 'Punto de interés'), { class: 'text-bg-danger' });
+      this.form().notifySubmissionCompleted();
+      throw e;
+    }
+  }
+
+  hasUnsavedChanges(): boolean {
+    return this.form().hasUnsavedChanges();
+  }
+}

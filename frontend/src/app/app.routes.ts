@@ -1,23 +1,23 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
-import { AuthService } from './auth.service';
-import { Toaster } from './components/toaster/toaster.service';
-import { BalneariosCreate } from './pages/balnearios-create';
-import { BalneariosDetail } from './pages/balnearios-detail/balnearios-detail';
-import { BalneariosList } from './pages/balnearios-list/balnearios-list';
-import { BalneariosUpdate } from './pages/balnearios-update';
-import { ErrorPage } from './pages/error-page';
-import { Home } from './pages/home/home';
-import { PuntosInteresCreate } from './pages/puntos-interes-create';
-import { PuntosInteresDetail } from './pages/puntos-interes-detail/puntos-interes-detail';
-import { PuntosInteresList } from './pages/puntos-interes-list/puntos-interes-list';
-import { PuntosInteresUpdate } from './pages/puntos-interes-update';
-import { Signup } from './pages/signup/signup';
-import { UsersCreate } from './pages/users-create';
-import { UsersDetail } from './pages/users-detail/users-detail';
-import { UsersList } from './pages/users-list/users-list';
-import { UsersUpdate } from './pages/users-update';
-import { confirmOnUnsavedChanges } from './util';
+import { AuthService } from '@features/auth/auth.service';
+import { Toaster } from '@common/ui/toaster/toaster.service';
+import { BalneariosCreate } from '@features/balnearios/balnearios-create';
+import { BalneariosDetail } from '@features/balnearios/balnearios-detail/balnearios-detail';
+import { BalneariosList } from '@features/balnearios/balnearios-list/balnearios-list';
+import { BalneariosUpdate } from '@features/balnearios/balnearios-update';
+import { ErrorPage } from '@common/ui/error-page';
+import { Home } from '@features/home/home';
+import { PuntosInteresCreate } from '@features/puntos-interes/puntos-interes-create';
+import { PuntosInteresDetail } from '@features/puntos-interes/puntos-interes-detail/puntos-interes-detail';
+import { PuntosInteresList } from '@features/puntos-interes/puntos-interes-list/puntos-interes-list';
+import { PuntosInteresUpdate } from '@features/puntos-interes/puntos-interes-update';
+import { Signup } from '@features/auth/signup/signup';
+import { UsersCreate } from '@features/users/users-create';
+import { UsersDetail } from '@features/users/users-detail/users-detail';
+import { UsersList } from '@features/users/users-list/users-list';
+import { UsersUpdate } from '@features/users/users-update';
+import { confirmOnUnsavedChanges } from '@common/util';
 
 function requiereAutenticacion(): CanActivateFn {
   return () => {
