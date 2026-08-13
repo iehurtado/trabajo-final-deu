@@ -21,6 +21,15 @@ body {
   padding-top: 59px;
 }
 
+.leaflet-bar a {
+  background-color: var(--bs-body-bg);
+  color: var(--bs-body-color);
+
+  &:hover {
+    background-color: var(--bs-tertiary-bg);
+  }
+}
+
 .ng-select {
   .ng-select-container {
     color: var(--bs-body-color) !important;

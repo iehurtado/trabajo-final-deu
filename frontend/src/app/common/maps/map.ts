@@ -1,6 +1,8 @@
-import { afterRenderEffect, AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, contentChildren, Directive, effect, ElementRef, EmbeddedViewRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild, ViewEncapsulation, ViewRef } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { afterRenderEffect, AfterViewInit, ApplicationRef, ChangeDetectionStrategy, Component, contentChild, contentChildren, Directive, effect, ElementRef, EmbeddedViewRef, inject, Injector, input, OnDestroy, output, TemplateRef, viewChild, ViewEncapsulation } from '@angular/core';
 import * as L from 'leaflet';
+import { Tip } from './zoom-tip';
+import { MapControl } from './controls';
 
 @Directive({
   selector: 'ng-template[appMapPopup]',
@@ -91,56 +93,6 @@ export class MarkerComponent implements AfterViewInit, OnDestroy {
   }
 }
 
-class CustomControl extends L.Control {
-  constructor(private readonly viewRef: EmbeddedViewRef<any>, options?: L.ControlOptions) {
-    super(options);
-  }
-
-  override onAdd(map: L.Map): HTMLElement {
-    const element = document.createElement('div');
-    L.DomEvent.disableClickPropagation(element);
-    L.DomEvent.disableScrollPropagation(element);
-
-    element.append(...this.viewRef.rootNodes);
-
-    return element;
-  }
-
-  override onRemove(map: L.Map): void {
-    this.viewRef?.destroy();
-  }
-}
-
-@Directive({
-  selector: 'ng-template[appMapControl]',
-})
-export class MapControl {
-  private readonly appRef = inject(ApplicationRef);
-  readonly injector = inject(Injector);
-  readonly templateRef = inject(TemplateRef);
-  readonly position = input<L.ControlPosition>();
-
-  private control?: CustomControl;
-  private viewRef?: EmbeddedViewRef<any>;
-
-  constructor() {
-    afterRenderEffect(() => {
-      const position = this.position();
-
-      if (position && position != this.control?.getPosition()) {
-        this.control?.setPosition(position);
-      }
-    })
-  }
-
-  addTo(map: L.Map) {
-    this.viewRef = this.templateRef.createEmbeddedView({}, this.injector);
-    this.appRef.attachView(this.viewRef);
-    this.control = new CustomControl(this.viewRef, { position: this.position() });
-    this.control.addTo(map);
-  }
-}
-
 @Component({
   selector: 'app-map',
   imports: [NgTemplateOutlet],
@@ -218,10 +170,12 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   private initMap(): void {
-    this.map = L.map(this.mapContainer().nativeElement, {
+    const container = this.mapContainer().nativeElement;
+    this.map = L.map(container, {
       center: this.center(),
       zoom: this.zoom(),
       zoomControl: false,
+      scrollWheelZoom: false,
     });
 
     const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -234,7 +188,29 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
     this.map.addLayer(tileLayer);
 
+    this.setupZoom();
+
     // Force a resize check to avoid display issues in hidden containers
     setTimeout(() => this.map?.invalidateSize());
+  }
+
+  private setupZoom() {
+    this.map?.getContainer().addEventListener('wheel', ev => {
+      if (ev.ctrlKey && ev.deltaY !== 0) {
+        ev.preventDefault();
+
+        if (ev.deltaY < 0) {
+          this.map?.zoomIn();
+        } else {
+          this.map?.zoomOut();
+        }
+      }
+    });
+
+    const text = 'Mantenga presionada la tecla Ctrl para manipular el zoom con el ratón';
+    this.map?.addControl(new Tip(text, { position: 'topright' }));
+
+    const zoomControl = L.control.zoom({ position: 'topright' });
+    this.map?.addControl(zoomControl);
   }
 }

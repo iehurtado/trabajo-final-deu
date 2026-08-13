@@ -4,6 +4,7 @@ import { PUNTA_LARA } from '@common/util';
 import * as L from 'leaflet';
 import { fromEvent, map, reduce, switchMap, takeUntil } from 'rxjs';
 import { defaultIcon } from './defaults';
+import { Tip } from './zoom-tip';
 
 @Component({
   selector: 'app-map-input',
@@ -38,7 +39,7 @@ export class MapInput implements ControlValueAccessor {
   private disabled = false;
 
   constructor() {
-    this.map = this.createMap();
+    this.initMap();
     this.setMapClickable(!this.disabled);
 
     afterNextRender({ read: () => this.map.invalidateSize() });
@@ -81,13 +82,15 @@ export class MapInput implements ControlValueAccessor {
     }}, { injector: this.injector });
   }
 
-  private createMap(): L.Map {
-    const container = this.viewContainer.element.nativeElement;
+  private initMap() {
+    const container = this.viewContainer.element.nativeElement as HTMLElement;
 
-    const map = L.map(container, {
+    this.map = L.map(container, {
       center: PUNTA_LARA,
       zoom: 14,
       dragging: true,
+      zoomControl: false,
+      scrollWheelZoom: false,
     });
 
     const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -97,10 +100,30 @@ export class MapInput implements ControlValueAccessor {
       className: 'map-tiles',
     });
 
-    map.addLayer(tileLayer);
-    map.addEventListener('mouseup', () => this.onTouched?.());
+    this.map.addLayer(tileLayer);
+    this.map.addEventListener('mouseup', () => this.onTouched?.());
 
-    return map;
+    this.setupZoom();
+  }
+
+  private setupZoom() {
+    this.map?.getContainer().addEventListener('wheel', ev => {
+      if (ev.ctrlKey && ev.deltaY !== 0) {
+        ev.preventDefault();
+
+        if (ev.deltaY < 0) {
+          this.map?.zoomIn();
+        } else {
+          this.map?.zoomOut();
+        }
+      }
+    });
+
+    const text = 'Mantenga presionada la tecla Ctrl para manipular el zoom con el ratón';
+    this.map?.addControl(new Tip(text, { position: 'topright' }));
+
+    const zoomControl = L.control.zoom({ position: 'topright' });
+    this.map?.addControl(zoomControl);
   }
 
   private handleMapClick = (e: L.LeafletMouseEvent) => {

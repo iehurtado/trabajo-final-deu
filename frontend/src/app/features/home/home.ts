@@ -1,7 +1,7 @@
 import { afterNextRender, afterRenderEffect, ApplicationRef, ChangeDetectionStrategy, Component, computed, createComponent, EnvironmentInjector, inject, Injector, inputBinding, linkedSignal, resource, Signal, signal, Type, viewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { MapComponent, MapControl, MapPanel } from '@common/maps/map';
+import { MapComponent, MapPanel } from '@common/maps/map';
 import { BalnearioIcon, PuntoInteresIcon } from '@common/maps/util';
 import { AuthService } from '@features/auth/auth.service';
 import { BalneariosService } from '@features/balnearios/balnearios.service';
@@ -13,6 +13,7 @@ import L, { Icon, IconOptions } from 'leaflet';
 import { firstValueFrom } from 'rxjs';
 import { PopupBalneario } from '../balnearios/popup-balneario';
 import { PopupPuntoInteres } from '../puntos-interes/popup-punto-interes';
+import { MapControl } from '@common/maps/controls';
 
 type PanelMarcador = {
   component: Type<any>;
@@ -43,7 +44,7 @@ type SearchOption = {
     NgSelectComponent,
     ReactiveFormsModule,
     NgOptionComponent,
-    MapControl
+    MapControl,
 ],
   templateUrl: './home.html',
   styleUrl: './home.scss',
