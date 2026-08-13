@@ -1,94 +1,93 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-    <div class="row g-2 mb-3">
-      <div class="col-12 col-lg-4">
-        <section class="card h-100 mb-2">
-          <h5 class="card-header">Información Básica</h5>
-          <div class="card-body">
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre</label>
-              <input type="text" id="nombre" formControlName="nombre" class="form-control required"
-                [class.is-invalid]="nombre.touched && nombre.invalid" autotrim>
-
-              @if (nombre.touched && nombre.errors; as errors) {
-                <div class="invalid-feedback">
-                  @if (errors['required']) {
-                    El nombre es requerido.
-                  } @else if (errors['puntoInteresNameExists']) {
-                    Este nombre ya está siendo utilizado.
-                  }
-                </div>
-              }
-            </div>
-            <div class="mb-3">
-              <label for="descripcion" class="form-label">Descripción <span class="text-muted">(opcional)</span></label>
-              <textarea id="descripcion" formControlName="descripcion" class="form-control" rows="3"></textarea>
-            </div>
-            <div class="row g-2">
-              <div class="col-md-6 mb-3">
-                <label for="categoria" class="form-label">Categoría</label>
-                <select id="categoria" formControlName="categoria" class="form-select required">
-                  <option value="Contaminantes">Contaminantes</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="subcategoria" class="form-label">Subcategoría</label>
-                <input type="text" id="subcategoria" formControlName="subcategoria" class="form-control required"
-                  [class.is-invalid]="form.get('subcategoria')?.touched && form.get('subcategoria')?.invalid" autotrim>
-                @if (form.get('subcategoria')?.touched && form.get('subcategoria')?.errors?.['required']) {
-                  <div class="invalid-feedback">La subcategoría es requerida.</div>
-                }
-              </div>
-            </div>
-          </div>
-        </section>
-      </div>
-      <div class="col-12 col-lg-8">
-        <section class="card">
-          <div class="card-header">
-            <h5 class="d-inline">Ubicación</h5>
-            <button type="button" class="btn btn-sm btn-link py-0 px-1 align-bottom"
-                title="Detectar Ubicación"
-                    (click)="detectarUbicacion()" [disabled]="detectando()">
-              @if (detectando()) {
-                <span class="spinner-border spinner-border-sm" role="status" aria-label="Detectando Ubicación"> </span>
-              } @else {
-                <fa-icon [icon]="faLocationCrosshairs" alt=""></fa-icon>
-              }
-            </button>
-          </div>
-          <div class="card-body p-0">
-             <app-map-input [markerIcon]="PuntoInteresIcon" style="height: 500px; width: 100%;" formControlName="ubicacion"></app-map-input>
-          </div>
-          <div class="card-footer small">
-            @let ubicacion = form.get('ubicacion');
-
-            @if (ubicacion?.touched && ubicacion?.errors?.['required']) {
-              <div class="text-danger">Seleccione una ubicación en el mapa</div>
-            } @else if (ubicacion?.value) {
-              Arrastre el marcador para ajustar la ubicación
+  <div class="row g-2 mb-3">
+    <div class="col-12 col-lg-7">
+      <section class="card">
+        <div class="card-header">
+          <h5 class="d-inline">Ubicación</h5>
+          <button type="button" class="btn btn-sm btn-link py-0 px-1 align-bottom" title="Detectar Ubicación"
+            (click)="detectarUbicacion()" [disabled]="detectando()">
+            @if (detectando()) {
+            <span class="spinner-border spinner-border-sm" role="status" aria-label="Detectando Ubicación"> </span>
             } @else {
-              Haga clic en el mapa para colocar un marcador
+            <fa-icon [icon]="faLocationCrosshairs" alt=""></fa-icon>
+            }
+          </button>
+        </div>
+        <div class="card-body p-0">
+          <app-map-input [markerIcon]="PuntoInteresIcon" style="height: 500px; width: 100%;"
+            formControlName="ubicacion"></app-map-input>
+        </div>
+        <div class="card-footer small">
+          @let ubicacion = form.get('ubicacion');
+
+          @if (ubicacion?.touched && ubicacion?.errors?.['required']) {
+          <div class="text-danger">Seleccione una ubicación en el mapa</div>
+          } @else if (ubicacion?.value) {
+          Arrastre el marcador para ajustar la ubicación
+          } @else {
+          Haga clic en el mapa para colocar un marcador
+          }
+        </div>
+      </section>
+    </div>
+    <div class="col-12 col-lg-5">
+      <section class="card mb-2">
+        <h5 class="card-header">Información Básica</h5>
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" id="nombre" formControlName="nombre" class="form-control required"
+              [class.is-invalid]="nombre.touched && nombre.invalid" autotrim>
+
+            @if (nombre.touched && nombre.errors; as errors) {
+            <div class="invalid-feedback">
+              @if (errors['required']) {
+              El nombre es requerido.
+              } @else if (errors['puntoInteresNameExists']) {
+              Este nombre ya está siendo utilizado.
+              }
+            </div>
             }
           </div>
-        </section>
-      </div>
-    </div>
-    <section class="card mb-2">
-      <div class="card-body">
-        <div class="d-flex justify-content-end">
-          <div class="ms-auto">
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción <span class="text-muted">(opcional)</span></label>
+            <textarea id="descripcion" formControlName="descripcion" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="row g-2">
+            <div class="col-md-6 mb-3">
+              <label for="categoria" class="form-label">Categoría</label>
+              <select id="categoria" formControlName="categoria" class="form-select required">
+                <option value="Contaminantes">Contaminantes</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="subcategoria" class="form-label">Subcategoría</label>
+              <input type="text" id="subcategoria" formControlName="subcategoria" class="form-control required"
+                [class.is-invalid]="form.get('subcategoria')?.touched && form.get('subcategoria')?.invalid" autotrim>
+              @if (form.get('subcategoria')?.touched && form.get('subcategoria')?.errors?.['required']) {
+              <div class="invalid-feedback">La subcategoría es requerida.</div>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="buttons" class="card mb-2" #buttons>
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
             <a role="button" class="btn focus-ring" [routerLink]="backLink()">Cancelar</a>
             <button type="submit" class="btn btn-primary" [disabled]="guardando()">
               Guardar
               @if (guardando()) {
-                <span class="spinner-border spinner-border-sm ms-2" role="status">
-                  <span class="visually-hidden">Guardando</span>
-                </span>
+              <span class="spinner-border spinner-border-sm ms-2" role="status">
+                <span class="visually-hidden">Guardando</span>
+              </span>
               }
             </button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <app-scroller [scrollable]="buttons" [threshold]="0.6">Acciones</app-scroller>
+    </div>
+  </div>
 
 </form>

@@ -11,10 +11,11 @@ import { DialogService } from '@common/ui/dialog/dialog.service';
 import { Toaster } from '@common/ui/toaster/toaster.service';
 import { AuthService } from '@features/auth/auth.service';
 import { DatePipe } from '@angular/common';
+import { Scroller } from '@common/ui/scrollers';
 
 @Component({
   selector: 'app-balnearios-detail',
-  imports: [MapComponent, RouterLink, MarkerComponent, EstadoAguaBadge, DatePipe],
+  imports: [MapComponent, RouterLink, MarkerComponent, EstadoAguaBadge, DatePipe, Scroller],
   templateUrl: './balnearios-detail.html',
   styleUrl: './balnearios-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

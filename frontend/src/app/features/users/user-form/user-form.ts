@@ -8,13 +8,14 @@ import { Rol, User, UserService } from '../user.service';
 import { equals } from "@common/validators";
 import { createUserEmailValidator } from '@features/auth/validators';
 import { AutoTrim } from '@common/autotrim';
+import { Scroller } from '@common/ui/scrollers';
 
 const PASSWD_VALIDATORS = [Validators.required, Validators.minLength(6)];
 const PASSWD_R_VALIDATORS = [Validators.required];
 
 @Component({
   selector: 'app-user-form',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgSelectModule, AutoTrim],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink, NgSelectModule, AutoTrim, Scroller],
   templateUrl: './user-form.html',
   styleUrl: './user-form.scss',
 })

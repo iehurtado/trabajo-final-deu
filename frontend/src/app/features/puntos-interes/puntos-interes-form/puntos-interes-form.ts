@@ -1,25 +1,30 @@
-import { Component, effect, inject, input, output, signal } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, UrlTree } from '@angular/router';
-import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
-import * as L from 'leaflet';
-import { delay, map, of, switchMap } from 'rxjs';
-import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
 import { AutoTrim } from '@common/autotrim';
 import { MapInput } from '@common/maps/input';
 import { PuntoInteresIcon } from '@common/maps/util';
+import { Scroller } from '@common/ui/scrollers';
+import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { faArrowDown, faLocationCrosshairs } from '@fortawesome/free-solid-svg-icons';
+import * as L from 'leaflet';
+import { delay, map, of, switchMap } from 'rxjs';
+import { PuntoInteres, PuntosInteresService } from '../puntos-interes.service';
+
 
 @Component({
   selector: 'app-puntos-interes-form',
-  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim, MapInput],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim, MapInput, Scroller],
   templateUrl: './puntos-interes-form.html',
   styleUrl: './puntos-interes-form.scss',
 })
 export class PuntosInteresForm {
   protected readonly faLocationCrosshairs = faLocationCrosshairs;
+  protected readonly faArrowDown = faArrowDown;
   protected readonly PuntoInteresIcon = PuntoInteresIcon;
 
+  private readonly destroyRef = inject(DestroyRef);
   private readonly fb = inject(FormBuilder);
   private readonly puntosInteresService = inject(PuntosInteresService);
 
@@ -57,7 +62,7 @@ export class PuntosInteresForm {
       } else {
         this.form.enable();
       }
-    })
+    });
   }
 
   private puntoInteresNameValidator(): AsyncValidatorFn {

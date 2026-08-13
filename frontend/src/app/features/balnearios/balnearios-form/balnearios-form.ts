@@ -9,10 +9,11 @@ import { Balneario, BalneariosService } from '../balnearios.service';
 import { AutoTrim } from '@common/autotrim';
 import { MapInput } from '@common/maps/input';
 import { BalnearioIcon } from '@common/maps/util';
+import { Scroller } from '@common/ui/scrollers';
 
 @Component({
   selector: 'app-balnearios-form',
-  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim, MapInput],
+  imports: [ReactiveFormsModule, RouterLink, FaIconComponent, AutoTrim, MapInput, Scroller],
   templateUrl: './balnearios-form.html',
   styleUrl: './balnearios-form.scss',
 })

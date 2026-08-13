@@ -4,10 +4,11 @@ import { RouterLink } from "@angular/router";
 import { firstValueFrom } from 'rxjs';
 import { UserService } from '../user.service';
 import { getUserFriendlyErrorMessage } from '@common/util';
+import { Scroller } from '@common/ui/scrollers';
 
 @Component({
   selector: 'app-users-detail',
-  imports: [CommonModule, RouterLink, DatePipe],
+  imports: [CommonModule, RouterLink, DatePipe, Scroller],
   templateUrl: './users-detail.html',
   styleUrl: './users-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
